@@ -5,16 +5,15 @@ import lombok.Data;
 
 import javax.persistence.*;
 
-@Entity
 @Data
-public class Comment {
+@Entity
+@Table(name = "likes")
+public class Like  {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int commentId;
+    private int likeId;
     private int postId;
-    private String commentText;
-    private String commentDate;
     @OneToOne
-    @JoinColumn(name = "commentUserID")
+    @JoinColumn(name = "likeUserID")
     private User user;
 }

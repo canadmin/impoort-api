@@ -1,10 +1,24 @@
 package com.impoort.impoortapi.domain.user;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
+@Data
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO,generator = "system-uuid")
+    @GenericGenerator(name = "system-uuid",strategy = "uuid")
     private String userId;
     private String ActiveGuide;
     private String description;
@@ -21,6 +35,6 @@ public class User {
     private String gender;
     private String phoneNumber;
     private String experienceYear;
-    private List<String> experienceCompanies;
+    private String experienceCompanies;
     private int employeeCount;
 }
