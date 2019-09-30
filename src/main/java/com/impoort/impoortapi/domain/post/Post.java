@@ -19,4 +19,6 @@ public class Post {
     private String investmentAmount;
     private String developerCount;
     private String wantedSalary;
+
+    //Hasan
 }
