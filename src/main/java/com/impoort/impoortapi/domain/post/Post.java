@@ -19,5 +19,4 @@ public class Post {
     private String ınvestmentAmount;
     private String develeporCount;
     private String wantedSalary;
-
 }
