@@ -10,13 +10,13 @@ public class Post {
     private User user;
     private int postType;
     private String mediaUrl;
-    private String postDesctription;
+    private String postDescription;
     private String sector;
     private int likeCount;
     private List<User> likeList;
     private int commentCount;
     private List<Comment> commentList;
-    private String ınvestmentAmount;
-    private String develeporCount;
+    private String investmentAmount;
+    private String developerCount;
     private String wantedSalary;
 }
