@@ -1,4 +1,4 @@
-package com.impoort.impoortapi.domain;
+package com.impoort.impoortapi.domain.user;
 
 import java.util.Date;
 import java.util.List;
