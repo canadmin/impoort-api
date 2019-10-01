@@ -11,10 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -43,5 +40,23 @@ public class UserController {
     public ResponseEntity<UserResponseDTO> addNewUser(@RequestBody UserRequestDTO userRequestDTO){
           return new ResponseEntity<UserResponseDTO>(userService.saveUser(userRequestDTO),HttpStatus.OK);
     }
+
+    /*
+    @GetMapping("/verifyAccount/url/{activeGuide}")
+    public String verifyAccount(@PathVariable(value = "activeGuide", required = true) String activeGuide ){
+        String resultMessage = "Bir hata meydana geldi, lütfen tekrar deneyin.";
+        UserResponseDTO userResponseDTO = userService.findByActiveGuide(activeGuide);
+        if(userResponseDTO != null) {
+            if (!userResponseDTO.isActive()) {
+                userResponseDTO.setActive(true);
+                userService.updateUser(userResponseDTO);
+                resultMessage = "Hesabınız başarıyla onaylandı.";
+
+            } else {
+                resultMessage = "Hesabınız zaten onaylanmış.";
+            }
+        }
+        return resultMessage;
+    }*/
 
 }
