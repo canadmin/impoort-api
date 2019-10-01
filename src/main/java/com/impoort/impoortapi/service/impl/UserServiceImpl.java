@@ -1,9 +1,10 @@
-package com.impoort.impoortapi.service;
+package com.impoort.impoortapi.service.impl;
 
 import com.impoort.impoortapi.api.v1.model.requestmodel.UserRequestDTO;
 import com.impoort.impoortapi.api.v1.model.responsemodel.UserResponseDTO;
 import com.impoort.impoortapi.domain.user.User;
 import com.impoort.impoortapi.repository.UserRepository;
+import com.impoort.impoortapi.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,7 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Service
-public class UserServiceImpl implements  UserService{
+public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
@@ -35,7 +36,6 @@ public class UserServiceImpl implements  UserService{
         User user=modelMapper.map(userRequestDTO,User.class);
         user=userRepository.save(user);
         UserResponseDTO userResponseDTO=modelMapper.map(user,UserResponseDTO.class);
-
         return userResponseDTO;
     }
 }

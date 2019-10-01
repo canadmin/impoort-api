@@ -4,17 +4,21 @@ import com.impoort.impoortapi.api.v1.model.requestmodel.CommentRequestDTO;
 import com.impoort.impoortapi.api.v1.model.requestmodel.PostRequestDTO;
 import com.impoort.impoortapi.api.v1.model.requestmodel.UserRequestDTO;
 import com.impoort.impoortapi.api.v1.model.responsemodel.CommentResponseDTO;
+import com.impoort.impoortapi.api.v1.model.responsemodel.PostResponseDTO;
 import com.impoort.impoortapi.api.v1.model.responsemodel.UserResponseDTO;
 import com.impoort.impoortapi.domain.comment.Comment;
 import com.impoort.impoortapi.domain.post.Post;
 import com.impoort.impoortapi.domain.user.User;
 import com.impoort.impoortapi.repository.PostRepository;
+import com.impoort.impoortapi.service.PostService;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import javax.xml.ws.Response;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -22,38 +26,32 @@ import java.util.List;
 @Controller
 @RequestMapping("/api/v1/post")
 public class PostController {
-        private final PostRepository postRepository;
-        private final ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
+    private  final PostService postService;
 
-    public PostController(PostRepository postRepository, ModelMapper modelMapper) {
-        this.postRepository = postRepository;
+
+    public PostController(ModelMapper modelMapper, PostService postService) {
         this.modelMapper = modelMapper;
+        this.postService = postService;
     }
 
     @GetMapping
-    public ResponseEntity<List<PostRequestDTO>> getAllPost(){
-        List<Post> posts=postRepository.findAll();
-        List<PostRequestDTO>  postRequestDTOS= Arrays.asList(modelMapper.map(posts, PostRequestDTO[].class));
-
-        return ResponseEntity.ok(postRequestDTOS);
+    public ResponseEntity<List<PostResponseDTO>> getAllPost(){
+        return new ResponseEntity<List<PostResponseDTO>>(postService.getAllPost(), HttpStatus.OK);
     }
     @PostMapping
-    public ResponseEntity<PostRequestDTO> addNewPost(@RequestBody PostRequestDTO postRequestDTO){
-
-        Post post=modelMapper.map(postRequestDTO,Post.class);
-        post.setCommentList(new ArrayList<>());
-        return ResponseEntity.ok(modelMapper.map(postRepository.save(post),PostRequestDTO.class));
+    public ResponseEntity<PostResponseDTO> addNewPost(@RequestBody PostRequestDTO postRequestDTO){
+        return new ResponseEntity<PostResponseDTO>(postService.addNewPost(postRequestDTO),HttpStatus.OK);
     }
     @PostMapping("/{postId}/addComment")
     public ResponseEntity<CommentResponseDTO> addNewPost(@RequestBody CommentRequestDTO commentRequestDTO, @PathVariable int postId){
-        Post post = postRepository.getOne(postId);
-        List<Comment> commentsTemp=post.getCommentList();
-        Comment comment=modelMapper.map(commentRequestDTO,Comment.class);
-        commentsTemp.add(comment);
-        post.setCommentList(commentsTemp);
-        postRepository.save(post);
-        CommentResponseDTO commentRequestDTO1=modelMapper.map(comment,CommentResponseDTO.class);
-        return ResponseEntity.ok(commentRequestDTO1);
+        return new ResponseEntity<CommentResponseDTO>(postService.addNewComment(postId,commentRequestDTO),HttpStatus.OK);
     }
+    @GetMapping("{postId}/getComment")
+    public ResponseEntity<List<CommentResponseDTO>> getPostComment(@PathVariable int postId){
+        return  new ResponseEntity<List<CommentResponseDTO>>(postService.getAllComment(postId),HttpStatus.OK);
+    }
+
+
 
 }
