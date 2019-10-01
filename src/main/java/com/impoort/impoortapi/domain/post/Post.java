@@ -30,13 +30,13 @@ public class Post {
     private int likeCount;
     private int commentCount;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "post_id2")
     private Set<Like> likeList;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "post_id1")
-    private Set<Comment> commentList;
+    private List<Comment> commentList;
 
     private String investmentAmount;
     private String developerCount;
