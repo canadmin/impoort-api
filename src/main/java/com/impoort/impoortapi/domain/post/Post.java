@@ -1,6 +1,7 @@
 package com.impoort.impoortapi.domain.post;
 
 import com.impoort.impoortapi.domain.comment.Comment;
+import com.impoort.impoortapi.domain.comment.Like;
 import com.impoort.impoortapi.domain.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,13 +28,16 @@ public class Post {
     private String postDescription;
     private String sector;
     private int likeCount;
-    @OneToMany
-    @JoinColumn
-    private List<User> likeList;
     private int commentCount;
+
     @OneToMany
-    @JoinColumn
-    private List<Comment> commentList;
+    @JoinColumn(name = "post_id2")
+    private Set<Like> likeList;
+
+    @OneToMany
+    @JoinColumn(name = "post_id1")
+    private Set<Comment> commentList;
+
     private String investmentAmount;
     private String developerCount;
     private String wantedSalary;
