@@ -1,9 +1,11 @@
 package com.impoort.impoortapi.controller;
 
 import com.impoort.impoortapi.api.v1.model.requestmodel.CommentRequestDTO;
+import com.impoort.impoortapi.api.v1.model.requestmodel.LikeRequestDTO;
 import com.impoort.impoortapi.api.v1.model.requestmodel.PostRequestDTO;
 import com.impoort.impoortapi.api.v1.model.requestmodel.UserRequestDTO;
 import com.impoort.impoortapi.api.v1.model.responsemodel.CommentResponseDTO;
+import com.impoort.impoortapi.api.v1.model.responsemodel.LikeResponseDTO;
 import com.impoort.impoortapi.api.v1.model.responsemodel.PostResponseDTO;
 import com.impoort.impoortapi.api.v1.model.responsemodel.UserResponseDTO;
 import com.impoort.impoortapi.domain.comment.Comment;
@@ -47,9 +49,18 @@ public class PostController {
     public ResponseEntity<CommentResponseDTO> addNewPost(@RequestBody CommentRequestDTO commentRequestDTO, @PathVariable int postId){
         return new ResponseEntity<CommentResponseDTO>(postService.addNewComment(postId,commentRequestDTO),HttpStatus.OK);
     }
-    @GetMapping("{postId}/getComment")
+    @GetMapping("{postId}/getAllComment")
     public ResponseEntity<List<CommentResponseDTO>> getPostComment(@PathVariable int postId){
         return  new ResponseEntity<List<CommentResponseDTO>>(postService.getAllComment(postId),HttpStatus.OK);
+    }
+    @PostMapping("{postId}/addNewLike")
+    public ResponseEntity<LikeResponseDTO> addNewLike(@RequestBody LikeRequestDTO likeRequestDTO,@PathVariable int postId){
+        return  new ResponseEntity<LikeResponseDTO>(postService.addNewLike(postId,likeRequestDTO),HttpStatus.OK);
+    }
+
+    @GetMapping("{postId}/getAllLike")
+    public ResponseEntity<List<LikeResponseDTO>> getAllLike(@PathVariable int postId){
+        return new ResponseEntity<List<LikeResponseDTO>>(postService.getAllLike(postId),HttpStatus.OK);
     }
 
 

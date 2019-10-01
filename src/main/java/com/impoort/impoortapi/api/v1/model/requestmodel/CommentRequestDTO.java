@@ -8,7 +8,6 @@ import javax.persistence.*;
 @Data
 public class CommentRequestDTO {
 
-    private int postId;
     private String commentText;
     private String commentDate;
     private User user;

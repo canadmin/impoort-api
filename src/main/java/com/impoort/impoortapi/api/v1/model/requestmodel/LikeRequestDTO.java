@@ -8,6 +8,5 @@ import javax.persistence.*;
 @Data
 public class LikeRequestDTO {
 
-    private int postId;
     private User user;
 }
