@@ -12,7 +12,6 @@ public class Like  {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int likeId;
-    private int postId;
     @OneToOne
     @JoinColumn(name = "likeUserID")
     private User user;

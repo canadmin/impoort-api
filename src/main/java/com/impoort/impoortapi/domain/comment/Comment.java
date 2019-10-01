@@ -11,7 +11,6 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int commentId;
-    private int postId;
     private String commentText;
     private String commentDate;
     @OneToOne
