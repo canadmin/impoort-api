@@ -27,7 +27,7 @@ public class UserBootsrap implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        User user =new User();
+      /*  User user =new User();
 
         user.setFirstName("Can");
         user.setCity("Aydın");
@@ -51,6 +51,6 @@ public class UserBootsrap implements CommandLineRunner {
 
         postRepository.save(post);
 
-
+*/
     }
 }
