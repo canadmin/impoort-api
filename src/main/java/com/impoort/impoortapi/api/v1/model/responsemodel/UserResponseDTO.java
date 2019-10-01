@@ -8,7 +8,7 @@ import java.util.Date;
 public class UserResponseDTO {
 
     private String userId;
-    private String ActiveGuide;
+    private String activeGuide;
     private String description;
     private boolean isActive;
     private boolean isConfirmed;

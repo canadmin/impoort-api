@@ -9,6 +9,8 @@ import java.util.List;
 public interface UserService {
     List<UserResponseDTO> getAllUser();
     UserResponseDTO saveUser(UserRequestDTO userRequestDTO);
+    UserResponseDTO findByActiveGuide(String activeGuide);
+    UserResponseDTO updateUser(UserResponseDTO userResponseDTO);
 
 
 }

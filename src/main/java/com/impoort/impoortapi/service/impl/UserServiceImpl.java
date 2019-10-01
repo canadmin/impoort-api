@@ -5,6 +5,7 @@ import com.impoort.impoortapi.api.v1.model.responsemodel.UserResponseDTO;
 import com.impoort.impoortapi.domain.user.User;
 import com.impoort.impoortapi.repository.UserRepository;
 import com.impoort.impoortapi.service.UserService;
+import com.impoort.impoortapi.utils.RandomStringGenerator;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,8 +35,21 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponseDTO saveUser(UserRequestDTO userRequestDTO) {
         User user=modelMapper.map(userRequestDTO,User.class);
+        user.setActiveGuide(RandomStringGenerator.generateString());
         user=userRepository.save(user);
         UserResponseDTO userResponseDTO=modelMapper.map(user,UserResponseDTO.class);
         return userResponseDTO;
+    }
+
+    @Override
+    public UserResponseDTO findByActiveGuide(String activeGuide) {
+        UserResponseDTO userResponseDTO = modelMapper.map(userRepository.findByActiveGuide(activeGuide), UserResponseDTO.class);
+        return userResponseDTO;
+    }
+
+    @Override
+    public UserResponseDTO updateUser(UserResponseDTO userResponseDTO) {
+        User updatedUser = modelMapper.map(userResponseDTO, User.class);
+        return modelMapper.map(userRepository.save(updatedUser), UserResponseDTO.class);
     }
 }
