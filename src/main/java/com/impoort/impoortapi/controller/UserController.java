@@ -1,11 +1,15 @@
 package com.impoort.impoortapi.controller;
 
+import com.impoort.impoortapi.api.v1.model.requestmodel.UserRequestDTO;
+import com.impoort.impoortapi.api.v1.model.responsemodel.UserResponseDTO;
 import com.impoort.impoortapi.domain.user.User;
 import com.impoort.impoortapi.service.UserService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -14,14 +18,21 @@ import java.util.List;
 @Controller
 @RequestMapping("/api/v1/user")
 public class UserController {
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+    private final ModelMapper modelMapper;
 
+    public UserController(UserService userService, ModelMapper modelMapper) {
+        this.userService = userService;
+        this.modelMapper = modelMapper;
+    }
 
     @GetMapping("/users")
-    public ResponseEntity<List<User>>  getAllUser(){
+    public ResponseEntity<List<UserResponseDTO>>  getAllUser(){
         return ResponseEntity.ok(userService.getAllUser());
-
+    }
+    @PostMapping("/addUser")
+    public ResponseEntity<UserResponseDTO> addNewUser(@RequestBody UserRequestDTO userRequestDTO){
+        return ResponseEntity.ok(userService.saveUser(userRequestDTO));
     }
 
 }

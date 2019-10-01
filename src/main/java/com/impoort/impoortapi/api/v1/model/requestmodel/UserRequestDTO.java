@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class userRequestDTO {
+public class UserRequestDTO {
 
     private String description;
     private String sector;

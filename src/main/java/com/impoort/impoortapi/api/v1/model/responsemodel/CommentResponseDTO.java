@@ -5,7 +5,7 @@ import lombok.Data;
 
 
 @Data
-public class commentResponseDTO {
+public class CommentResponseDTO {
 
     private int commentId;
     private int postId;

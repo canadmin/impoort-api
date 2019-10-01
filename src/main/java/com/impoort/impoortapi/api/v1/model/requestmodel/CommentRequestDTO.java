@@ -6,8 +6,10 @@ import lombok.Data;
 import javax.persistence.*;
 
 @Data
-public class likeRequestDTO {
+public class CommentRequestDTO {
 
     private int postId;
+    private String commentText;
+    private String commentDate;
     private User user;
 }
