@@ -32,7 +32,7 @@ public class Post {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "post_id2")
-    private Set<Like> likeList;
+    private List<Like> likeList;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "post_id1")

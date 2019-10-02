@@ -20,7 +20,9 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO,generator = "system-uuid")
     @GenericGenerator(name = "system-uuid",strategy = "uuid")
     private String userId;
-    private String ActiveGuide;
+
+    @Column(unique = true)
+    private String activeGuide;
     private String description;
     private boolean isActive;
     private boolean isConfirmed;
