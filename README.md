@@ -4,6 +4,7 @@
 	# git clone https://github.com/canadmin/impoort-api.git
 	* proje dizini içerisinde 
 	# mvn spring-boot:run
+	
 # Security
 >## JWT ÖZELLİĞİ EKLENDİ(Rest-api-security)
 > ### özelliği aktifleştirmek için:
