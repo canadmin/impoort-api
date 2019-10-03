@@ -36,10 +36,7 @@ public class UserController {
         mailSenderService.sendSimpleMessage("yusufali.cezik@hotmail.com", "", false, "Yusuf Ali Çezik");*/
           return new ResponseEntity<List<UserResponseDTO>>(userService.getAllUser(), HttpStatus.OK);
     }
-    @PostMapping("/addUser")
-    public ResponseEntity<UserResponseDTO> addNewUser(@RequestBody UserRequestDTO userRequestDTO){
-          return new ResponseEntity<UserResponseDTO>(userService.saveUser(userRequestDTO),HttpStatus.OK);
-    }
+
 
     /*
     @GetMapping("/verifyAccount/url/{activeGuide}")
