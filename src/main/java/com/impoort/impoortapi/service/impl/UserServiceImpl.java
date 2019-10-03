@@ -32,14 +32,6 @@ public class UserServiceImpl implements UserService {
         return userResponseDTOS;
     }
 
-    @Override
-    public UserResponseDTO saveUser(UserRequestDTO userRequestDTO) {
-        User user=modelMapper.map(userRequestDTO,User.class);
-        user.setActiveGuide(RandomStringGenerator.generateString());
-        user=userRepository.save(user);
-        UserResponseDTO userResponseDTO=modelMapper.map(user,UserResponseDTO.class);
-        return userResponseDTO;
-    }
 
     @Override
     public UserResponseDTO findByActiveGuide(String activeGuide) {
