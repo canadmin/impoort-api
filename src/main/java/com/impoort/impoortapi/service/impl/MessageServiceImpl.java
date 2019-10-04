@@ -1,5 +1,6 @@
 package com.impoort.impoortapi.service.impl;
 
+import com.impoort.impoortapi.api.v1.model.responsemodel.UserMessageDTO;
 import com.impoort.impoortapi.domain.messages.Message;
 import com.impoort.impoortapi.domain.messages.MessagesGeneral;
 import com.impoort.impoortapi.domain.user.User;
@@ -83,13 +84,15 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public List<User> getAllMessageUser(String userId){
+    public List<UserMessageDTO> getAllMessageUser(String userId){
         List<MessagesGeneral> messagesGenerals= messageGeneralRepository
                 .findAllByUserId(userId);
-        List<User> returnedUser=new ArrayList<>();
+        List<UserMessageDTO> returnedUser=new ArrayList<>();
         for(MessagesGeneral msg :messagesGenerals){
             User user= userRepository.getOne(msg.getUserMessagesWithID());
-            returnedUser.add(user);
+            UserMessageDTO userMessageDTO=new UserMessageDTO(user.getUserId(),user.getFirstName(),user.getLastName(),user.getProfileImgUrl(),msg.getLastMessage());
+
+            returnedUser.add(userMessageDTO);
         }
         return returnedUser;
     }

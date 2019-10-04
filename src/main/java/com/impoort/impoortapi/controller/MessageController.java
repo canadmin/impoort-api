@@ -1,5 +1,6 @@
 package com.impoort.impoortapi.controller;
 
+import com.impoort.impoortapi.api.v1.model.responsemodel.UserMessageDTO;
 import com.impoort.impoortapi.domain.messages.Message;
 import com.impoort.impoortapi.domain.messages.MessagesGeneral;
 import com.impoort.impoortapi.domain.user.User;
@@ -34,8 +35,8 @@ public class MessageController {
     }
 
     @GetMapping("/inbox/{userId}")
-    public ResponseEntity<List<User>> getUserMessagesUsers(@PathVariable String userId){
-        return new ResponseEntity<List<User>>(messageService.getAllMessageUser(userId),HttpStatus.OK);
+    public ResponseEntity<List<UserMessageDTO>> getUserMessagesUsers(@PathVariable String userId){
+        return new ResponseEntity<List<UserMessageDTO>>(messageService.getAllMessageUser(userId),HttpStatus.OK);
     }
 
 
