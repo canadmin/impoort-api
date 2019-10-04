@@ -1,10 +1,9 @@
-package com.impoort.impoortapi.repository;
+package com.impoort.impoortapi.repository.message;
 
 import com.impoort.impoortapi.domain.messages.Message;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.NamedQuery;
 import java.util.List;
 
 @Repository
