@@ -30,14 +30,12 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public List<Message> getAllMessageWithReceiver(String senderId, String receiverId) {
-        List<Message> firstMessageList=messageRepository.findAllByMessageSenderUserIdAndMessageReceiverUserId(senderId,receiverId);
-        List<Message> secondMessageList=messageRepository.findAllByMessageSenderUserIdAndMessageReceiverUserId(receiverId,senderId);
-        for(int i=0;i<secondMessageList.size(); i++){
-            firstMessageList.add(secondMessageList.get(i));
-        }
+        List<Message> firstMessageList=messageRepository
+                .findAllByMessageSenderUserIdAndMessageReceiverUserId(senderId,receiverId);
+        List<Message> secondMessageList=messageRepository
+                .findAllByMessageSenderUserIdAndMessageReceiverUserId(receiverId,senderId);
+        firstMessageList.addAll(secondMessageList);
         firstMessageList.sort(Comparator.comparing(Message::getMessageDate));
-
-
         return firstMessageList;
     }
 
@@ -51,39 +49,46 @@ public class MessageServiceImpl implements MessageService {
 
     private void saveMessageGeneral(Message message){
 
-        MessagesGeneral messagesGeneral = new MessagesGeneral();
-        messagesGeneral.setUserId(message.getMessageSenderUserId());
-        messagesGeneral.setUserMessagesWithID(message.getMessageReceiverUserId());
-        messagesGeneral.setLastMessage(message.getMessageText());
+        MessagesGeneral messagesGeneralFromMe = new MessagesGeneral(message.getMessageSenderUserId(),
+                message.getMessageReceiverUserId(),
+                message.getMessageText());
 
-        MessagesGeneral messagesGeneral2 = new MessagesGeneral();
-        messagesGeneral2.setUserId(message.getMessageReceiverUserId());
-        messagesGeneral2.setUserMessagesWithID(message.getMessageSenderUserId());
-        messagesGeneral2.setLastMessage(message.getMessageText());
+        MessagesGeneral messagesGeneralToOther = new MessagesGeneral(message.getMessageReceiverUserId(),
+                message.getMessageSenderUserId(),
+                message.getMessageText());
 
-        MessagesGeneral messagesGeneralExist = messageGeneralRepository.findByUserIdAndUserMessagesWithID(message.getMessageSenderUserId(),message.getMessageReceiverUserId());
-        MessagesGeneral messagesGeneralExist2 = messageGeneralRepository.findByUserIdAndUserMessagesWithID(message.getMessageReceiverUserId(),message.getMessageSenderUserId());
-        if(messagesGeneralExist ==null ){
-            messageGeneralRepository.save(messagesGeneral);
+        MessagesGeneral messagesGeneralExistMe = messageGeneralRepository
+                .findByUserIdAndUserMessagesWithID(message.getMessageSenderUserId(),
+                message.getMessageReceiverUserId());
+
+        MessagesGeneral messagesGeneralExistOther = messageGeneralRepository
+                .findByUserIdAndUserMessagesWithID(message.getMessageReceiverUserId(),
+                message.getMessageSenderUserId());
+
+        if(messagesGeneralExistMe ==null ){
+            messageGeneralRepository.save(messagesGeneralFromMe);
+            }else{
+                messagesGeneralFromMe
+                        .setMessageGeneralId(messagesGeneralExistMe.getMessageGeneralId());
+                messageGeneralRepository.save(messagesGeneralFromMe);
+            }
+        if(messagesGeneralExistOther == null) {
+            messageGeneralRepository.save(messagesGeneralToOther);
         }else{
-            messagesGeneral.setMessageGeneralId(messagesGeneralExist.getMessageGeneralId());
-            messageGeneralRepository.save(messagesGeneral);
-        }
-        if(messagesGeneralExist2 == null) {
-            messageGeneralRepository.save(messagesGeneral2);
-        }else{
-            messagesGeneral2.setMessageGeneralId(messagesGeneralExist2.getMessageGeneralId());
-            messageGeneralRepository.save(messagesGeneral2);
+            messagesGeneralToOther
+                    .setMessageGeneralId(messagesGeneralExistOther.getMessageGeneralId());
+            messageGeneralRepository.save(messagesGeneralToOther);
         }
 
     }
 
     @Override
     public List<User> getAllMessageUser(String userId){
-        List<MessagesGeneral> messagesGenerals= messageGeneralRepository.findAllByUserId(userId);
+        List<MessagesGeneral> messagesGenerals= messageGeneralRepository
+                .findAllByUserId(userId);
         List<User> returnedUser=new ArrayList<>();
-        for(int i = 0; i < messagesGenerals.size() ; i++){
-            User user= userRepository.getOne(messagesGenerals.get(i).getUserMessagesWithID());
+        for(MessagesGeneral msg :messagesGenerals){
+            User user= userRepository.getOne(msg.getUserMessagesWithID());
             returnedUser.add(user);
         }
         return returnedUser;

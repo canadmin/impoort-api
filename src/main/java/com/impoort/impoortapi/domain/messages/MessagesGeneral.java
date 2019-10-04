@@ -21,4 +21,10 @@ public class MessagesGeneral {
     private String userId;
     private String userMessagesWithID;
     private String lastMessage;
+
+    public MessagesGeneral(String userId, String userMessagesWithID, String lastMessage) {
+        this.userId = userId;
+        this.userMessagesWithID = userMessagesWithID;
+        this.lastMessage = lastMessage;
+    }
 }
