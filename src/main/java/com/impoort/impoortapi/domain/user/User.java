@@ -40,4 +40,5 @@ public class User {
     private String experienceYear;
     private String experienceCompanies;
     private int employeeCount;
+    private String profileImgUrl;
 }
