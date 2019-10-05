@@ -36,27 +36,32 @@ public class PostController {
         this.postService = postService;
     }
 
+    @CrossOrigin
     @GetMapping
     public ResponseEntity<List<PostResponseDTO>> getAllPost(){
         return new ResponseEntity<List<PostResponseDTO>>(postService.getAllPost(), HttpStatus.OK);
     }
+    @CrossOrigin
     @PostMapping
     public ResponseEntity<PostResponseDTO> addNewPost(@RequestBody PostRequestDTO postRequestDTO){
         return new ResponseEntity<PostResponseDTO>(postService.addNewPost(postRequestDTO),HttpStatus.OK);
     }
+    @CrossOrigin
     @PostMapping("/{postId}/addComment")
     public ResponseEntity<CommentResponseDTO> addNewPost(@RequestBody CommentRequestDTO commentRequestDTO, @PathVariable int postId){
         return new ResponseEntity<CommentResponseDTO>(postService.addNewComment(postId,commentRequestDTO),HttpStatus.OK);
     }
+    @CrossOrigin
     @GetMapping("{postId}/getAllComment")
     public ResponseEntity<List<CommentResponseDTO>> getPostComment(@PathVariable int postId){
         return  new ResponseEntity<List<CommentResponseDTO>>(postService.getAllComment(postId),HttpStatus.OK);
     }
+    @CrossOrigin
     @PostMapping("{postId}/addNewLike")
     public ResponseEntity<LikeResponseDTO> addNewLike(@RequestBody LikeRequestDTO likeRequestDTO,@PathVariable int postId){
         return  new ResponseEntity<LikeResponseDTO>(postService.addNewLike(postId,likeRequestDTO),HttpStatus.OK);
     }
-
+    @CrossOrigin
     @GetMapping("{postId}/getAllLike")
     public ResponseEntity<List<LikeResponseDTO>> getAllLike(@PathVariable int postId){
         return new ResponseEntity<List<LikeResponseDTO>>(postService.getAllLike(postId),HttpStatus.OK);

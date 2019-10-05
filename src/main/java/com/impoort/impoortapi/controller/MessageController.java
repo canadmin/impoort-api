@@ -24,16 +24,19 @@ public class MessageController {
         this.messageService = messageService;
     }
 
+    @CrossOrigin
     @GetMapping("/allMessage/{senderId}/{receiverId}")
     public ResponseEntity<List<Message>> getAllMessageWithReceiverUser(@PathVariable String senderId, @PathVariable String receiverId){
         return new ResponseEntity<>(messageService.getAllMessageWithReceiver(senderId,receiverId), HttpStatus.OK);
     }
 
+    @CrossOrigin
     @PostMapping("/sendMessage")
     public ResponseEntity<Message> sendNewMessageToReceiver(@RequestBody Message message){
         return  new ResponseEntity<Message>(messageService.sendMessageToReceiver(message),HttpStatus.OK);
     }
 
+    @CrossOrigin
     @GetMapping("/inbox/{userId}")
     public ResponseEntity<List<UserMessageDTO>> getUserMessagesUsers(@PathVariable String userId){
         return new ResponseEntity<List<UserMessageDTO>>(messageService.getAllMessageUser(userId),HttpStatus.OK);
