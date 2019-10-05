@@ -29,6 +29,7 @@ public class UserController {
         this.modelMapper = modelMapper;
     }
 
+    @CrossOrigin
     @GetMapping("/users")
     public ResponseEntity<List<UserResponseDTO>>  getAllUser(){
         /* Mail Sender Test

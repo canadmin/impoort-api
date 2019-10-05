@@ -29,11 +29,14 @@ public class UserAuthController {
     public UserAuthController(AuthenticationService service) {
         this.service = service;
     }
-
+    
+    @CrossOrigin
     @PostMapping(path = "/login")
     public Object login(HttpServletRequest httpServletRequest, @RequestBody final UserAuthDto userAuthDto){
         return service.login(userAuthDto);
     }
+
+    @CrossOrigin
     @PostMapping("/signUp")
     public ResponseEntity<UserResponseDTO> addNewUser(@RequestBody UserRequestDTO userRequestDTO){
         return new ResponseEntity<UserResponseDTO>(service.signUp(userRequestDTO),HttpStatus.OK);

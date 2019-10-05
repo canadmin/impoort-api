@@ -1,4 +1,4 @@
-package com.impoort.impoortapi.repository;
+package com.impoort.impoortapi.repository.message;
 
 import com.impoort.impoortapi.domain.messages.MessagesGeneral;
 import org.springframework.data.jpa.repository.JpaRepository;
