@@ -34,7 +34,7 @@ public class User {
     private String email;
     private String password;
     private String city;
-    private Date birthDate;
+    private String birthDate;
     private String gender;
     private String phoneNumber;
     private String experienceYear;
