@@ -30,11 +30,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public Object login(UserAuthDto userAuthDto) {
         User user=userRepository.findByEmail(userAuthDto.getEmail());
+        UserResponseDTO userResponseDTO=modelMapper.map(user,UserResponseDTO.class);
         UserAuthDto userAuthFound=modelMapper.map(user,UserAuthDto.class);
         if(isValidPassword(userAuthDto.getPassword(),userAuthFound.getPassword())){
             String jwt = JwtUtil.generateToken(userAuthDto.getEmail());
-            return new HashMap<String,String>(){{
+            return new HashMap<String,Object>(){{
                 put("token",jwt);
+                put("user",userResponseDTO);
             }};
         }else {
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);

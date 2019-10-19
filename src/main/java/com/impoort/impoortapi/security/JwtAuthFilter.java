@@ -30,7 +30,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     }
 
     private boolean isProtectedUrl(HttpServletRequest request) {
-       //return  !pathMatcher.match("/auth/**",request.getServletPath());
-       return  pathMatcher.match("/asdasd/**",request.getServletPath());
+       return  pathMatcher.match("/api/**",request.getServletPath());
     }
 }

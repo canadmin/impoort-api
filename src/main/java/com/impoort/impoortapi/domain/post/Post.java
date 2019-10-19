@@ -29,15 +29,12 @@ public class Post {
     private String sector;
     private int likeCount;
     private int commentCount;
-
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "post_id2")
     private List<Like> likeList;
-
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "post_id1")
     private List<Comment> commentList;
-
     private String investmentAmount;
     private String developerCount;
     private String wantedSalary;

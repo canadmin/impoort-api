@@ -13,3 +13,4 @@ public interface MessageGeneralRepository extends JpaRepository<MessagesGeneral,
 
     List<MessagesGeneral> findAllByUserId(String userId);
 }
+

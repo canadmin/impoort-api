@@ -32,8 +32,8 @@ public class UserAuthController {
     
     @CrossOrigin
     @PostMapping(path = "/login")
-    public Object login(HttpServletRequest httpServletRequest, @RequestBody final UserAuthDto userAuthDto){
-        return service.login(userAuthDto);
+    public ResponseEntity<Object> login(HttpServletRequest httpServletRequest, @RequestBody final UserAuthDto userAuthDto){
+        return new ResponseEntity<Object>(service.login(userAuthDto),HttpStatus.OK);
     }
 
     @CrossOrigin
