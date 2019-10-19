@@ -37,6 +37,9 @@ public class User {
     private String birthDate;
     private String gender;
     private String phoneNumber;
+    private int watcherCount;
+    private int watchingCount;
+    private int watchingPostCount;
     private String experienceYear;
     private String experienceCompanies;
     private int employeeCount;
