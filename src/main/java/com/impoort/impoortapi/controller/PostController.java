@@ -48,7 +48,7 @@ public class PostController {
     }
     @CrossOrigin
     @PostMapping("/{postId}/addComment")
-    public ResponseEntity<CommentResponseDTO> addNewPost(@RequestBody CommentRequestDTO commentRequestDTO, @PathVariable int postId){
+    public ResponseEntity<CommentResponseDTO> addNewComment(@RequestBody CommentRequestDTO commentRequestDTO, @PathVariable int postId){
         return new ResponseEntity<CommentResponseDTO>(postService.addNewComment(postId,commentRequestDTO),HttpStatus.OK);
     }
     @CrossOrigin
