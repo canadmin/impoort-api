@@ -41,15 +41,10 @@ public class UserServiceImpl implements UserService {
             List<Experience> workers = companyRepository.
                     findAllByCompanyIdAndStillWork(userResponseDTO.getUserId(), true);
             List<UserResponseDTO> workerUsers = new ArrayList<>();
-            for (Experience worker : workers) {
-                try {
-                    UserResponseDTO userResponseDTO1 = modelMapper
-                            .map(userRepository.getOne(worker.getWorkerId()), UserResponseDTO.class);
-                    workerUsers.add(userResponseDTO1);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
+
+            workers.forEach(worker->workerUsers.add(modelMapper
+                    .map(userRepository.getOne(worker.getWorkerId()), UserResponseDTO.class)));
+
             userResponseDTO.setEmployees(workerUsers);
         }
         System.out.println(userResponseDTO.getExperiences());
@@ -80,6 +75,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponseDTO updateUser(UserUpdateDto userUpdateDto) {
         List<Experience> experiences = userUpdateDto.getExperiences();
+
         for (Experience exp : experiences) {
             Experience newExp;
             newExp = exp;
