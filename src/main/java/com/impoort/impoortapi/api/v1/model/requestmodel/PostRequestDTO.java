@@ -13,7 +13,7 @@ public class PostRequestDTO {
     private int postType;
     private String mediaUrl;
     private String postDescription;
-    private String sector;
+    private String department;
     private String investmentAmount;
     private String developerCount;
     private String wantedSalary;

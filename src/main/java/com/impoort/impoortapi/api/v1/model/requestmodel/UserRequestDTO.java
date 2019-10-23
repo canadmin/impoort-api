@@ -1,14 +1,17 @@
 package com.impoort.impoortapi.api.v1.model.requestmodel;
 
+import com.impoort.impoortapi.domain.company.Experience;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 @Data
 public class UserRequestDTO {
 
     private String description;
-    private String sector;
+    private String department;
     private int userType;
     private String firstName;
     private String lastName;
@@ -18,7 +21,6 @@ public class UserRequestDTO {
     private String gender;
     private String password;
     private String phoneNumber;
-    private String experienceYear;
-    private String experienceCompanies;
+    private List<Experience> experiences;
     private int employeeCount;
 }

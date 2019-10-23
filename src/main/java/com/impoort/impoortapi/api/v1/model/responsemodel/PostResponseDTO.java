@@ -14,7 +14,7 @@ public class PostResponseDTO {
     private int postType;
     private String mediaUrl;
     private String postDescription;
-    private String sector;
+    private String department;
     private int likeCount;
     private List<User> likeList;
     private int commentCount;
