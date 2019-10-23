@@ -3,9 +3,7 @@ package com.impoort.impoortapi.api.v1.model.responsemodel;
 import com.impoort.impoortapi.domain.company.Experience;
 import lombok.Data;
 
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Data
 public class UserResponseDTO {
@@ -26,4 +24,8 @@ public class UserResponseDTO {
     private String phoneNumber;
     private List<Experience> experiences;
     private int employeeCount;
+    //eğer startup ise
+    private List<UserResponseDTO> employees;
+    private String profileImgUrl;
+
 }

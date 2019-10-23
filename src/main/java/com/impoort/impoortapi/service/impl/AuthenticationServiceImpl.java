@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -29,33 +30,34 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public Object login(UserAuthDto userAuthDto) {
-        User user=userRepository.findByEmail(userAuthDto.getEmail());
-        UserResponseDTO userResponseDTO=modelMapper.map(user,UserResponseDTO.class);
-        UserAuthDto userAuthFound=modelMapper.map(user,UserAuthDto.class);
-        if(isValidPassword(userAuthDto.getPassword(),userAuthFound.getPassword())){
-            String jwt = JwtUtil.generateToken(userAuthDto.getEmail());
-            HashMap<String,Object> response= new HashMap<String,Object>(){
-                {   put("token",jwt);
-                    put("user",userResponseDTO);
+        User user = userRepository.findByEmail(userAuthDto.getEmail());
+        UserResponseDTO userResponseDTO = modelMapper.map(user, UserResponseDTO.class);
+        UserAuthDto userAuthFound = modelMapper.map(user, UserAuthDto.class);
+        if (isValidPassword(userAuthDto.getPassword(), userAuthFound.getPassword())) {
+            Map<String, Object> jwt = JwtUtil.generateToken(userAuthDto.getEmail());
+            HashMap<String, Object> response = new HashMap<String, Object>() {
+                {
+                    put("token", jwt);
+                    put("user", userResponseDTO);
                 }
             };
             return response;
-        }else {
+        } else {
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }
     }
 
 
-    private boolean isValidPassword(String reqPassword, String foundPassword ) {
+    private boolean isValidPassword(String reqPassword, String foundPassword) {
         return reqPassword.equals(foundPassword);
     }
 
     @Override
     public UserResponseDTO signUp(UserRequestDTO userRequestDTO) {
-        User user=modelMapper.map(userRequestDTO,User.class);
+        User user = modelMapper.map(userRequestDTO, User.class);
         user.setActiveGuide(RandomStringGenerator.generateString());
-        user=userRepository.save(user);
-        UserResponseDTO userResponseDTO=modelMapper.map(user,UserResponseDTO.class);
+        user = userRepository.save(user);
+        UserResponseDTO userResponseDTO = modelMapper.map(user, UserResponseDTO.class);
         return userResponseDTO;
     }
 }

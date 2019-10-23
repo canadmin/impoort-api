@@ -13,15 +13,23 @@ import java.io.IOException;
 
 public class JwtAuthFilter extends OncePerRequestFilter {
     private static final PathMatcher pathMatcher = new AntPathMatcher();
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
-            if(isProtectedUrl(request)){
-            String token=request.getHeader("Authorization");
-            JwtUtil.validateToken(token);
+            if(pathMatcher.match("/auth/**",request.getServletPath())){
+                if(!request.getHeader("auth_key").equals("impoort-api-123")){
+                    response.sendRedirect("/error/invalid_auth");
+                    return;
+                }
+            }
+            if(isProtectedUrl(request)) {
+                String token = request.getHeader("Authorization");
+                String key = request.getHeader("client_key");
+                JwtUtil.validateToken(token,key);
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, e.getMessage());
             return;
         }
@@ -29,6 +37,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     }
 
     private boolean isProtectedUrl(HttpServletRequest request) {
-       return  pathMatcher.match("/api/**",request.getServletPath());
+        return pathMatcher.match("/api/**", request.getServletPath());
     }
+
 }

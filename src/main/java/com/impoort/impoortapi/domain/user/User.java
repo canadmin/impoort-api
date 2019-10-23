@@ -1,14 +1,12 @@
 package com.impoort.impoortapi.domain.user;
 
-import com.impoort.impoortapi.domain.company.Experience;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.List;
-import java.util.Set;
+
 
 
 @Data
@@ -28,6 +26,7 @@ public class User {
     private boolean isActive;
     private boolean isConfirmed;
     private String department;
+    //sadece iki tane kullanıcı türü vardır bu türlerden 1->User 2->
     private int userType;
     private String firstName;
     private String lastName;
@@ -41,9 +40,6 @@ public class User {
     private int watcherCount;
     private int watchingCount;
     private int watchingPostCount;
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_experience_id")
-    private List<Experience> experiences;
     private int employeeCount;
     private String profileImgUrl;
 }

@@ -7,7 +7,8 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class UserRequestDTO {
+public class UserUpdateDto {
+    private String userId;
     private String description;
     private String department;//title
     private int userType; // startup -
@@ -23,4 +24,6 @@ public class UserRequestDTO {
     private int employeeCount; // s icin
     //eğer startup ise
     private List<User> employees; // s icin
+    private String profileImgUrl;
+
 }

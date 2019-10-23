@@ -23,7 +23,9 @@ public class MessageServiceImpl implements MessageService {
     private MessageGeneralRepository messageGeneralRepository;
 
     @Autowired
-    public MessageServiceImpl(UserRepository userRepository, MessageRepository messageRepository, MessageGeneralRepository messageGeneralRepository) {
+    public MessageServiceImpl(UserRepository userRepository,
+                              MessageRepository messageRepository,
+                              MessageGeneralRepository messageGeneralRepository) {
         this.userRepository = userRepository;
         this.messageRepository = messageRepository;
         this.messageGeneralRepository = messageGeneralRepository;
@@ -31,10 +33,10 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public List<Message> getAllMessageWithReceiver(String senderId, String receiverId) {
-        List<Message> firstMessageList=messageRepository
-                .findAllByMessageSenderUserIdAndMessageReceiverUserId(senderId,receiverId);
-        List<Message> secondMessageList=messageRepository
-                .findAllByMessageSenderUserIdAndMessageReceiverUserId(receiverId,senderId);
+        List<Message> firstMessageList = messageRepository
+                .findAllByMessageSenderUserIdAndMessageReceiverUserId(senderId, receiverId);
+        List<Message> secondMessageList = messageRepository
+                .findAllByMessageSenderUserIdAndMessageReceiverUserId(receiverId, senderId);
         firstMessageList.addAll(secondMessageList);
         firstMessageList.sort(Comparator.comparing(Message::getMessageDate));
         return firstMessageList;
@@ -48,7 +50,7 @@ public class MessageServiceImpl implements MessageService {
     }
 
 
-    private void saveMessageGeneral(Message message){
+    private void saveMessageGeneral(Message message) {
 
         MessagesGeneral messagesGeneralFromMe = new MessagesGeneral(message.getMessageSenderUserId(),
                 message.getMessageReceiverUserId(),
@@ -60,22 +62,22 @@ public class MessageServiceImpl implements MessageService {
 
         MessagesGeneral messagesGeneralExistMe = messageGeneralRepository
                 .findByUserIdAndUserMessagesWithID(message.getMessageSenderUserId(),
-                message.getMessageReceiverUserId());
+                        message.getMessageReceiverUserId());
 
         MessagesGeneral messagesGeneralExistOther = messageGeneralRepository
                 .findByUserIdAndUserMessagesWithID(message.getMessageReceiverUserId(),
-                message.getMessageSenderUserId());
+                        message.getMessageSenderUserId());
 
-        if(messagesGeneralExistMe ==null ){
+        if (messagesGeneralExistMe == null) {
             messageGeneralRepository.save(messagesGeneralFromMe);
-            }else{
-                messagesGeneralFromMe
-                        .setMessageGeneralId(messagesGeneralExistMe.getMessageGeneralId());
-                messageGeneralRepository.save(messagesGeneralFromMe);
-            }
-        if(messagesGeneralExistOther == null) {
+        } else {
+            messagesGeneralFromMe
+                    .setMessageGeneralId(messagesGeneralExistMe.getMessageGeneralId());
+            messageGeneralRepository.save(messagesGeneralFromMe);
+        }
+        if (messagesGeneralExistOther == null) {
             messageGeneralRepository.save(messagesGeneralToOther);
-        }else{
+        } else {
             messagesGeneralToOther
                     .setMessageGeneralId(messagesGeneralExistOther.getMessageGeneralId());
             messageGeneralRepository.save(messagesGeneralToOther);
@@ -84,13 +86,17 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public List<UserMessageDTO> getAllMessageUser(String userId){
-        List<MessagesGeneral> messagesGenerals= messageGeneralRepository
+    public List<UserMessageDTO> getAllMessageUser(String userId) {
+        List<MessagesGeneral> messagesGenerals = messageGeneralRepository
                 .findAllByUserId(userId);
-        List<UserMessageDTO> returnedUser=new ArrayList<>();
-        for(MessagesGeneral msg :messagesGenerals){
-            User user= userRepository.getOne(msg.getUserMessagesWithID());
-            UserMessageDTO userMessageDTO=new UserMessageDTO(user.getUserId(),user.getFirstName(),user.getLastName(),user.getProfileImgUrl(),msg.getLastMessage());
+        List<UserMessageDTO> returnedUser = new ArrayList<>();
+        for (MessagesGeneral msg : messagesGenerals) {
+            User user = userRepository.getOne(msg.getUserMessagesWithID());
+            UserMessageDTO userMessageDTO = new UserMessageDTO(user.getUserId(),
+                                                                user.getFirstName(),
+                                                                user.getLastName(),
+                                                                user.getProfileImgUrl(),
+                                                                msg.getLastMessage());
 
             returnedUser.add(userMessageDTO);
         }

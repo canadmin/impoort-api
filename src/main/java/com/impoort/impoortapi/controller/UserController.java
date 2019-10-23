@@ -1,6 +1,7 @@
 package com.impoort.impoortapi.controller;
 
 import com.impoort.impoortapi.api.v1.model.requestmodel.UserRequestDTO;
+import com.impoort.impoortapi.api.v1.model.requestmodel.UserUpdateDto;
 import com.impoort.impoortapi.api.v1.model.responsemodel.UserResponseDTO;
 import com.impoort.impoortapi.domain.user.User;
 import com.impoort.impoortapi.service.UserService;
@@ -13,6 +14,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.xml.ws.Response;
 import java.util.List;
 
 @Controller
@@ -32,12 +34,22 @@ public class UserController {
     @CrossOrigin
     @GetMapping("/users")
     public ResponseEntity<List<UserResponseDTO>>  getAllUser(){
-        /* Mail Sender Test
-        MailSenderService mailSenderService = new MailSenderService(emailSender);
-        mailSenderService.sendSimpleMessage("yusufali.cezik@hotmail.com", "", false, "Yusuf Ali Çezik");*/
           return new ResponseEntity<List<UserResponseDTO>>(userService.getAllUser(), HttpStatus.OK);
     }
+    /*
+    kullanıcı bilgilerini güncellemek için yazıldı
+    */
+    @CrossOrigin
+    @PostMapping("/updateUser")
+    public ResponseEntity<UserResponseDTO> updateUser(@RequestBody UserUpdateDto user){
+        return new ResponseEntity<>(userService.updateUser(user),HttpStatus.OK);
+    }
 
+    @CrossOrigin
+    @GetMapping("/{userId}")
+    public ResponseEntity<UserResponseDTO> getUser(@PathVariable String userId){
+    return new ResponseEntity<>(userService.getUser(userId),HttpStatus.OK);
+    }
 
     /*
     @GetMapping("/verifyAccount/url/{activeGuide}")
@@ -58,3 +70,6 @@ public class UserController {
     }*/
 
 }
+/* Mail Sender Test
+        MailSenderService mailSenderService = new MailSenderService(emailSender);
+        mailSenderService.sendSimpleMessage("yusufali.cezik@hotmail.com", "", false, "Yusuf Ali Çezik");*/

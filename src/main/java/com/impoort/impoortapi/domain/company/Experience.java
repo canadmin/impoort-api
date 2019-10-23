@@ -1,6 +1,5 @@
 package com.impoort.impoortapi.domain.company;
 
-import com.impoort.impoortapi.domain.user.User;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -10,8 +9,11 @@ import javax.persistence.*;
 public class Experience {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int companyId;
+    private int experienceId;
     private String companyName;
     private String department;
+    private boolean stillWork;
+    private String companyId;
+    private String workerId;
 
 }

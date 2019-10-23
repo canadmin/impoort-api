@@ -3,8 +3,6 @@ package com.impoort.impoortapi.api.v1.model.responsemodel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import javax.persistence.Column;
-import java.util.Date;
 
 @Data
 @AllArgsConstructor
