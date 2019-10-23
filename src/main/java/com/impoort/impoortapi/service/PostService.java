@@ -6,7 +6,6 @@ import com.impoort.impoortapi.api.v1.model.requestmodel.PostRequestDTO;
 import com.impoort.impoortapi.api.v1.model.responsemodel.CommentResponseDTO;
 import com.impoort.impoortapi.api.v1.model.responsemodel.LikeResponseDTO;
 import com.impoort.impoortapi.api.v1.model.responsemodel.PostResponseDTO;
-import com.impoort.impoortapi.domain.post.Post;
 
 import java.util.List;
 

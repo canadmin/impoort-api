@@ -36,17 +36,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponseDTO getUser(String userId) {
 
-        UserResponseDTO userResponseDTO = modelMapper.map(userRepository.getOne(userId),UserResponseDTO.class);
-        if(userResponseDTO.getUserType() == 2){
-            List<Experience> workers=companyRepository.
-                    findAllByCompanyIdAndStillWork(userResponseDTO.getUserId(),true);
+        UserResponseDTO userResponseDTO = modelMapper.map(userRepository.getOne(userId), UserResponseDTO.class);
+        if (userResponseDTO.getUserType() == 2) {
+            List<Experience> workers = companyRepository.
+                    findAllByCompanyIdAndStillWork(userResponseDTO.getUserId(), true);
             List<UserResponseDTO> workerUsers = new ArrayList<>();
-            for(Experience worker : workers){
+            for (Experience worker : workers) {
                 try {
                     UserResponseDTO userResponseDTO1 = modelMapper
                             .map(userRepository.getOne(worker.getWorkerId()), UserResponseDTO.class);
                     workerUsers.add(userResponseDTO1);
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -58,11 +58,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserResponseDTO> getAllUser() {
-        List<User> userList=userRepository.findAll();
-        List<UserResponseDTO> userResponseDTOS= Arrays.asList(modelMapper.map(userList,UserResponseDTO[].class));
+        List<User> userList = userRepository.findAll();
+        List<UserResponseDTO> userResponseDTOS = Arrays.asList(modelMapper.map(userList, UserResponseDTO[].class));
         return userResponseDTOS;
     }
-
 
 
     @Override
@@ -80,15 +79,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponseDTO updateUser(UserUpdateDto userUpdateDto) {
-        List<Experience> experiences=userUpdateDto.getExperiences();
-        for (Experience exp : experiences){
+        List<Experience> experiences = userUpdateDto.getExperiences();
+        for (Experience exp : experiences) {
             Experience newExp;
-            newExp=exp;
+            newExp = exp;
             newExp.setWorkerId(userUpdateDto.getUserId());
             companyRepository.save(newExp);
         }
 
-        User updatedUser =(modelMapper.map(userUpdateDto,User.class));
+        User updatedUser = (modelMapper.map(userUpdateDto, User.class));
         User oldUser = userRepository.getOne(userUpdateDto.getUserId());
 
         User newUser = updatedUser;
@@ -100,7 +99,7 @@ public class UserServiceImpl implements UserService {
         newUser.setActive(oldUser.isActive());
 
         userRepository.save(newUser);
-        UserResponseDTO userResponseDTO=modelMapper.map(newUser,UserResponseDTO.class);
+        UserResponseDTO userResponseDTO = modelMapper.map(newUser, UserResponseDTO.class);
         userResponseDTO.setExperiences(companyRepository.findByWorkerId(userResponseDTO.getUserId()));
         return userResponseDTO;
     }

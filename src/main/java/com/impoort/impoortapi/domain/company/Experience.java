@@ -1,6 +1,5 @@
 package com.impoort.impoortapi.domain.company;
 
-import com.impoort.impoortapi.domain.user.User;
 import lombok.Data;
 
 import javax.persistence.*;

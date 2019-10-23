@@ -4,9 +4,7 @@ import com.impoort.impoortapi.domain.company.Experience;
 import com.impoort.impoortapi.domain.user.User;
 import lombok.Data;
 
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Data
 public class UserRequestDTO {

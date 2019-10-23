@@ -15,7 +15,8 @@ public class MailSenderService {
             SimpleMailMessage message = new SimpleMailMessage();
             message.setTo(mail);
             message.setSubject("Hesap Onayı");
-            message.setText("Merhaba " + name.toUpperCase() + " , \n " + "Lütfen hesabını onaylamak aşağıdaki linke tıkla \n \n " +
+            message.setText("Merhaba " + name.toUpperCase() + " , \n " +
+                    "Lütfen hesabını onaylamak aşağıdaki linke tıkla \n \n " +
                     "localhost:8081/api/users/verifyAcount/url/" + text);
             emailSender.send(message);
         }

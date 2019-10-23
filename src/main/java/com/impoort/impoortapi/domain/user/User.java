@@ -1,14 +1,12 @@
 package com.impoort.impoortapi.domain.user;
 
-import com.impoort.impoortapi.domain.company.Experience;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.List;
-import java.util.Set;
+
 
 
 @Data

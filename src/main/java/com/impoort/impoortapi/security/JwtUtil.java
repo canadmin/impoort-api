@@ -9,7 +9,7 @@ import java.util.Map;
 
 
 public class JwtUtil {
-    static final String SECRET = "impoort-api-secret-key-canburakyusufhasan";
+    public static final String SECRET = "impoort-api-secret-key-canburakyusufhasan";
 
     public static String generateToken(String email) {
         HashMap<String, Object> map = new HashMap<>();

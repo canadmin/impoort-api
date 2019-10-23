@@ -1,7 +1,6 @@
 package com.impoort.impoortapi.repository.company;
 
 import com.impoort.impoortapi.domain.company.Experience;
-import com.impoort.impoortapi.domain.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

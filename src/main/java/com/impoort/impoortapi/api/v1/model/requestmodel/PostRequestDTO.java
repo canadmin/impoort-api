@@ -1,10 +1,8 @@
 package com.impoort.impoortapi.api.v1.model.requestmodel;
 
-import com.impoort.impoortapi.domain.comment.Comment;
 import com.impoort.impoortapi.domain.user.User;
 import lombok.Data;
 
-import javax.persistence.*;
 import java.util.List;
 
 @Data

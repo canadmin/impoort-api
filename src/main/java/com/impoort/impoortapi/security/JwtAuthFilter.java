@@ -13,15 +13,16 @@ import java.io.IOException;
 
 public class JwtAuthFilter extends OncePerRequestFilter {
     private static final PathMatcher pathMatcher = new AntPathMatcher();
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
-            if(isProtectedUrl(request)){
-            String token=request.getHeader("Authorization");
-            JwtUtil.validateToken(token);
+            if (isProtectedUrl(request)) {
+                String token = request.getHeader("Authorization");
+                JwtUtil.validateToken(token);
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, e.getMessage());
             return;
         }
@@ -29,6 +30,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     }
 
     private boolean isProtectedUrl(HttpServletRequest request) {
-       return  pathMatcher.match("/api/**",request.getServletPath());
+        return pathMatcher.match("/api/**", request.getServletPath());
     }
 }
