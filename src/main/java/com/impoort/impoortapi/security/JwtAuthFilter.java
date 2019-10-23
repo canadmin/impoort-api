@@ -9,8 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+
 
 public class JwtAuthFilter extends OncePerRequestFilter {
     private static final PathMatcher pathMatcher = new AntPathMatcher();
@@ -30,7 +29,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     }
 
     private boolean isProtectedUrl(HttpServletRequest request) {
-       //return  !pathMatcher.match("/auth/**",request.getServletPath());
-       return  pathMatcher.match("/asdasd/**",request.getServletPath());
+       return  pathMatcher.match("/api/**",request.getServletPath());
     }
 }

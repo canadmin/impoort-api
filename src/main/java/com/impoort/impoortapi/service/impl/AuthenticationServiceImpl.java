@@ -30,12 +30,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public Object login(UserAuthDto userAuthDto) {
         User user=userRepository.findByEmail(userAuthDto.getEmail());
+        UserResponseDTO userResponseDTO=modelMapper.map(user,UserResponseDTO.class);
         UserAuthDto userAuthFound=modelMapper.map(user,UserAuthDto.class);
         if(isValidPassword(userAuthDto.getPassword(),userAuthFound.getPassword())){
             String jwt = JwtUtil.generateToken(userAuthDto.getEmail());
-            return new HashMap<String,String>(){{
-                put("token",jwt);
-            }};
+            HashMap<String,Object> response= new HashMap<String,Object>(){
+                {   put("token",jwt);
+                    put("user",userResponseDTO);
+                }
+            };
+            return response;
         }else {
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }
@@ -52,5 +56,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         user.setActiveGuide(RandomStringGenerator.generateString());
         user=userRepository.save(user);
         UserResponseDTO userResponseDTO=modelMapper.map(user,UserResponseDTO.class);
-        return userResponseDTO;    }
+        return userResponseDTO;
+    }
 }

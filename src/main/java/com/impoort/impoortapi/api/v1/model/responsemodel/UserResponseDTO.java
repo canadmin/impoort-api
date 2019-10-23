@@ -1,8 +1,11 @@
 package com.impoort.impoortapi.api.v1.model.responsemodel;
 
+import com.impoort.impoortapi.domain.company.Experience;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 @Data
 public class UserResponseDTO {
@@ -12,7 +15,7 @@ public class UserResponseDTO {
     private String description;
     private boolean isActive;
     private boolean isConfirmed;
-    private String sector;
+    private String department;
     private int userType;
     private String firstName;
     private String lastName;
@@ -21,7 +24,6 @@ public class UserResponseDTO {
     private String birthDate;
     private String gender;
     private String phoneNumber;
-    private String experienceYear;
-    private String experienceCompanies;
+    private List<Experience> experiences;
     private int employeeCount;
 }

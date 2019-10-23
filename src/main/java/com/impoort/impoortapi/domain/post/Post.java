@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Set;
 
 @Data
 @Entity
@@ -26,18 +25,15 @@ public class Post {
     private int postType;
     private String mediaUrl;
     private String postDescription;
-    private String sector;
+    private String department;
     private int likeCount;
     private int commentCount;
-
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "post_id2")
+    @JoinColumn(name = "like_post_id")
     private List<Like> likeList;
-
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "post_id1")
+    @JoinColumn(name = "comment_post_id")
     private List<Comment> commentList;
-
     private String investmentAmount;
     private String developerCount;
     private String wantedSalary;
