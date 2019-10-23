@@ -21,7 +21,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 if(!request.getHeader("auth_key").equals("impoort-api-123")){
                     response.sendRedirect("/error/invalid_auth");
                     return;
-
                 }
             }
             if(isProtectedUrl(request)) {
