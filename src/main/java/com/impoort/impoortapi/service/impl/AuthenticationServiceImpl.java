@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -33,7 +34,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         UserResponseDTO userResponseDTO = modelMapper.map(user, UserResponseDTO.class);
         UserAuthDto userAuthFound = modelMapper.map(user, UserAuthDto.class);
         if (isValidPassword(userAuthDto.getPassword(), userAuthFound.getPassword())) {
-            String jwt = JwtUtil.generateToken(userAuthDto.getEmail());
+            Map<String, Object> jwt = JwtUtil.generateToken(userAuthDto.getEmail());
             HashMap<String, Object> response = new HashMap<String, Object>() {
                 {
                     put("token", jwt);
