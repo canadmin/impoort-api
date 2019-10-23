@@ -1,6 +1,7 @@
 package com.impoort.impoortapi.api.v1.model.responsemodel;
 
 import com.impoort.impoortapi.domain.company.Experience;
+import com.impoort.impoortapi.domain.user.User;
 import lombok.Data;
 
 import java.util.Date;
@@ -26,4 +27,7 @@ public class UserResponseDTO {
     private String phoneNumber;
     private List<Experience> experiences;
     private int employeeCount;
+    //eğer startup ise
+    private List<UserResponseDTO> employees;
+
 }

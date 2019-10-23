@@ -28,6 +28,7 @@ public class User {
     private boolean isActive;
     private boolean isConfirmed;
     private String department;
+    //sadece iki tane kullanıcı türü vardır bu türlerden 1->User 2->
     private int userType;
     private String firstName;
     private String lastName;
@@ -41,9 +42,6 @@ public class User {
     private int watcherCount;
     private int watchingCount;
     private int watchingPostCount;
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_experience_id")
-    private List<Experience> experiences;
     private int employeeCount;
     private String profileImgUrl;
 }
