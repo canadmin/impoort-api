@@ -5,7 +5,8 @@ import com.impoort.impoortapi.api.v1.model.responsemodel.UserResponseDTO;
 import com.impoort.impoortapi.domain.user.User;
 import com.impoort.impoortapi.repository.UserRepository;
 import com.impoort.impoortapi.security.JwtUtil;
-import com.impoort.impoortapi.security.UserAuthDto;
+import com.impoort.impoortapi.security.authDto.UserAuthRequestDto;
+import com.impoort.impoortapi.security.authDto.UserAuthResponseDto;
 import com.impoort.impoortapi.service.AuthenticationService;
 import com.impoort.impoortapi.utils.RandomStringGenerator;
 import org.modelmapper.ModelMapper;
@@ -29,19 +30,18 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public Object login(UserAuthDto userAuthDto) {
-        User user = userRepository.findByEmail(userAuthDto.getEmail());
+    public Object login(UserAuthRequestDto userAuthRequestDto) {
+        UserAuthResponseDto userAuthResponseDto= new UserAuthResponseDto();
+
+        User user = userRepository.findByEmail(userAuthRequestDto.getEmail());
         UserResponseDTO userResponseDTO = modelMapper.map(user, UserResponseDTO.class);
-        UserAuthDto userAuthFound = modelMapper.map(user, UserAuthDto.class);
-        if (isValidPassword(userAuthDto.getPassword(), userAuthFound.getPassword())) {
-            Map<String, Object> jwt = JwtUtil.generateToken(userAuthDto.getEmail());
-            HashMap<String, Object> response = new HashMap<String, Object>() {
-                {
-                    put("token", jwt);
-                    put("user", userResponseDTO);
-                }
-            };
-            return response;
+        UserAuthRequestDto userAuthFound = modelMapper.map(user, UserAuthRequestDto.class);
+        if (isValidPassword(userAuthRequestDto.getPassword(), userAuthFound.getPassword())) {
+            Map<String, Object> jwt = JwtUtil.generateToken(userAuthRequestDto.getEmail());
+            userAuthResponseDto.setToken((HashMap) jwt);
+            userAuthResponseDto.setUser(userResponseDTO);
+
+          return userAuthResponseDto;
         } else {
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }
