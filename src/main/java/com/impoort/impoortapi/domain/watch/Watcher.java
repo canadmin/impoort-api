@@ -1,5 +1,7 @@
 package com.impoort.impoortapi.domain.watch;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.impoort.impoortapi.domain.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,7 +17,9 @@ public class Watcher {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+    private boolean isBeingWatch;
     @OneToOne
     @JoinColumn(name = "watchingUserID")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private User user;
 }
