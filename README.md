@@ -5,6 +5,7 @@
 	
 # Database profile
     h2 veritabanı için: 
+    # h2 veritabanı için: 
     application.properties dosyasından 
            spring.profiles.active=test
     postgresql veritabanı için:
