@@ -12,8 +12,9 @@ public interface UserService {
 
     UserResponseDTO updateUser(UserResponseDTO userResponseDTO);
 
-    UserResponseDTO getUser(String userId);
+    UserResponseDTO getUser(String userId,String myId);
 
     UserResponseDTO updateUser(UserUpdateDto userUpdateDto);
+
 
 }

@@ -1,12 +1,17 @@
 package com.impoort.impoortapi.domain.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.impoort.impoortapi.domain.watch.Watcher;
+import com.impoort.impoortapi.domain.watch.Watching;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
 
 import javax.persistence.*;
-
+import java.util.List;
 
 
 @Data
@@ -14,7 +19,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "user_entity")
-public class User {
+public class User  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO,generator = "system-uuid")
@@ -33,6 +38,14 @@ public class User {
     private String lastName;
     @Column(unique = true)
     private String email;
+    @OneToMany( cascade = {CascadeType.ALL})
+    @JsonIgnore
+    @JoinColumn(name = "watcher_user_id")
+    private List<Watcher> watcher;
+    @OneToMany( cascade = {CascadeType.ALL})
+    @JsonIgnore
+    @JoinColumn(name = "watching_user_id")
+    private List<Watching> watching;
     private String password;
     private String city;
     private String birthDate;

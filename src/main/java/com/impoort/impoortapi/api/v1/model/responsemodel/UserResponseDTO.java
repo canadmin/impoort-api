@@ -1,6 +1,8 @@
 package com.impoort.impoortapi.api.v1.model.responsemodel;
 
 import com.impoort.impoortapi.domain.company.Experience;
+import com.impoort.impoortapi.domain.watch.Watcher;
+import com.impoort.impoortapi.domain.watch.Watching;
 import lombok.Data;
 
 import java.util.List;
@@ -19,6 +21,8 @@ public class UserResponseDTO {
     private String lastName;
     private String email;
     private String city;
+    private List<Watching> watching;
+    private List<Watcher> watcher;
     private String birthDate;
     private String gender;
     private String phoneNumber;

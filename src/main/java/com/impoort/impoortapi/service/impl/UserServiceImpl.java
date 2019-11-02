@@ -5,6 +5,8 @@ import com.impoort.impoortapi.api.v1.model.requestmodel.UserUpdateDto;
 import com.impoort.impoortapi.api.v1.model.responsemodel.UserResponseDTO;
 import com.impoort.impoortapi.domain.company.Experience;
 import com.impoort.impoortapi.domain.user.User;
+import com.impoort.impoortapi.domain.watch.Watcher;
+import com.impoort.impoortapi.domain.watch.Watching;
 import com.impoort.impoortapi.repository.UserRepository;
 import com.impoort.impoortapi.repository.company.CompanyRepository;
 import com.impoort.impoortapi.service.UserService;
@@ -27,15 +29,15 @@ public class UserServiceImpl implements UserService {
     private final ModelMapper modelMapper;
     private final CompanyRepository companyRepository;
 
+
     public UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper, CompanyRepository companyRepository) {
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
         this.companyRepository = companyRepository;
     }
-
+    //goruntelenecek profil id'si ve benim id'im
     @Override
-    public UserResponseDTO getUser(String userId) {
-
+    public UserResponseDTO getUser(String userId,String myId) {
         UserResponseDTO userResponseDTO = modelMapper.map(userRepository.getOne(userId), UserResponseDTO.class);
         if (userResponseDTO.getUserType() == 2) {
             List<Experience> workers = companyRepository.
@@ -47,7 +49,23 @@ public class UserServiceImpl implements UserService {
 
             userResponseDTO.setEmployees(workerUsers);
         }
-        System.out.println(userResponseDTO.getExperiences());
+        //görüntelenen kişinin watcherları ve watchingleri arasında hangilerini takip ediyorum
+        List<Watching> myWatchingList=userRepository.getOne(myId).getWatching();
+        System.out.println(myWatchingList.size());
+        for(int i =0 ; i < myWatchingList.size(); i++){
+            for (int j = 0; j <userResponseDTO.getWatching().size() ; j++) {
+                if(userResponseDTO.getWatching().get(j).getUser().getUserId()==myWatchingList.get(i).getUser().getUserId()){
+                    userResponseDTO.getWatching().get(j).setBeingWatch(true);
+                }
+            }
+            for (int j = 0; j <userResponseDTO.getWatcher().size() ; j++) {
+                if(userResponseDTO.getWatcher().get(j).getUser().getUserId()==myWatchingList.get(i).getUser().getUserId()){
+                    userResponseDTO.getWatcher().get(j).setBeingWatch(true);
+                }
+            }
+        }
+
+
         return userResponseDTO;
     }
 
@@ -90,6 +108,8 @@ public class UserServiceImpl implements UserService {
         newUser.setActiveGuide(oldUser.getActiveGuide());
         newUser.setWatcherCount(oldUser.getWatcherCount());
         newUser.setWatchingCount(oldUser.getWatchingCount());
+        newUser.setWatcher(oldUser.getWatcher());
+        newUser.setWatching(oldUser.getWatching());
         newUser.setWatchingPostCount(oldUser.getWatchingPostCount());
         newUser.setEmployeeCount(oldUser.getEmployeeCount());
         newUser.setActive(oldUser.isActive());
