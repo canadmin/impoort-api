@@ -1,12 +1,15 @@
 package com.impoort.impoortapi.domain.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.impoort.impoortapi.domain.watch.Watcher;
+import com.impoort.impoortapi.domain.watch.Watching;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-
+import java.util.List;
 
 
 @Data
@@ -33,6 +36,14 @@ public class User {
     private String lastName;
     @Column(unique = true)
     private String email;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JsonIgnore // user responselar da sürekli liste çağrıldığı için sonsuz döngü oluyordu serileştirmeyi engelledim
+    @JoinColumn(name = "watcher_user_id")
+    private List<Watcher> watcher;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JsonIgnore
+    @JoinColumn(name = "watching_user_id")
+    private List<Watching> watching;
     private String password;
     private String city;
     private String birthDate;
