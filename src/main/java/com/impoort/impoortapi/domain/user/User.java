@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
 
 import javax.persistence.*;
 import java.util.List;
@@ -17,7 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "user_entity")
-public class User {
+public class User  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO,generator = "system-uuid")
@@ -36,11 +38,11 @@ public class User {
     private String lastName;
     @Column(unique = true)
     private String email;
-    @OneToMany(cascade = CascadeType.ALL)
-    @JsonIgnore // user responselar da sürekli liste çağrıldığı için sonsuz döngü oluyordu serileştirmeyi engelledim
+    @OneToMany( cascade = {CascadeType.ALL})
+    @JsonIgnore
     @JoinColumn(name = "watcher_user_id")
     private List<Watcher> watcher;
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany( cascade = {CascadeType.ALL})
     @JsonIgnore
     @JoinColumn(name = "watching_user_id")
     private List<Watching> watching;

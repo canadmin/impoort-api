@@ -46,9 +46,9 @@ public class UserController {
     }
 
     @CrossOrigin
-    @GetMapping("/{userId}")
-    public ResponseEntity<UserResponseDTO> getUser(@PathVariable String userId){
-    return new ResponseEntity<>(userService.getUser(userId),HttpStatus.OK);
+    @GetMapping("/{userId}/{myId}")
+    public ResponseEntity<UserResponseDTO> getUser(@PathVariable String userId,@PathVariable String myId){
+    return new ResponseEntity<>(userService.getUser(userId,myId),HttpStatus.OK);
     }
 
     /*
