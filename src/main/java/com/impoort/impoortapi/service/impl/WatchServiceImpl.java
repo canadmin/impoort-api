@@ -35,30 +35,41 @@ public class WatchServiceImpl implements WatchService {
     public Watch watchUser(Watch watch) {
 
         UUID mapUUID = UUID.randomUUID();
+
         User me = userRepository.getOne(watch.getWatcherId());
         User other = userRepository.getOne(watch.getWatchingId());
+
         List<Watching> myWatchingList = me.getWatching();
+
         Watching newWatching = new Watching();
         newWatching.setUser(other);
         newWatching.setWatchMapId(mapUUID);
+
         myWatchingList.add(newWatching);
+
         me.setWatching(myWatchingList);
+
         userRepository.save(me);
 
-        List<Watcher> otherWatcherList=other.getWatcher();
+        List<Watcher> otherWatcherList = other.getWatcher();
+
         Watcher newWatcher = new Watcher();
         newWatcher.setUser(me);
         newWatcher.setWatchMapId(mapUUID);
+
         otherWatcherList.add(newWatcher);
+
         other.setWatcher(otherWatcherList);
+
         userRepository.save(other);
+
         return watch;
     }
 
     /*
-    *TODO takibi bırakmak için ilk önce kullanıcının takip ettikleri listesinden takip ilgili takip silinecek
-    * TODO sonra takip etmeyi bıraktığı kullanıcının takipcileri listesinden ilgili watcher silinecek
-    */
+     *TODO takibi bırakmak için ilk önce kullanıcının takip ettikleri listesinden takip ilgili takip silinecek
+     *TODO sonra takip etmeyi bıraktığı kullanıcının takipcileri listesinden ilgili watcher silinecek
+     */
     @Override
     public void stopWatching(int watchingId) {
         Watching watching = watchingRepository.getOne(watchingId);
