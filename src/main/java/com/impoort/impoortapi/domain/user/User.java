@@ -19,11 +19,11 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "user_entity")
-public class User  {
+public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO,generator = "system-uuid")
-    @GenericGenerator(name = "system-uuid",strategy = "uuid")
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "system-uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "uuid")
     private String userId;
 
     @Column(unique = true)
@@ -42,12 +42,20 @@ public class User  {
     @Column(unique = true)
     private String email;
 
-    @OneToMany( cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.PERSIST},orphanRemoval = true)
+    @OneToMany(cascade = {
+            CascadeType.REFRESH,
+            CascadeType.MERGE,
+            CascadeType.PERSIST
+    }, orphanRemoval = true)
     @JsonIgnore
     @JoinColumn(name = "watcher_user_id")
     private List<Watcher> watcher;
 
-    @OneToMany( cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.PERSIST},orphanRemoval = true)
+    @OneToMany(cascade = {
+            CascadeType.REFRESH,
+            CascadeType.MERGE,
+            CascadeType.PERSIST
+    }, orphanRemoval = true)
     @JsonIgnore
     @JoinColumn(name = "watching_user_id")
     private List<Watching> watching;
