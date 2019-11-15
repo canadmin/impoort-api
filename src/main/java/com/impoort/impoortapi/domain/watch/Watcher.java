@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -17,9 +18,14 @@ public class Watcher {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+
     private boolean isBeingWatch;
+
     @OneToOne
     @JoinColumn(name = "watchingUserID")
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private User user;
+
+    // watcher silinirken bulunması kolay olsun diye eklendi
+    private UUID watchMapId;
 }
