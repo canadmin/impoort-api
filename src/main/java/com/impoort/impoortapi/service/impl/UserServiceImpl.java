@@ -54,12 +54,12 @@ public class UserServiceImpl implements UserService {
         System.out.println(myWatchingList.size());
         for(int i =0 ; i < myWatchingList.size(); i++){
             for (int j = 0; j <userResponseDTO.getWatching().size() ; j++) {
-                if(userResponseDTO.getWatching().get(j).getUser().getUserId()==myWatchingList.get(i).getUser().getUserId()){
+                if(userResponseDTO.getWatching().get(j).getUser().getUserId() == myWatchingList.get(i).getUser().getUserId()){
                     userResponseDTO.getWatching().get(j).setBeingWatch(true);
                 }
             }
             for (int j = 0; j <userResponseDTO.getWatcher().size() ; j++) {
-                if(userResponseDTO.getWatcher().get(j).getUser().getUserId()==myWatchingList.get(i).getUser().getUserId()){
+                if(userResponseDTO.getWatcher().get(j).getUser().getUserId() == myWatchingList.get(i).getUser().getUserId()){
                     userResponseDTO.getWatcher().get(j).setBeingWatch(true);
                 }
             }
