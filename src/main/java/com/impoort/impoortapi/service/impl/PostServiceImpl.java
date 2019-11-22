@@ -3,33 +3,40 @@ package com.impoort.impoortapi.service.impl;
 import com.impoort.impoortapi.api.v1.model.requestmodel.CommentRequestDTO;
 import com.impoort.impoortapi.api.v1.model.requestmodel.LikeRequestDTO;
 import com.impoort.impoortapi.api.v1.model.requestmodel.PostRequestDTO;
+import com.impoort.impoortapi.api.v1.model.requestmodel.pageLists.PostPageList;
 import com.impoort.impoortapi.api.v1.model.responsemodel.CommentResponseDTO;
 import com.impoort.impoortapi.api.v1.model.responsemodel.LikeResponseDTO;
 import com.impoort.impoortapi.api.v1.model.responsemodel.PostResponseDTO;
 import com.impoort.impoortapi.domain.comment.Comment;
 import com.impoort.impoortapi.domain.comment.Like;
 import com.impoort.impoortapi.domain.post.Post;
-import com.impoort.impoortapi.repository.PostRepository;
+import com.impoort.impoortapi.repository.postrepositories.PostPagingRepository;
+import com.impoort.impoortapi.repository.postrepositories.PostRepository;
 import com.impoort.impoortapi.service.PostService;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
     private final ModelMapper modelMapper;
+    private final PostPagingRepository postPagingRepository;
 
-    @Autowired
-    public PostServiceImpl(PostRepository postRepository, ModelMapper modelMapper) {
-        this.postRepository = postRepository;
-        this.modelMapper = modelMapper;
-    }
+
+
 
     @Override
     public List<PostResponseDTO> getAllPost() {
@@ -89,4 +96,28 @@ public class PostServiceImpl implements PostService {
         likeResponseDTO.setLikeId(likes.get(likes.size() - 1).getLikeId());
         return likeResponseDTO;
     }
+
+
+    /**
+     *todo şuan tüm postlarda arama yapılıyor
+     *Senaryo : Post-userId benim takipçi listeme göre filtrelenecek
+     **/
+    @Override
+    public PostPageList listPost(PageRequest pageRequest) {
+
+        PostPageList postPageList;
+
+        Page<Post> postPage = postPagingRepository.findAll(pageRequest);
+
+        postPageList = new PostPageList(postPage
+                .getContent().stream()
+                .map(x -> modelMapper.map(x,PostResponseDTO.class))
+                .collect(Collectors.toList())
+                ,
+                PageRequest.of(postPage.getPageable().getPageNumber(),
+                postPage.getPageable().getPageSize()),postPage.getTotalElements());
+
+        return postPageList;
+    }
+
 }
