@@ -66,7 +66,8 @@ public class PostController {
     @CrossOrigin
     @GetMapping
     public ResponseEntity<PostPageList> listPosts(@RequestParam(value = "pageNumber", required = false) Integer pageNumber,
-                                                  @RequestParam(value = "pageSize", required = false) Integer pageSize
+                                                  @RequestParam(value = "pageSize", required = false) Integer pageSize,
+                                                  @RequestParam(value = "userId",required = true) String userId
                                                   ){
 
         if (pageNumber == null || pageNumber < 0){
@@ -77,8 +78,8 @@ public class PostController {
             pageSize = DEFAULT_PAGE_SIZE;
         }
 
-        PostPageList beerList = postService.listPost(PageRequest.of(pageNumber, pageSize));
-        return new ResponseEntity<>(beerList,HttpStatus.OK);
+        PostPageList postList = postService.listPost(userId,PageRequest.of(pageNumber, pageSize));
+        return new ResponseEntity<>(postList,HttpStatus.OK);
     }
 
 

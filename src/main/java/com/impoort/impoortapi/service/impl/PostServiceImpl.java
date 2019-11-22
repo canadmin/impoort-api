@@ -10,6 +10,9 @@ import com.impoort.impoortapi.api.v1.model.responsemodel.PostResponseDTO;
 import com.impoort.impoortapi.domain.comment.Comment;
 import com.impoort.impoortapi.domain.comment.Like;
 import com.impoort.impoortapi.domain.post.Post;
+import com.impoort.impoortapi.domain.user.User;
+import com.impoort.impoortapi.domain.watch.Watching;
+import com.impoort.impoortapi.repository.UserRepository;
 import com.impoort.impoortapi.repository.postrepositories.PostPagingRepository;
 import com.impoort.impoortapi.repository.postrepositories.PostRepository;
 import com.impoort.impoortapi.service.PostService;
@@ -19,8 +22,11 @@ import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.awt.event.WindowAdapter;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,8 +40,7 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
     private final ModelMapper modelMapper;
     private final PostPagingRepository postPagingRepository;
-
-
+    private final UserRepository userRepository;
 
 
     @Override
@@ -48,6 +53,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostResponseDTO addNewPost(PostRequestDTO postRequestDTO) {
         Post post = modelMapper.map(postRequestDTO, Post.class);
+        post.setUser(userRepository.getOne(postRequestDTO.getUserId()));
         post.setCommentList(new ArrayList<>());
         post.setLikeList(new ArrayList<>());
         return modelMapper.map(postRepository.save(post), PostResponseDTO.class);
@@ -98,24 +104,28 @@ public class PostServiceImpl implements PostService {
     }
 
 
-    /**
-     *todo şuan tüm postlarda arama yapılıyor
-     *Senaryo : Post-userId benim takipçi listeme göre filtrelenecek
-     **/
     @Override
-    public PostPageList listPost(PageRequest pageRequest) {
+    public PostPageList listPost(String userId, PageRequest pageRequest) {
 
         PostPageList postPageList;
+        Pageable sortedByCreatedDateTime = PageRequest.of(pageRequest.getPageNumber(),pageRequest.getPageSize(),Sort.by("createdDateTime"));
+        Page<Post> postPage = null;
+        List<Watching> watchings = userRepository.getOne(userId).getWatching();
 
-        Page<Post> postPage = postPagingRepository.findAll(pageRequest);
+        List<String> users = new ArrayList<>();
+
+        for (int i = 0; i < watchings.size(); i++) {
+            users.add(watchings.get(i).getUser().getUserId());
+        }
+
+        postPage = postPagingRepository.findByUserIdIn(users, sortedByCreatedDateTime);
 
         postPageList = new PostPageList(postPage
                 .getContent().stream()
-                .map(x -> modelMapper.map(x,PostResponseDTO.class))
-                .collect(Collectors.toList())
-                ,
+                .map(x -> modelMapper.map(x, PostResponseDTO.class))
+                .collect(Collectors.toList()),
                 PageRequest.of(postPage.getPageable().getPageNumber(),
-                postPage.getPageable().getPageSize()),postPage.getTotalElements());
+                        postPage.getPageable().getPageSize()), postPage.getTotalElements());
 
         return postPageList;
     }
