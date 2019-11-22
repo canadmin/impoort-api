@@ -25,8 +25,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             }
             if(isProtectedUrl(request)) {
                 String token = request.getHeader("Authorization");
-                String key = request.getHeader("client_key");
-                JwtUtil.validateToken(token,key);
+                JwtUtil.validateToken(token);
             }
 
         } catch (Exception e) {
