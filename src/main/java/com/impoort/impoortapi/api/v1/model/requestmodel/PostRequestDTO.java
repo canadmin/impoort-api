@@ -10,7 +10,7 @@ import java.util.List;
 
 @Data
 public class PostRequestDTO {
-    private User user;
+    private String userId;
     private int postType;
     private String mediaUrl;
     private String postDescription;

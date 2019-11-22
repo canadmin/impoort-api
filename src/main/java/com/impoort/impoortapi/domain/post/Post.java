@@ -23,8 +23,10 @@ public class Post {
     private int postId;
 
     @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "user")
     private User user;
+
+    private String userId;
 
     private int postType;
     private String mediaUrl;
