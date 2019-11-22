@@ -6,8 +6,10 @@ import com.impoort.impoortapi.domain.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Data
@@ -39,7 +41,7 @@ public class Post {
     @JoinColumn(name = "comment_post_id")
     private List<Comment> commentList;
 
-    private String investmentAmount;
-    private String developerCount;
-    private String wantedSalary;
+    @CreationTimestamp
+    @Column(updatable = false)
+    private Timestamp createdDateTime;
 }

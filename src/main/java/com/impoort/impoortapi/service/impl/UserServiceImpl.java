@@ -65,10 +65,10 @@ public class UserServiceImpl implements UserService {
             }
         }
 
-
         return userResponseDTO;
     }
 
+    //test için yazıldı silinecek
     @Override
     public List<UserResponseDTO> getAllUser() {
         List<User> userList = userRepository.findAll();
@@ -76,7 +76,7 @@ public class UserServiceImpl implements UserService {
         return userResponseDTOS;
     }
 
-
+    //mail doğrulaması
     @Override
     public UserResponseDTO findByActiveGuide(String activeGuide) {
         UserResponseDTO userResponseDTO = modelMapper.map(userRepository
@@ -84,12 +84,15 @@ public class UserServiceImpl implements UserService {
         return userResponseDTO;
     }
 
+    //ne amaçla yazılmış bilemiyorum
     @Override
     public UserResponseDTO updateUser(UserResponseDTO userResponseDTO) {
         User updatedUser = modelMapper.map(userResponseDTO, User.class);
         return modelMapper.map(userRepository.save(updatedUser), UserResponseDTO.class);
     }
 
+
+    //bu kullanıcının profil bilgilerinin güncellenmesi için yazıldı
     @Override
     public UserResponseDTO updateUser(UserUpdateDto userUpdateDto) {
         List<Experience> experiences = userUpdateDto.getExperiences();

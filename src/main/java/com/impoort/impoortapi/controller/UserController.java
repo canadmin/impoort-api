@@ -31,6 +31,7 @@ public class UserController {
         this.modelMapper = modelMapper;
     }
 
+    //test için var  silinecek
     @CrossOrigin
     @GetMapping("/users")
     public ResponseEntity<List<UserResponseDTO>>  getAllUser(){
@@ -45,6 +46,8 @@ public class UserController {
         return new ResponseEntity<>(userService.updateUser(user),HttpStatus.OK);
     }
 
+
+    // profile görüntülemek için yazıldı
     @CrossOrigin
     @GetMapping("/{userId}/{myId}")
     public ResponseEntity<UserResponseDTO> getUser(@PathVariable String userId,@PathVariable String myId){
