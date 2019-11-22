@@ -37,8 +37,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         UserResponseDTO userResponseDTO = modelMapper.map(user, UserResponseDTO.class);
         UserAuthRequestDto userAuthFound = modelMapper.map(user, UserAuthRequestDto.class);
         if (isValidPassword(userAuthRequestDto.getPassword(), userAuthFound.getPassword())) {
-            Map<String, Object> jwt = JwtUtil.generateToken(userAuthRequestDto.getEmail());
-            userAuthResponseDto.setToken((HashMap) jwt);
+            String jwt = JwtUtil.generateToken(userAuthRequestDto.getEmail());
+            userAuthResponseDto.setToken(jwt);
             userAuthResponseDto.setUser(userResponseDTO);
 
           return userAuthResponseDto;
