@@ -35,7 +35,6 @@ public class UserServiceImpl implements UserService {
         this.modelMapper = modelMapper;
         this.companyRepository = companyRepository;
     }
-    //goruntelenecek profil id'si ve benim id'im
 
     @Override
     public UserResponseDTO getUser(String userId,String myId) {
@@ -49,21 +48,6 @@ public class UserServiceImpl implements UserService {
                     .map(userRepository.getOne(worker.getWorkerId()), UserResponseDTO.class)));
 
             userResponseDTO.setEmployees(workerUsers);
-        }
-        //görüntelenen kişinin watcherları ve watchingleri arasında hangilerini takip ediyorum
-        List<Watching> myWatchingList=userRepository.getOne(myId).getWatching();
-        System.out.println(myWatchingList.size());
-        for(int i =0 ; i < myWatchingList.size(); i++){
-            for (int j = 0; j <userResponseDTO.getWatching().size() ; j++) {
-                if(userResponseDTO.getWatching().get(j).getUser().getUserId() == myWatchingList.get(i).getUser().getUserId()){
-                    userResponseDTO.getWatching().get(j).setBeingWatch(true);
-                }
-            }
-            for (int j = 0; j <userResponseDTO.getWatcher().size() ; j++) {
-                if(userResponseDTO.getWatcher().get(j).getUser().getUserId() == myWatchingList.get(i).getUser().getUserId()){
-                    userResponseDTO.getWatcher().get(j).setBeingWatch(true);
-                }
-            }
         }
 
         return userResponseDTO;
