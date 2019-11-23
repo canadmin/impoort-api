@@ -9,6 +9,6 @@ import javax.persistence.*;
 public class CommentRequestDTO {
 
     private String commentText;
-    private String commentDate;
-    private User user;
+    private String user;
+
 }

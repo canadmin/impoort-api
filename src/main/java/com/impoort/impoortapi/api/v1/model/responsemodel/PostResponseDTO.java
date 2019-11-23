@@ -13,7 +13,7 @@ import java.util.List;
 public class PostResponseDTO {
 
     private int postId;
-    private User user;
+    private UserResponseDTO user;
     private int postType;
     private String mediaUrl;
     private String postDescription;
