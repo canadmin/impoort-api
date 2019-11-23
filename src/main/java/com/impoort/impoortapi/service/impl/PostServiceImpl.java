@@ -7,6 +7,7 @@ import com.impoort.impoortapi.api.v1.model.requestmodel.pageLists.PostPageList;
 import com.impoort.impoortapi.api.v1.model.responsemodel.CommentResponseDTO;
 import com.impoort.impoortapi.api.v1.model.responsemodel.LikeResponseDTO;
 import com.impoort.impoortapi.api.v1.model.responsemodel.PostResponseDTO;
+import com.impoort.impoortapi.api.v1.model.responsemodel.UserResponseDTO;
 import com.impoort.impoortapi.domain.comment.Comment;
 import com.impoort.impoortapi.domain.comment.Like;
 import com.impoort.impoortapi.domain.post.Post;
@@ -43,6 +44,7 @@ public class PostServiceImpl implements PostService {
     private final UserRepository userRepository;
 
 
+    /** Test için yazıldı silinecek**/
     @Override
     public List<PostResponseDTO> getAllPost() {
         List<Post> postList = postRepository.findAll();
@@ -64,12 +66,14 @@ public class PostServiceImpl implements PostService {
         Post post = postRepository.getOne(postId);
         List<Comment> commentsTemp = post.getCommentList();
         Comment comment = modelMapper.map(commentRequestDTO, Comment.class);
+        comment.setUser(userRepository.getOne(commentRequestDTO.getUser()));
         commentsTemp.add(comment);
         post.setCommentList(commentsTemp);
         post.setCommentCount(commentsTemp.size());
         postRepository.save(post);
         CommentResponseDTO commentResponseDTO = modelMapper.map(comment, CommentResponseDTO.class);
         commentResponseDTO.setCommentId(commentsTemp.get(commentsTemp.size() - 1).getCommentId());
+        commentResponseDTO.setPostId(post.getPostId());
         return commentResponseDTO;
     }
 
@@ -94,6 +98,8 @@ public class PostServiceImpl implements PostService {
         Post post = postRepository.getOne(postId);
         List<Like> likes = post.getLikeList();
         Like like = modelMapper.map(likeRequestDTO, Like.class);
+        User user =userRepository.getOne(likeRequestDTO.getUser());
+        like.setUser(user);
         likes.add(like);
         post.setLikeList(likes);
         post.setLikeCount(likes.size());

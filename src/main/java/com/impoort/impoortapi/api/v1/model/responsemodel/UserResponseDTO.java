@@ -21,8 +21,6 @@ public class UserResponseDTO {
     private String lastName;
     private String email;
     private String city;
-    private List<Watching> watching;
-    private List<Watcher> watcher;
     private String birthDate;
     private String gender;
     private String phoneNumber;
