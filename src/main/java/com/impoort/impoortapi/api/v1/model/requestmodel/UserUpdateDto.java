@@ -4,10 +4,12 @@ import com.impoort.impoortapi.domain.company.Experience;
 import com.impoort.impoortapi.domain.user.User;
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Data
 public class UserUpdateDto {
+    @NotNull
     private String userId;
     private String description;
     private String department;//title
