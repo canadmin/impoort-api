@@ -36,10 +36,11 @@ public class UserServiceImpl implements UserService {
         this.companyRepository = companyRepository;
     }
     //goruntelenecek profil id'si ve benim id'im
+
     @Override
     public UserResponseDTO getUser(String userId,String myId) {
         UserResponseDTO userResponseDTO = modelMapper.map(userRepository.getOne(userId), UserResponseDTO.class);
-        if (userResponseDTO.getUserType() == 2) {
+        if (userResponseDTO.getUserType() == 2) { //eğer startup hesabı ise
             List<Experience> workers = companyRepository.
                     findAllByCompanyIdAndStillWork(userResponseDTO.getUserId(), true);
             List<UserResponseDTO> workerUsers = new ArrayList<>();
@@ -67,6 +68,8 @@ public class UserServiceImpl implements UserService {
 
         return userResponseDTO;
     }
+
+
 
     //test için yazıldı silinecek
     @Override

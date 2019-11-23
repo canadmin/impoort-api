@@ -2,6 +2,8 @@ package com.impoort.impoortapi.service;
 
 import com.impoort.impoortapi.api.v1.model.requestmodel.UserUpdateDto;
 import com.impoort.impoortapi.api.v1.model.responsemodel.UserResponseDTO;
+import com.impoort.impoortapi.domain.watch.Watcher;
+import com.impoort.impoortapi.domain.watch.Watching;
 
 import java.util.List;
 
@@ -15,6 +17,5 @@ public interface UserService {
     UserResponseDTO getUser(String userId,String myId);
 
     UserResponseDTO updateUser(UserUpdateDto userUpdateDto);
-
 
 }

@@ -21,6 +21,7 @@ public class Watcher {
 
     private boolean isBeingWatch;
 
+    private String watchingUser;
     @OneToOne
     @JoinColumn(name = "watchingUserID")
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})

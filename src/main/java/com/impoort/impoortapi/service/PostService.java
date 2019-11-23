@@ -26,5 +26,5 @@ public interface PostService {
     LikeResponseDTO addNewLike(int postId, LikeRequestDTO likeRequestDTO);
 
 
-    PostPageList listPost(String userId,PageRequest pageRequest);
+    PostPageList listPost(String userId,PageRequest pageRequest,Boolean profilePost);
 }
