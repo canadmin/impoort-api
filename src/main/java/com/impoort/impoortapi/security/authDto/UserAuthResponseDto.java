@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashMap;
 
 @Data
 @NoArgsConstructor
@@ -13,7 +12,7 @@ import java.util.HashMap;
 public class UserAuthResponseDto {
 
 
-    private HashMap token;
+    private String token;
     private UserResponseDTO user;
 
 }

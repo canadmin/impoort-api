@@ -4,6 +4,8 @@ import com.impoort.impoortapi.api.v1.model.requestmodel.UserRequestDTO;
 import com.impoort.impoortapi.api.v1.model.requestmodel.UserUpdateDto;
 import com.impoort.impoortapi.api.v1.model.responsemodel.UserResponseDTO;
 import com.impoort.impoortapi.domain.user.User;
+import com.impoort.impoortapi.domain.watch.Watcher;
+import com.impoort.impoortapi.domain.watch.Watching;
 import com.impoort.impoortapi.service.UserService;
 import com.impoort.impoortapi.utils.MailSenderService;
 import org.modelmapper.ModelMapper;
@@ -31,6 +33,7 @@ public class UserController {
         this.modelMapper = modelMapper;
     }
 
+    //test için var  silinecek
     @CrossOrigin
     @GetMapping("/users")
     public ResponseEntity<List<UserResponseDTO>>  getAllUser(){
@@ -45,6 +48,8 @@ public class UserController {
         return new ResponseEntity<>(userService.updateUser(user),HttpStatus.OK);
     }
 
+
+    // profile görüntülemek için yazıldı
     @CrossOrigin
     @GetMapping("/{userId}/{myId}")
     public ResponseEntity<UserResponseDTO> getUser(@PathVariable String userId,@PathVariable String myId){

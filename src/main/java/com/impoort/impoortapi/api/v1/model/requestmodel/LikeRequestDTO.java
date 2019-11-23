@@ -4,9 +4,11 @@ import com.impoort.impoortapi.domain.user.User;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Data
 public class LikeRequestDTO {
 
-    private User user;
+    @NotNull
+    private String user;
 }

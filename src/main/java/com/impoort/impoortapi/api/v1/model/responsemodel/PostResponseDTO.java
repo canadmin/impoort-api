@@ -1,16 +1,19 @@
 package com.impoort.impoortapi.api.v1.model.responsemodel;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.impoort.impoortapi.domain.comment.Comment;
 import com.impoort.impoortapi.domain.user.User;
 import lombok.Data;
 
+import javax.validation.constraints.Null;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Data
 public class PostResponseDTO {
 
     private int postId;
-    private User user;
+    private UserResponseDTO user;
     private int postType;
     private String mediaUrl;
     private String postDescription;
@@ -19,7 +22,8 @@ public class PostResponseDTO {
     private List<User> likeList;
     private int commentCount;
     private List<Comment> commentList;
-    private String investmentAmount;
-    private String developerCount;
-    private String wantedSalary;
+
+    @JsonFormat(pattern="dd-MM-yyyy hh:mm", shape=JsonFormat.Shape.STRING)
+    private Timestamp createdDateTime;
+
 }

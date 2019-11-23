@@ -1,4 +1,4 @@
-package com.impoort.impoortapi.repository;
+package com.impoort.impoortapi.repository.postrepositories;
 
 import com.impoort.impoortapi.api.v1.model.responsemodel.CommentResponseDTO;
 import com.impoort.impoortapi.domain.comment.Comment;
