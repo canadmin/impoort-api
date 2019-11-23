@@ -105,20 +105,25 @@ public class PostServiceImpl implements PostService {
 
 
     @Override
-    public PostPageList listPost(String userId, PageRequest pageRequest) {
+    public PostPageList listPost(String userId, PageRequest pageRequest,Boolean profilePost) {
 
         PostPageList postPageList;
         Pageable sortedByCreatedDateTime = PageRequest.of(pageRequest.getPageNumber(),pageRequest.getPageSize(),Sort.by("createdDateTime"));
         Page<Post> postPage = null;
-        List<Watching> watchings = userRepository.getOne(userId).getWatching();
 
-        List<String> users = new ArrayList<>();
 
-        for (int i = 0; i < watchings.size(); i++) {
-            users.add(watchings.get(i).getUser().getUserId());
+        if(profilePost){
+            postPage = postPagingRepository.findAllByUserId(userId,sortedByCreatedDateTime);
+
+        }else{
+            List<String> users = new ArrayList<>();
+
+            for (int i = 0; i < userRepository.getOne(userId).getWatching().size(); i++) {
+                users.add(userRepository.getOne(userId).getWatching().get(i).getUser().getUserId());
+            }
+
+            postPage = postPagingRepository.findByUserIdIn(users, sortedByCreatedDateTime);
         }
-
-        postPage = postPagingRepository.findByUserIdIn(users, sortedByCreatedDateTime);
 
         postPageList = new PostPageList(postPage
                 .getContent().stream()

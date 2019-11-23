@@ -2,11 +2,13 @@ package com.impoort.impoortapi.api.v1.model.requestmodel;
 
 import com.impoort.impoortapi.domain.company.Experience;
 import com.impoort.impoortapi.domain.user.User;
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
+@Builder
 public class UserRequestDTO {
     private String description;
     private String department;//title

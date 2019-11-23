@@ -67,7 +67,8 @@ public class PostController {
     @GetMapping
     public ResponseEntity<PostPageList> listPosts(@RequestParam(value = "pageNumber", required = false) Integer pageNumber,
                                                   @RequestParam(value = "pageSize", required = false) Integer pageSize,
-                                                  @RequestParam(value = "userId",required = true) String userId
+                                                  @RequestParam(value = "userId",required = true) String userId,
+                                                  @RequestParam(value = "profilePost", required = false) Boolean profilePost
                                                   ){
 
         if (pageNumber == null || pageNumber < 0){
@@ -78,7 +79,7 @@ public class PostController {
             pageSize = DEFAULT_PAGE_SIZE;
         }
 
-        PostPageList postList = postService.listPost(userId,PageRequest.of(pageNumber, pageSize));
+        PostPageList postList = postService.listPost(userId,PageRequest.of(pageNumber, pageSize),profilePost);
         return new ResponseEntity<>(postList,HttpStatus.OK);
     }
 

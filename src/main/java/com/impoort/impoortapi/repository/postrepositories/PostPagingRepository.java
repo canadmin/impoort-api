@@ -10,5 +10,8 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import java.util.List;
 
 public interface PostPagingRepository extends PagingAndSortingRepository<Post,Integer> {
-     Page<Post> findByUserIdIn(List<String> user, Pageable pageable);
+
+     Page<Post> findByUserIdIn(List<String> userId, Pageable pageable);
+
+     Page<Post> findAllByUserId(String userId,Pageable pageable);
 }

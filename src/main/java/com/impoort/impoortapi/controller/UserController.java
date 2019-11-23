@@ -4,6 +4,8 @@ import com.impoort.impoortapi.api.v1.model.requestmodel.UserRequestDTO;
 import com.impoort.impoortapi.api.v1.model.requestmodel.UserUpdateDto;
 import com.impoort.impoortapi.api.v1.model.responsemodel.UserResponseDTO;
 import com.impoort.impoortapi.domain.user.User;
+import com.impoort.impoortapi.domain.watch.Watcher;
+import com.impoort.impoortapi.domain.watch.Watching;
 import com.impoort.impoortapi.service.UserService;
 import com.impoort.impoortapi.utils.MailSenderService;
 import org.modelmapper.ModelMapper;
