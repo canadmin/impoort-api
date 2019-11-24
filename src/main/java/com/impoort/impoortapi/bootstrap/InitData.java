@@ -38,5 +38,13 @@ public class InitData implements CommandLineRunner {
                         .password("123")
                         .build(),User.class));
 
+        //Startup hesabı
+
+        userRepository.save(modelMapper
+                .map(UserRequestDTO.builder()
+                        .firstName("facebook")
+                        .email("facebook")
+                        .password("123").userType(2)
+                        .build(),User.class));
     }
 }
