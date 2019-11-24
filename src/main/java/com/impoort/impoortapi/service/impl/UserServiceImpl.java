@@ -36,15 +36,20 @@ public class UserServiceImpl implements UserService {
         this.companyRepository = companyRepository;
     }
 
+    /**
+     * @param userId profili görüntülenen kullanıcının id'si
+     * @param myId   profili görüntüleyen kullanıcının id'si bu silinecek gerek yok
+     * @return
+     */
     @Override
-    public UserResponseDTO getUser(String userId,String myId) {
+    public UserResponseDTO getUser(String userId, String myId) {
         UserResponseDTO userResponseDTO = modelMapper.map(userRepository.getOne(userId), UserResponseDTO.class);
-        if (userResponseDTO.getUserType() == 2) { //eğer startup hesabı ise
+        if (userResponseDTO.getUserType() == 2) { //eğer startup hesabı ise company repo dan şirkette çalışan insanların bilgisini getirmeli
             List<Experience> workers = companyRepository.
                     findAllByCompanyIdAndStillWork(userResponseDTO.getUserId(), true);
             List<UserResponseDTO> workerUsers = new ArrayList<>();
 
-            workers.forEach(worker->workerUsers.add(modelMapper
+            workers.forEach(worker -> workerUsers.add(modelMapper
                     .map(userRepository.getOne(worker.getWorkerId()), UserResponseDTO.class)));
 
             userResponseDTO.setEmployees(workerUsers);
@@ -52,7 +57,6 @@ public class UserServiceImpl implements UserService {
 
         return userResponseDTO;
     }
-
 
 
     //test için yazıldı silinecek
@@ -82,14 +86,7 @@ public class UserServiceImpl implements UserService {
     //bu kullanıcının profil bilgilerinin güncellenmesi için yazıldı
     @Override
     public UserResponseDTO updateUser(UserUpdateDto userUpdateDto) {
-        List<Experience> experiences = userUpdateDto.getExperiences();
 
-        for (Experience exp : experiences) {
-            Experience newExp;
-            newExp = exp;
-            newExp.setWorkerId(userUpdateDto.getUserId());
-            companyRepository.save(newExp);
-        }
 
         User updatedUser = (modelMapper.map(userUpdateDto, User.class));
         User oldUser = userRepository.getOne(userUpdateDto.getUserId());

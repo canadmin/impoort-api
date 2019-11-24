@@ -40,7 +40,10 @@ public class WatchServiceImpl implements WatchService {
     private final ModelMapper modelMapper;
     private final PostPagingRepository postPagingRepository;
 
-
+    /**
+     * @param watch içerik olarak takip edecek ve takip edileni içeriiyor
+     * @return içerik olarak takip edecek ve takip edileni döndürüyor
+     */
     @Override
     public Watch watchUser(Watch watch) {
 
@@ -91,17 +94,26 @@ public class WatchServiceImpl implements WatchService {
 
     }
 
+    /**
+     * profili görüntüledikten sonra eğer kullanıcıyı izleyenleri görüntülemek istersek paging yapılmış bir izleyenler listesi sunulması gerekir
+     *
+     * @param userId      profili görüntülenmiş kişi id'si
+     * @param myId        profili görüntüleyen kişin
+     * @param pageRequest
+     * @return profilini görüntülenen kişinin izleyenler listesi dönerken o listedekilerin görüntüleyen kişi tarafından takip edilip edilmediği bilgiside eklenir
+     * isBeing : true dönüyorsa onu takip ediyorum demektir
+     */
     @Override
     public WatcherPageList getWatcher(String userId, String myId, PageRequest pageRequest) {
 
         WatcherPageList watcherPageList;
 
         List<Watcher> watchers = userRepository.getOne(userId).getWatcher();
-        List<Watching> myWatchingList=userRepository.getOne(myId).getWatching();
+        List<Watching> myWatchingList = userRepository.getOne(myId).getWatching();
 
-        for(int i =0 ; i < myWatchingList.size(); i++){
-          for (int j = 0; j < watchers.size() ; j++) {
-                if(watchers.get(j).getUser().getUserId() == myWatchingList.get(i).getUser().getUserId()){
+        for (int i = 0; i < myWatchingList.size(); i++) {
+            for (int j = 0; j < watchers.size(); j++) {
+                if (watchers.get(j).getUser().getUserId() == myWatchingList.get(i).getUser().getUserId()) {
                     watchers.get(j).setBeingWatch(true);
                 }
             }
@@ -114,7 +126,7 @@ public class WatchServiceImpl implements WatchService {
 
 
         watcherPageList = new WatcherPageList(page.getSource(),
-                PageRequest.of(pageRequest.getPageNumber(),pageRequest.getPageSize()),
+                PageRequest.of(pageRequest.getPageNumber(), pageRequest.getPageSize()),
                 page.getSource().size());
         return watcherPageList;
     }
@@ -125,11 +137,11 @@ public class WatchServiceImpl implements WatchService {
         WatchingPageList watchingPageList;
 
         List<Watching> watchings = userRepository.getOne(userId).getWatching();
-        List<Watching> myWatchingList=userRepository.getOne(myId).getWatching();
+        List<Watching> myWatchingList = userRepository.getOne(myId).getWatching();
 
-        for(int i =0 ; i < myWatchingList.size(); i++){
-            for (int j = 0; j < watchings.size() ; j++) {
-                if(watchings.get(j).getUser().getUserId() == myWatchingList.get(i).getUser().getUserId()){
+        for (int i = 0; i < myWatchingList.size(); i++) {
+            for (int j = 0; j < watchings.size(); j++) {
+                if (watchings.get(j).getUser().getUserId() == myWatchingList.get(i).getUser().getUserId()) {
                     watchings.get(j).setBeingWatch(true);
                 }
             }
@@ -142,7 +154,7 @@ public class WatchServiceImpl implements WatchService {
 
 
         watchingPageList = new WatchingPageList(page.getSource(),
-                PageRequest.of(pageRequest.getPageNumber(),pageRequest.getPageSize()),
+                PageRequest.of(pageRequest.getPageNumber(), pageRequest.getPageSize()),
                 page.getSource().size());
         return watchingPageList;
     }

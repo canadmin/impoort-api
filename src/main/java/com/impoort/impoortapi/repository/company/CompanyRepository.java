@@ -8,4 +8,5 @@ import java.util.List;
 public interface CompanyRepository extends JpaRepository<Experience,Integer> {
     List<Experience> findAllByCompanyIdAndStillWork(String companyId,boolean stillWork);
     List<Experience> findByWorkerId(String workerId);
+
 }
