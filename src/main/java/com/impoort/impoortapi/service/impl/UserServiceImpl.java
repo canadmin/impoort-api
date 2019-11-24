@@ -36,6 +36,11 @@ public class UserServiceImpl implements UserService {
         this.companyRepository = companyRepository;
     }
 
+    /**
+     * @param userId profili görüntülenen kullanıcının id'si
+     * @param myId profili görüntüleyen kullanıcının id'si bu silinecek gerek yok
+     * @return
+     */
     @Override
     public UserResponseDTO getUser(String userId,String myId) {
         UserResponseDTO userResponseDTO = modelMapper.map(userRepository.getOne(userId), UserResponseDTO.class);

@@ -61,6 +61,11 @@ public class PostServiceImpl implements PostService {
         return modelMapper.map(postRepository.save(post), PostResponseDTO.class);
     }
 
+    /**
+     * @param postId yorum eklenecek post id'si
+     * @param commentRequestDTO
+     * @return
+     */
     @Override
     public CommentResponseDTO addNewComment(int postId, CommentRequestDTO commentRequestDTO) {
         Post post = postRepository.getOne(postId);
@@ -77,6 +82,9 @@ public class PostServiceImpl implements PostService {
         return commentResponseDTO;
     }
 
+    /**
+     * @param postId yorumları  görüntülenecek postun ıdsi
+     */
     @Override
     public List<CommentResponseDTO> getAllComment(int postId) {
         Post post = postRepository.getOne(postId);
@@ -85,6 +93,9 @@ public class PostServiceImpl implements PostService {
         return commentResponseDTOS;
     }
 
+    /**
+     * @param postId beğenileri görüntülenecek postun ıdsi
+     */
     @Override
     public List<LikeResponseDTO> getAllLike(int postId) {
         Post post = postRepository.getOne(postId);
@@ -93,6 +104,13 @@ public class PostServiceImpl implements PostService {
         return likeResponseDTOS;
     }
 
+
+    /**
+     *
+     * @param postId like atılacak post ıd'si
+     * @param likeRequestDTO kullanıcı ıd'sini içeriyor
+     * @return like id ve beğenen kullanıcının bilgisi geri dönüyor
+     */
     @Override
     public LikeResponseDTO addNewLike(int postId, LikeRequestDTO likeRequestDTO) {
         Post post = postRepository.getOne(postId);
@@ -110,6 +128,12 @@ public class PostServiceImpl implements PostService {
     }
 
 
+    /**
+     * @param userId gelen postları listenelecek kullanıcının id'si
+     * @param  pageRequest nasıl sayfalanacak mesele 0-15 ilk sayfada gösterilecek eleman sayısı 1,15 ikinci sayfa
+     * @param profilePost eğer diğer bir kullanıcının veya kendi profilinindeki kullanıcıları görüntülüyorsan(true || false ) ona göre sorgu atılacak
+     * @return dönen obje postPageList türünde postpage list içerik ile beraber sayfa numarası ve o sayfadaki içerik sayısı
+     */
     @Override
     public PostPageList listPost(String userId, PageRequest pageRequest,Boolean profilePost) {
 

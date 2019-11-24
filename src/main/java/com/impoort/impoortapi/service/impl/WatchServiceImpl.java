@@ -40,7 +40,11 @@ public class WatchServiceImpl implements WatchService {
     private final ModelMapper modelMapper;
     private final PostPagingRepository postPagingRepository;
 
-
+    /**
+     *
+     * @param watch içerik olarak takip edecek ve takip edileni içeriiyor
+     * @return içerik olarak takip edecek ve takip edileni döndürüyor
+     */
     @Override
     public Watch watchUser(Watch watch) {
 
@@ -91,6 +95,14 @@ public class WatchServiceImpl implements WatchService {
 
     }
 
+    /**
+     * profili görüntüledikten sonra eğer kullanıcıyı izleyenleri görüntülemek istersek paging yapılmış bir izleyenler listesi sunulması gerekir
+     * @param userId profili görüntülenmiş kişi id'si
+     * @param myId profili görüntüleyen kişin
+     * @param pageRequest
+     * @return  profilini görüntülenen kişinin izleyenler listesi dönerken o listedekilerin görüntüleyen kişi tarafından takip edilip edilmediği bilgiside eklenir
+     * isBeing : true dönüyorsa onu takip ediyorum demektir
+     */
     @Override
     public WatcherPageList getWatcher(String userId, String myId, PageRequest pageRequest) {
 
