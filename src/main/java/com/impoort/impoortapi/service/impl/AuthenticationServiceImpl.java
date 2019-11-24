@@ -31,7 +31,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public Object login(UserAuthRequestDto userAuthRequestDto) {
-        UserAuthResponseDto userAuthResponseDto= new UserAuthResponseDto();
+        UserAuthResponseDto userAuthResponseDto = new UserAuthResponseDto();
 
         User user = userRepository.findByEmail(userAuthRequestDto.getEmail());
         UserResponseDTO userResponseDTO = modelMapper.map(user, UserResponseDTO.class);
@@ -41,7 +41,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             userAuthResponseDto.setToken(jwt);
             userAuthResponseDto.setUser(userResponseDTO);
 
-          return userAuthResponseDto;
+            return userAuthResponseDto;
         } else {
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }

@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class JwtUtil {
     public static final String SECRET = "impoort-api-secret-key-canburakyusufhasan";
-    public static final String SECRET_CLIENT ="x-key";
+    public static final String SECRET_CLIENT = "x-key";
     public static final String SECRET_KEY = "123";
 
     public static String generateToken(String email) {
@@ -31,9 +31,9 @@ public class JwtUtil {
         try {
             Map<String, Object> icerik = Jwts.parser()
                     .setSigningKey(SECRET.trim())
-                    .parseClaimsJws(token.replace("Bearer ",""))
+                    .parseClaimsJws(token.replace("Bearer ", ""))
                     .getBody();
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new IllegalStateException("Gecersiz Token");
         }
     }

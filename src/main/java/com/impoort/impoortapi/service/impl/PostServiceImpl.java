@@ -44,7 +44,9 @@ public class PostServiceImpl implements PostService {
     private final UserRepository userRepository;
 
 
-    /** Test için yazıldı silinecek**/
+    /**
+     * Test için yazıldı silinecek
+     **/
     @Override
     public List<PostResponseDTO> getAllPost() {
         List<Post> postList = postRepository.findAll();
@@ -62,7 +64,7 @@ public class PostServiceImpl implements PostService {
     }
 
     /**
-     * @param postId yorum eklenecek post id'si
+     * @param postId            yorum eklenecek post id'si
      * @param commentRequestDTO
      * @return
      */
@@ -106,8 +108,7 @@ public class PostServiceImpl implements PostService {
 
 
     /**
-     *
-     * @param postId like atılacak post ıd'si
+     * @param postId         like atılacak post ıd'si
      * @param likeRequestDTO kullanıcı ıd'sini içeriyor
      * @return like id ve beğenen kullanıcının bilgisi geri dönüyor
      */
@@ -116,7 +117,7 @@ public class PostServiceImpl implements PostService {
         Post post = postRepository.getOne(postId);
         List<Like> likes = post.getLikeList();
         Like like = modelMapper.map(likeRequestDTO, Like.class);
-        User user =userRepository.getOne(likeRequestDTO.getUser());
+        User user = userRepository.getOne(likeRequestDTO.getUser());
         like.setUser(user);
         likes.add(like);
         post.setLikeList(likes);
@@ -129,23 +130,23 @@ public class PostServiceImpl implements PostService {
 
 
     /**
-     * @param userId gelen postları listenelecek kullanıcının id'si
-     * @param  pageRequest nasıl sayfalanacak mesele 0-15 ilk sayfada gösterilecek eleman sayısı 1,15 ikinci sayfa
+     * @param userId      gelen postları listenelecek kullanıcının id'si
+     * @param pageRequest nasıl sayfalanacak mesele 0-15 ilk sayfada gösterilecek eleman sayısı 1,15 ikinci sayfa
      * @param profilePost eğer diğer bir kullanıcının veya kendi profilinindeki kullanıcıları görüntülüyorsan(true || false ) ona göre sorgu atılacak
      * @return dönen obje postPageList türünde postpage list içerik ile beraber sayfa numarası ve o sayfadaki içerik sayısı
      */
     @Override
-    public PostPageList listPost(String userId, PageRequest pageRequest,Boolean profilePost) {
+    public PostPageList listPost(String userId, PageRequest pageRequest, Boolean profilePost) {
 
         PostPageList postPageList;
-        Pageable sortedByCreatedDateTime = PageRequest.of(pageRequest.getPageNumber(),pageRequest.getPageSize(),Sort.by("createdDateTime"));
+        Pageable sortedByCreatedDateTime = PageRequest.of(pageRequest.getPageNumber(), pageRequest.getPageSize(), Sort.by("createdDateTime"));
         Page<Post> postPage = null;
 
 
-        if(profilePost){
-            postPage = postPagingRepository.findAllByUserId(userId,sortedByCreatedDateTime);
+        if (profilePost) {
+            postPage = postPagingRepository.findAllByUserId(userId, sortedByCreatedDateTime);
 
-        }else{
+        } else {
             List<String> users = new ArrayList<>();
 
             for (int i = 0; i < userRepository.getOne(userId).getWatching().size(); i++) {
