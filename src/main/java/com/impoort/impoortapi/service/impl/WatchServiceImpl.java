@@ -61,7 +61,7 @@ public class WatchServiceImpl implements WatchService {
         myWatchingList.add(newWatching);
 
         me.setWatching(myWatchingList);
-
+        me.setWatchingCount(myWatchingList.size());
         userRepository.save(me);
 
         List<Watcher> otherWatcherList = other.getWatcher();
@@ -73,7 +73,7 @@ public class WatchServiceImpl implements WatchService {
         otherWatcherList.add(newWatcher);
 
         other.setWatcher(otherWatcherList);
-
+        other.setWatcherCount(otherWatcherList.size());
         userRepository.save(other);
 
 

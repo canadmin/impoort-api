@@ -30,4 +30,8 @@ public class UserResponseDTO {
     private List<UserResponseDTO> employees;
     private String profileImgUrl;
 
+    private int watcherCount;
+    private int watchingCount;
+    private int watchingPostCount;
+
 }
