@@ -39,6 +39,7 @@ public class PostController {
     @CrossOrigin
     @PostMapping
     public ResponseEntity<PostResponseDTO> addNewPost(@RequestBody PostRequestDTO postRequestDTO){
+    	System.out.println("TEST");
         return new ResponseEntity<PostResponseDTO>(postService.addNewPost(postRequestDTO),HttpStatus.OK);
     }
     @CrossOrigin
@@ -56,6 +57,13 @@ public class PostController {
     public ResponseEntity<LikeResponseDTO> addNewLike(@RequestBody LikeRequestDTO likeRequestDTO,@PathVariable int postId){
         return  new ResponseEntity<LikeResponseDTO>(postService.addNewLike(postId,likeRequestDTO),HttpStatus.OK);
     }
+    
+    @CrossOrigin
+    @PostMapping("{postId}/deleteLike")
+    public ResponseEntity<LikeResponseDTO> deleteLike(@RequestBody LikeRequestDTO likeRequestDTO,@PathVariable int postId){
+        return  new ResponseEntity<LikeResponseDTO>(postService.deleteLike(postId,likeRequestDTO),HttpStatus.OK);
+    }
+    
     @CrossOrigin
     @GetMapping("{postId}/getAllLike")
     public ResponseEntity<List<LikeResponseDTO>> getAllLike(@PathVariable int postId){

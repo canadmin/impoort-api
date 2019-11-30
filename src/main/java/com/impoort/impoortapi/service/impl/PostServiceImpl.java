@@ -14,6 +14,7 @@ import com.impoort.impoortapi.domain.post.Post;
 import com.impoort.impoortapi.domain.user.User;
 import com.impoort.impoortapi.domain.watch.Watching;
 import com.impoort.impoortapi.repository.UserRepository;
+import com.impoort.impoortapi.repository.like.LikeRepository;
 import com.impoort.impoortapi.repository.postrepositories.PostPagingRepository;
 import com.impoort.impoortapi.repository.postrepositories.PostRepository;
 import com.impoort.impoortapi.service.PostService;
@@ -39,6 +40,8 @@ import java.util.stream.Collectors;
 public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
+    private final LikeRepository likeRepository;
+    
     private final ModelMapper modelMapper;
     private final PostPagingRepository postPagingRepository;
     private final UserRepository userRepository;
@@ -116,6 +119,7 @@ public class PostServiceImpl implements PostService {
     public LikeResponseDTO addNewLike(int postId, LikeRequestDTO likeRequestDTO) {
         Post post = postRepository.getOne(postId);
         List<Like> likes = post.getLikeList();
+        System.out.println(likes.toString());
         Like like = modelMapper.map(likeRequestDTO, Like.class);
         User user = userRepository.getOne(likeRequestDTO.getUser());
         like.setUser(user);
@@ -165,5 +169,27 @@ public class PostServiceImpl implements PostService {
 
         return postPageList;
     }
+
+	@Override
+	public LikeResponseDTO deleteLike(int postId, LikeRequestDTO deleteRequestDTO) {
+        Post post = postRepository.getOne(postId);
+        List<Like> likes = post.getLikeList();
+        
+        Like delete = null;
+        for(Like like : likes) {
+        	if(like.getUser().getUserId().equals(deleteRequestDTO.getUser())) {
+        		delete = like;
+        		break;
+        	}
+        }
+          
+        likes.remove(delete);        	
+        likeRepository.delete(delete);
+        post.setLikeCount(likes.size());
+        postRepository.save(post);
+        
+        LikeResponseDTO deleteResponseDTO = modelMapper.map(delete,LikeResponseDTO.class);
+        return deleteResponseDTO;
+	}
 
 }

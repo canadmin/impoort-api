@@ -24,7 +24,8 @@ public interface PostService {
     List<LikeResponseDTO> getAllLike(int postId);
 
     LikeResponseDTO addNewLike(int postId, LikeRequestDTO likeRequestDTO);
-
+    
+    LikeResponseDTO deleteLike(int postId, LikeRequestDTO deleteRequestDTO);
 
     PostPageList listPost(String userId,PageRequest pageRequest,Boolean profilePost);
 }
