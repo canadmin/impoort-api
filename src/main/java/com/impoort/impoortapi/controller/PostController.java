@@ -57,12 +57,16 @@ public class PostController {
         return  new ResponseEntity<LikeResponseDTO>(postService.addNewLike(postId,likeRequestDTO),HttpStatus.OK);
     }
     @CrossOrigin
+    @PostMapping("{postId}/deleteLike")
+    public ResponseEntity<LikeResponseDTO> deleteLike(@RequestBody LikeRequestDTO likeRequestDTO,@PathVariable int postId){
+        return  new ResponseEntity<LikeResponseDTO>(postService.deleteLike(postId,likeRequestDTO),HttpStatus.OK);
+    }
+
+    @CrossOrigin
     @GetMapping("{postId}/getAllLike")
     public ResponseEntity<List<LikeResponseDTO>> getAllLike(@PathVariable int postId){
         return new ResponseEntity<List<LikeResponseDTO>>(postService.getAllLike(postId),HttpStatus.OK);
-    }
-
-
+    }//Deneme
     @CrossOrigin
     @GetMapping
     public ResponseEntity<PostPageList> listPosts(@RequestParam(value = "pageNumber", required = false) Integer pageNumber,
