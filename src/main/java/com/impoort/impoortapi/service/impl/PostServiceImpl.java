@@ -1,8 +1,9 @@
 package com.impoort.impoortapi.service.impl;
 
-import com.impoort.impoortapi.api.v1.model.requestmodel.CommentRequestDTO;
 import com.impoort.impoortapi.api.v1.model.requestmodel.LikeRequestDTO;
 import com.impoort.impoortapi.api.v1.model.requestmodel.PostRequestDTO;
+import com.impoort.impoortapi.api.v1.model.requestmodel.comment.CommentRequestDTO;
+import com.impoort.impoortapi.api.v1.model.requestmodel.comment.IDCommentRequestDTO;
 import com.impoort.impoortapi.api.v1.model.requestmodel.pageLists.PostPageList;
 import com.impoort.impoortapi.api.v1.model.responsemodel.CommentResponseDTO;
 import com.impoort.impoortapi.api.v1.model.responsemodel.LikeResponseDTO;
@@ -14,6 +15,7 @@ import com.impoort.impoortapi.domain.post.Post;
 import com.impoort.impoortapi.domain.user.User;
 import com.impoort.impoortapi.domain.watch.Watching;
 import com.impoort.impoortapi.repository.UserRepository;
+import com.impoort.impoortapi.repository.comment.CommentRepository;
 import com.impoort.impoortapi.repository.comment.LikeRepository;
 import com.impoort.impoortapi.repository.postrepositories.PostPagingRepository;
 import com.impoort.impoortapi.repository.postrepositories.PostRepository;
@@ -41,6 +43,8 @@ public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
     private final LikeRepository likeRepository;
+    private final CommentRepository commentRepository;
+    
     private final ModelMapper modelMapper;
     private final PostPagingRepository postPagingRepository;
     private final UserRepository userRepository;
@@ -85,6 +89,23 @@ public class PostServiceImpl implements PostService {
         commentResponseDTO.setPostId(post.getPostId());
         return commentResponseDTO;
     }
+    
+	@Override
+	public CommentResponseDTO deleteComment(int postId, IDCommentRequestDTO commentRequestDTO) {
+        Post post = postRepository.getOne(postId);
+        List<Comment> comments = post.getCommentList();
+        Comment delete = commentRepository.getOne(Integer.parseInt(commentRequestDTO.getCommentId()));   
+        
+        comments.remove(delete);     
+        post.setCommentCount(comments.size());   	
+        
+        commentRepository.delete(delete);
+        postRepository.save(post);
+        
+        CommentResponseDTO deleteResponseDTO = modelMapper.map(delete,CommentResponseDTO.class);
+        deleteResponseDTO.setPostId(postId);
+        return deleteResponseDTO;
+	}
 
     /**
      * @param postId yorumları  görüntülenecek postun ıdsi
@@ -189,5 +210,7 @@ public class PostServiceImpl implements PostService {
 
         return postPageList;
     }
+
+
 
 }

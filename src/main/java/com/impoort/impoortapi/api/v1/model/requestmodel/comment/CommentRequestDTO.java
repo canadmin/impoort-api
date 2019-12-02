@@ -1,4 +1,4 @@
-package com.impoort.impoortapi.api.v1.model.requestmodel;
+package com.impoort.impoortapi.api.v1.model.requestmodel.comment;
 
 import com.impoort.impoortapi.domain.user.User;
 import lombok.Data;
