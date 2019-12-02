@@ -1,8 +1,9 @@
 package com.impoort.impoortapi.controller;
 
-import com.impoort.impoortapi.api.v1.model.requestmodel.CommentRequestDTO;
 import com.impoort.impoortapi.api.v1.model.requestmodel.LikeRequestDTO;
 import com.impoort.impoortapi.api.v1.model.requestmodel.PostRequestDTO;
+import com.impoort.impoortapi.api.v1.model.requestmodel.comment.CommentRequestDTO;
+import com.impoort.impoortapi.api.v1.model.requestmodel.comment.IDCommentRequestDTO;
 import com.impoort.impoortapi.api.v1.model.requestmodel.pageLists.PostPageList;
 import com.impoort.impoortapi.api.v1.model.responsemodel.CommentResponseDTO;
 import com.impoort.impoortapi.api.v1.model.responsemodel.LikeResponseDTO;
@@ -45,6 +46,11 @@ public class PostController {
     @PostMapping("/{postId}/addComment")
     public ResponseEntity<CommentResponseDTO> addNewComment(@RequestBody CommentRequestDTO commentRequestDTO, @PathVariable int postId){
         return new ResponseEntity<CommentResponseDTO>(postService.addNewComment(postId,commentRequestDTO),HttpStatus.OK);
+    }
+    @CrossOrigin
+    @PostMapping("/{postId}/deleteComment")
+    public ResponseEntity<CommentResponseDTO> deleteComment(@RequestBody IDCommentRequestDTO commentRequestDTO, @PathVariable int postId){
+        return new ResponseEntity<CommentResponseDTO>(postService.deleteComment(postId,commentRequestDTO),HttpStatus.OK);
     }
     @CrossOrigin
     @GetMapping("{postId}/getAllComment")
