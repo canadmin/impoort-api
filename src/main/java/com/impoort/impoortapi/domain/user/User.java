@@ -2,19 +2,16 @@ package com.impoort.impoortapi.domain.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.impoort.impoortapi.domain.enums.UserType;
+import com.impoort.impoortapi.domain.comment.WatchPost;
 import com.impoort.impoortapi.domain.watch.Watcher;
 import com.impoort.impoortapi.domain.watch.Watching;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.LazyToOne;
-import org.hibernate.annotations.LazyToOneOption;
 
 import javax.persistence.*;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @Data
@@ -85,4 +82,7 @@ public class User {
     @Column(name = "linkName")
     @CollectionTable(name = "user_links",joinColumns = @JoinColumn(name = "user_id"))
     private Map<String,String> links = new HashMap<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<WatchPost> watchPosts = new ArrayList<>();
 }

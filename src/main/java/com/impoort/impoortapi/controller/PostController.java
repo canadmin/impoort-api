@@ -63,7 +63,7 @@ public class PostController {
         return  new ResponseEntity<LikeResponseDTO>(postService.addNewLike(postId,likeRequestDTO),HttpStatus.OK);
     }
     @CrossOrigin
-    @PostMapping("{postId}/deleteLike")
+    @DeleteMapping("{postId}/deleteLike")
     public ResponseEntity<LikeResponseDTO> deleteLike(@RequestBody LikeRequestDTO likeRequestDTO,@PathVariable int postId){
         return  new ResponseEntity<LikeResponseDTO>(postService.deleteLike(postId,likeRequestDTO),HttpStatus.OK);
     }
@@ -93,5 +93,17 @@ public class PostController {
         return new ResponseEntity<>(postList,HttpStatus.OK);
     }
 
+    @CrossOrigin
+    @PostMapping("/{postId}/watch")
+    public ResponseEntity<PostResponseDTO> watchPost(@PathVariable int postId,  @RequestParam(value = "userId",required = true) String userId){
+        return new ResponseEntity<>(postService.watchPost(postId,userId),HttpStatus.OK);
+    }
 
+    @CrossOrigin
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/{postId}/watch")
+    public void deleteWatch(@PathVariable int postId,
+                            @RequestParam(value = "userId",required = true) String userId){
+        postService.deleteWatch(postId,userId);
+    }
 }

@@ -8,33 +8,31 @@ import com.impoort.impoortapi.api.v1.model.requestmodel.pageLists.PostPageList;
 import com.impoort.impoortapi.api.v1.model.responsemodel.CommentResponseDTO;
 import com.impoort.impoortapi.api.v1.model.responsemodel.LikeResponseDTO;
 import com.impoort.impoortapi.api.v1.model.responsemodel.PostResponseDTO;
-import com.impoort.impoortapi.api.v1.model.responsemodel.UserResponseDTO;
 import com.impoort.impoortapi.domain.comment.Comment;
 import com.impoort.impoortapi.domain.comment.Like;
 import com.impoort.impoortapi.domain.post.Post;
 import com.impoort.impoortapi.domain.user.User;
-import com.impoort.impoortapi.domain.watch.Watching;
+import com.impoort.impoortapi.domain.comment.WatchPost;
 import com.impoort.impoortapi.repository.UserRepository;
 import com.impoort.impoortapi.repository.comment.CommentRepository;
 import com.impoort.impoortapi.repository.comment.LikeRepository;
+import com.impoort.impoortapi.repository.comment.WatchPostRepository;
 import com.impoort.impoortapi.repository.postrepositories.PostPagingRepository;
 import com.impoort.impoortapi.repository.postrepositories.PostRepository;
 import com.impoort.impoortapi.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.awt.event.WindowAdapter;
-import java.lang.reflect.Type;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -48,6 +46,7 @@ public class PostServiceImpl implements PostService {
     private final ModelMapper modelMapper;
     private final PostPagingRepository postPagingRepository;
     private final UserRepository userRepository;
+    private final WatchPostRepository watchPostRepository;
 
 
     /**
@@ -155,7 +154,7 @@ public class PostServiceImpl implements PostService {
 	public LikeResponseDTO deleteLike(int postId, LikeRequestDTO deleteRequestDTO) {
         Post post = postRepository.getOne(postId);
         List<Like> likes = post.getLikeList();
-        
+        // TODO bunu çözelim hasancığım satır 218 deki gibi :)
         Like delete = null;
         for(Like like : likes) {
         	if(like.getUser().getUserId().equals(deleteRequestDTO.getUser())) {
@@ -211,6 +210,27 @@ public class PostServiceImpl implements PostService {
         return postPageList;
     }
 
+    @Override
+    public PostResponseDTO watchPost(int postId, String userId) {
+        User user = userRepository.getOne(userId);
+        Post post = postRepository.getOne(postId);
 
+        Boolean isExist = watchPostRepository.existsByPostAndUser(postId,user);
+        if(!isExist){
+            user.setWatchingPostCount(user.getWatchingPostCount()+1);
+            WatchPost watchPost = WatchPost.builder().user(user).post(postId).build();
+            watchPostRepository.save(watchPost);
 
+            return modelMapper.map(postRepository.getOne(postId),PostResponseDTO.class);
+        }
+        return null;
+    }
+
+    @Override
+    public void deleteWatch(int postId, String userId) {
+        User user = userRepository.getOne(userId);
+        user.setWatchingPostCount(user.getWatchingPostCount()-1);
+        WatchPost watchPost =  watchPostRepository.findByPostAndUser(postId,user);
+        watchPostRepository.deleteById(watchPost.getWatchedPostId());
+    }
 }
