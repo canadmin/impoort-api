@@ -7,6 +7,7 @@ import com.impoort.impoortapi.domain.watch.Watching;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Map;
 
 @Data
 public class UserResponseDTO {
@@ -35,5 +36,5 @@ public class UserResponseDTO {
     private int watcherCount;
     private int watchingCount;
     private int watchingPostCount;
-
+    private Map<String,String> links;
 }

@@ -7,6 +7,7 @@ import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Map;
 
 @Data
 public class UserUpdateDto {
@@ -28,5 +29,7 @@ public class UserUpdateDto {
     //eğer startup ise
     private List<User> employees; // s icin
     private String profileImgUrl;
+
+    private Map<String,String> links;
 
 }

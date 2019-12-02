@@ -12,7 +12,9 @@ import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 
 import javax.persistence.*;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Data
@@ -77,4 +79,10 @@ public class User {
     private int watchingPostCount;
     private int employeeCount;
     private String profileImgUrl;
+
+    @ElementCollection
+    @MapKeyColumn(name = "link")
+    @Column(name = "linkName")
+    @CollectionTable(name = "user_links",joinColumns = @JoinColumn(name = "user_id"))
+    private Map<String,String> links = new HashMap<>();
 }

@@ -8,6 +8,7 @@ import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Map;
 
 @Data
 @Builder
@@ -34,4 +35,5 @@ public class UserRequestDTO {
     private int employeeCount; // s icin
     //eğer startup ise
     private List<User> employees; // s icin
+    private Map<String,String> links;
 }
