@@ -1,6 +1,7 @@
 package com.impoort.impoortapi.api.v1.model.requestmodel;
 
 import com.impoort.impoortapi.domain.company.Experience;
+import com.impoort.impoortapi.domain.enums.UserType;
 import com.impoort.impoortapi.domain.user.User;
 import lombok.Data;
 
@@ -13,7 +14,7 @@ public class UserUpdateDto {
     private String userId;
     private String description;
     private String department;//title
-    private int userType; // startup -
+    private UserType userType; // startup -
     private String firstName;
     private String lastName;
     private String email;

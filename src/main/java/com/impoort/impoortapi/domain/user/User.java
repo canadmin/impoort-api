@@ -1,6 +1,7 @@
 package com.impoort.impoortapi.domain.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.impoort.impoortapi.domain.enums.UserType;
 import com.impoort.impoortapi.domain.watch.Watcher;
 import com.impoort.impoortapi.domain.watch.Watching;
 import lombok.AllArgsConstructor;
@@ -35,12 +36,16 @@ public class User {
     private String department;
 
     //sadece iki tane kullanıcı türü vardır bu türlerden 1->User 2->
-    private int userType;
+    @Enumerated(value = EnumType.ORDINAL)
+    private UserType userType;
+
     private String firstName;
     private String lastName;
 
+    private String fullName;
     @Column(unique = true)
     private String email;
+
 
     @OneToMany(cascade = {
             CascadeType.REFRESH,

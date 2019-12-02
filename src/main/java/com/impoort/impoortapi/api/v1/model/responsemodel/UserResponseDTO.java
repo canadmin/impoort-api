@@ -1,6 +1,7 @@
 package com.impoort.impoortapi.api.v1.model.responsemodel;
 
 import com.impoort.impoortapi.domain.company.Experience;
+import com.impoort.impoortapi.domain.enums.UserType;
 import com.impoort.impoortapi.domain.watch.Watcher;
 import com.impoort.impoortapi.domain.watch.Watching;
 import lombok.Data;
@@ -13,10 +14,11 @@ public class UserResponseDTO {
     private String userId;
     private String activeGuide;
     private String description;
+    private String fullName;
     private boolean isActive;
     private boolean isConfirmed;
     private String department;
-    private int userType;
+    private UserType userType;
     private String firstName;
     private String lastName;
     private String email;

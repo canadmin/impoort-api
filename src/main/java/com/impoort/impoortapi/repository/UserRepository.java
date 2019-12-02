@@ -1,5 +1,6 @@
 package com.impoort.impoortapi.repository;
 
+import com.impoort.impoortapi.domain.enums.UserType;
 import com.impoort.impoortapi.domain.user.User;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,5 +22,6 @@ public interface UserRepository extends JpaRepository<User,String> {
     @Query("select user from User user order by user.watcherCount desc ")
     List<User> getSuggestedUser(Pageable pageable);
 
+    List<User> findAllByFullNameContainingAndUserTypeIn(String userName,List<UserType> userType);
 
 }
