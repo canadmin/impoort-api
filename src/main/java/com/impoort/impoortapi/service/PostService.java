@@ -32,4 +32,8 @@ public interface PostService {
 	LikeResponseDTO deleteLike(int postId, LikeRequestDTO deleteRequestDto);
 
 	CommentResponseDTO deleteComment(int postId, IDCommentRequestDTO commentRequestDTO);
+
+    PostResponseDTO watchPost(int postId, String userId);
+
+    void deleteWatch(int postId, String userId);
 }
