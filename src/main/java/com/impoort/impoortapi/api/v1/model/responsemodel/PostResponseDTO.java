@@ -7,6 +7,7 @@ import lombok.Data;
 
 import javax.validation.constraints.Null;
 import java.sql.Timestamp;
+import java.util.Collection;
 import java.util.List;
 
 @Data
@@ -25,5 +26,7 @@ public class PostResponseDTO {
 
     @JsonFormat(pattern="dd-MM-yyyy hh:mm", shape=JsonFormat.Shape.STRING)
     private Timestamp createdDateTime;
+
+    private Collection<String> tags;
 
 }
