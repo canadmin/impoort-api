@@ -10,6 +10,8 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Data
@@ -46,4 +48,9 @@ public class Post {
     @CreationTimestamp
     @Column(updatable = false)
     private Timestamp createdDateTime;
+
+    @ElementCollection
+    @CollectionTable(name = "post_tag",joinColumns = @JoinColumn(name = "post_id"))
+    @Column(name = "tag")
+    private Collection<String> tags = new ArrayList<>();
 }
