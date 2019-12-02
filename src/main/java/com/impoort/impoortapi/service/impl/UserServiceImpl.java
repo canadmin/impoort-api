@@ -4,12 +4,14 @@ import com.impoort.impoortapi.api.v1.model.requestmodel.UserRequestDTO;
 import com.impoort.impoortapi.api.v1.model.requestmodel.UserUpdateDto;
 import com.impoort.impoortapi.api.v1.model.responsemodel.UserResponseDTO;
 import com.impoort.impoortapi.domain.company.Experience;
+import com.impoort.impoortapi.domain.enums.UserType;
 import com.impoort.impoortapi.domain.user.User;
 import com.impoort.impoortapi.domain.watch.Watcher;
 import com.impoort.impoortapi.domain.watch.Watching;
 import com.impoort.impoortapi.repository.UserRepository;
 import com.impoort.impoortapi.repository.company.CompanyRepository;
 import com.impoort.impoortapi.service.UserService;
+import com.impoort.impoortapi.utils.Converters;
 import com.impoort.impoortapi.utils.RandomStringGenerator;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +46,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponseDTO getUser(String userId, String myId) {
         UserResponseDTO userResponseDTO = modelMapper.map(userRepository.getOne(userId), UserResponseDTO.class);
-        if (userResponseDTO.getUserType() == 2) { //eğer startup hesabı ise company repo dan şirkette çalışan insanların bilgisini getirmeli
+        if (userResponseDTO.getUserType() == UserType.STARTUP) { //eğer startup hesabı ise company repo dan şirkette çalışan insanların bilgisini getirmeli
             List<Experience> workers = companyRepository.
                     findAllByCompanyIdAndStillWork(userResponseDTO.getUserId(), true);
             List<UserResponseDTO> workerUsers = new ArrayList<>();
@@ -79,6 +81,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponseDTO updateUser(UserResponseDTO userResponseDTO) {
         User updatedUser = modelMapper.map(userResponseDTO, User.class);
+        updatedUser.setFirstName(Converters.generateFullName(updatedUser.getFirstName(),updatedUser.getLastName()));
         return modelMapper.map(userRepository.save(updatedUser), UserResponseDTO.class);
     }
 
@@ -106,4 +109,5 @@ public class UserServiceImpl implements UserService {
         userResponseDTO.setExperiences(companyRepository.findByWorkerId(userResponseDTO.getUserId()));
         return userResponseDTO;
     }
+
 }

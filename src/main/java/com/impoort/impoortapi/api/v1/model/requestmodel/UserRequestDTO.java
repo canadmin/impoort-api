@@ -1,6 +1,7 @@
 package com.impoort.impoortapi.api.v1.model.requestmodel;
 
 import com.impoort.impoortapi.domain.company.Experience;
+import com.impoort.impoortapi.domain.enums.UserType;
 import com.impoort.impoortapi.domain.user.User;
 import lombok.Builder;
 import lombok.Data;
@@ -14,7 +15,7 @@ public class UserRequestDTO {
 
     private String description;
     private String department;//title
-    private int userType; // startup -
+    private UserType userType; // startup -
 
     @NotNull
     private String firstName;

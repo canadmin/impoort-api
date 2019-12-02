@@ -8,6 +8,7 @@ import com.impoort.impoortapi.security.JwtUtil;
 import com.impoort.impoortapi.security.authDto.UserAuthRequestDto;
 import com.impoort.impoortapi.security.authDto.UserAuthResponseDto;
 import com.impoort.impoortapi.service.AuthenticationService;
+import com.impoort.impoortapi.utils.Converters;
 import com.impoort.impoortapi.utils.RandomStringGenerator;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +57,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public UserResponseDTO signUp(UserRequestDTO userRequestDTO) {
         User user = modelMapper.map(userRequestDTO, User.class);
         user.setActiveGuide(RandomStringGenerator.generateString());
+        user.setFullName(Converters.generateFullName(user.getFirstName(),user.getLastName()));
         user = userRepository.save(user);
         UserResponseDTO userResponseDTO = modelMapper.map(user, UserResponseDTO.class);
         return userResponseDTO;

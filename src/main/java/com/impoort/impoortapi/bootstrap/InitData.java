@@ -1,6 +1,7 @@
 package com.impoort.impoortapi.bootstrap;
 
 import com.impoort.impoortapi.api.v1.model.requestmodel.UserRequestDTO;
+import com.impoort.impoortapi.domain.enums.UserType;
 import com.impoort.impoortapi.domain.user.User;
 import com.impoort.impoortapi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -8,7 +9,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-@Component
+//@Component
 @RequiredArgsConstructor
 public class InitData implements CommandLineRunner {
 
@@ -22,6 +23,7 @@ public class InitData implements CommandLineRunner {
                         .firstName("hasan")
                         .email("hasan")
                         .password("123")
+                        .userType(UserType.STARTUP)
                         .build(),User.class));
 
         userRepository.save(modelMapper
@@ -44,7 +46,7 @@ public class InitData implements CommandLineRunner {
                 .map(UserRequestDTO.builder()
                         .firstName("facebook")
                         .email("facebook")
-                        .password("123").userType(2)
+                        .password("123").userType(UserType.DEVELOPER)
                         .build(),User.class));
     }
 }
