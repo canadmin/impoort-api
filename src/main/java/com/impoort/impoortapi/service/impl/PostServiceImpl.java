@@ -31,6 +31,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -182,6 +183,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostPageList listPost(String userId, PageRequest pageRequest, Boolean profilePost) {
 
+        Optional<User> user1 = userRepository.findById(userId);
         PostPageList postPageList;
         Pageable sortedByCreatedDateTime = PageRequest.of(pageRequest.getPageNumber(),
                 pageRequest.getPageSize(), Sort.by("createdDateTime"));
@@ -200,13 +202,31 @@ public class PostServiceImpl implements PostService {
 
             postPage = postPagingRepository.findByUserIdIn(users, sortedByCreatedDateTime);
         }
-        List<PostResponseDTO> updatedPostPage = postPage.getContent().stream().map(x->modelMapper.map(x,PostResponseDTO.class)).collect(Collectors.toList());
+
+        List<PostResponseDTO> updatedPostPage =
+                postPage.getContent()
+                        .stream()
+                        .map(x-> modelMapper.map(x,PostResponseDTO.class))
+                        .collect(Collectors.toList());
+
+        //listenecek postlarda benim beğenip beğenmediğim bilgisi ekleniyor
+        // listenecek postlarda benim watchlayıp watchlamadığım görünecek
         AtomicInteger index = new AtomicInteger();
-        updatedPostPage.stream().forEach(x->{
-            if(x.getLikeList().get(index.getAndIncrement()).getUserId().equals(userId)){
-                x.setIsLiked(true);
+        List<WatchPost> watchPostList = watchPostRepository.findAllByUser(user1.get());
+
+        updatedPostPage.stream().forEach(post->{
+            if(post.getLikeList().get(index.getAndIncrement()).getUserId().equals(userId)){
+                post.setIsLiked(true);
+                post.setLikeList(null);
             }
+            if(!watchPostList.isEmpty()){
+                if(post.getPostId() == watchPostList.get(index.decrementAndGet()).getPost()){
+                    post.setIsWatched(true);
+                }
+            }
+
         });
+
 
         postPageList = new PostPageList(updatedPostPage,
                 PageRequest.of(postPage.getPageable().getPageNumber(),
