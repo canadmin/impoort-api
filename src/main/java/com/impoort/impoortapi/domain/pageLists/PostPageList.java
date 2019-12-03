@@ -1,30 +1,29 @@
-package com.impoort.impoortapi.api.v1.model.requestmodel.pageLists;
+package com.impoort.impoortapi.domain.pageLists;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.impoort.impoortapi.api.v1.model.responsemodel.PostResponseDTO;
-import com.impoort.impoortapi.domain.watch.Watcher;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
-public class WatcherPageList extends PageImpl<Watcher> {
+public class PostPageList extends PageImpl<PostResponseDTO> {
 
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
-    public WatcherPageList(@JsonProperty("watcher") List<Watcher> watcher,
+    public PostPageList(@JsonProperty("posts") List<PostResponseDTO> posts,
                         @JsonProperty("number") int number,
                         @JsonProperty("size") int size,
                         @JsonProperty("totalElements") Long totalElements){
-        super(watcher, PageRequest.of(number,size),totalElements);
+        super(posts, PageRequest.of(number,size),totalElements);
 
     }
-    public WatcherPageList(List<Watcher> watchers, Pageable pageable, long total) {
-        super(watchers, pageable, total);
+    public PostPageList(List<PostResponseDTO> posts, Pageable pageable, long total) {
+        super(posts, pageable, total);
     }
 
-    public WatcherPageList(List<Watcher> watchers) {
-        super(watchers);
+    public PostPageList(List<PostResponseDTO> posts) {
+        super(posts);
     }
 }

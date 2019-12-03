@@ -21,6 +21,7 @@ public class InitData implements CommandLineRunner {
         userRepository.save(modelMapper
                 .map(UserRequestDTO.builder()
                         .firstName("hasan")
+                        .lastName("cerit")
                         .email("hasan")
                         .password("123")
                         .userType(UserType.STARTUP)
@@ -29,6 +30,7 @@ public class InitData implements CommandLineRunner {
         userRepository.save(modelMapper
                 .map(UserRequestDTO.builder()
                         .firstName("can")
+                        .lastName("yard")
                         .email("can")
                         .password("123")
                         .build(),User.class));
@@ -36,6 +38,7 @@ public class InitData implements CommandLineRunner {
         userRepository.save(modelMapper
                 .map(UserRequestDTO.builder()
                         .firstName("burak")
+                        .lastName("deneme")
                         .email("burak")
                         .password("123")
                         .build(),User.class));

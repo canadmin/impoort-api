@@ -4,7 +4,7 @@ import com.impoort.impoortapi.api.v1.model.requestmodel.LikeRequestDTO;
 import com.impoort.impoortapi.api.v1.model.requestmodel.PostRequestDTO;
 import com.impoort.impoortapi.api.v1.model.requestmodel.comment.CommentRequestDTO;
 import com.impoort.impoortapi.api.v1.model.requestmodel.comment.IDCommentRequestDTO;
-import com.impoort.impoortapi.api.v1.model.requestmodel.pageLists.PostPageList;
+import com.impoort.impoortapi.domain.pageLists.PostPageList;
 import com.impoort.impoortapi.api.v1.model.responsemodel.CommentResponseDTO;
 import com.impoort.impoortapi.api.v1.model.responsemodel.LikeResponseDTO;
 import com.impoort.impoortapi.api.v1.model.responsemodel.PostResponseDTO;

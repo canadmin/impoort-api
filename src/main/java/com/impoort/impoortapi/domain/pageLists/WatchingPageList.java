@@ -1,8 +1,7 @@
-package com.impoort.impoortapi.api.v1.model.requestmodel.pageLists;
+package com.impoort.impoortapi.domain.pageLists;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.impoort.impoortapi.api.v1.model.responsemodel.PostResponseDTO;
 import com.impoort.impoortapi.domain.watch.Watching;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;

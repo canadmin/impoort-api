@@ -1,10 +1,8 @@
 package com.impoort.impoortapi.controller;
 
-import com.impoort.impoortapi.api.v1.model.requestmodel.pageLists.WatcherPageList;
-import com.impoort.impoortapi.api.v1.model.requestmodel.pageLists.WatchingPageList;
+import com.impoort.impoortapi.domain.pageLists.WatcherPageList;
+import com.impoort.impoortapi.domain.pageLists.WatchingPageList;
 import com.impoort.impoortapi.domain.watch.Watch;
-import com.impoort.impoortapi.domain.watch.Watcher;
-import com.impoort.impoortapi.domain.watch.Watching;
 import com.impoort.impoortapi.service.WatchService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Slf4j
 @Controller
@@ -40,21 +36,24 @@ public class WatchController {
     }
 
     @CrossOrigin
-    @GetMapping("/{userId}/{myId}/watcher")
-    public ResponseEntity<WatcherPageList> getWatcher(@PathVariable String userId, @PathVariable String myId,
+    @GetMapping("/watcher/{userId}")
+    public ResponseEntity<WatcherPageList> getWatcher(@PathVariable String userId,
                                                       @RequestParam(value = "pageNumber", required = false) Integer pageNumber,
-                                                      @RequestParam(value = "pageSize", required = false) Integer pageSize){
+                                                      @RequestParam(value = "pageSize", required = false) Integer pageSize,
+                                                      @RequestParam(value = "myId", required = true) String myId){
 
         return new ResponseEntity<>(watchService.getWatcher(userId,myId, PageRequest.of(pageNumber,pageSize)),HttpStatus.OK);
     }
 
     @CrossOrigin
-    @GetMapping("/{userId}/{myId}/watching")
-    public ResponseEntity<WatchingPageList> getWatching(@PathVariable String userId, @PathVariable String myId,
+    @GetMapping("/watching/{userId}")
+    public ResponseEntity<WatchingPageList> getWatching(@PathVariable String userId,
+                                                        @RequestParam(value = "myId", required = true) String myId,
                                                         @RequestParam(value = "pageNumber", required = false) Integer pageNumber,
                                                         @RequestParam(value = "pageSize", required = false) Integer pageSize){
 
 
         return new ResponseEntity<>(watchService.getWatching(userId,myId,PageRequest.of(pageNumber,pageSize)),HttpStatus.OK);
     }
+
 }

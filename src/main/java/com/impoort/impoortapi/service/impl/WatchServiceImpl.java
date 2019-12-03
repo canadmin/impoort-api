@@ -1,8 +1,7 @@
 package com.impoort.impoortapi.service.impl;
 
-import com.impoort.impoortapi.api.v1.model.requestmodel.pageLists.WatcherPageList;
-import com.impoort.impoortapi.api.v1.model.requestmodel.pageLists.WatchingPageList;
-import com.impoort.impoortapi.api.v1.model.responsemodel.UserResponseDTO;
+import com.impoort.impoortapi.domain.pageLists.WatcherPageList;
+import com.impoort.impoortapi.domain.pageLists.WatchingPageList;
 import com.impoort.impoortapi.domain.user.User;
 import com.impoort.impoortapi.domain.watch.Watch;
 import com.impoort.impoortapi.domain.watch.Watcher;
@@ -17,8 +16,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.support.PagedListHolder;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 

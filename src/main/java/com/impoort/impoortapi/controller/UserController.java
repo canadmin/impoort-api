@@ -51,8 +51,9 @@ public class UserController {
 
     // profile görüntülemek için yazıldı
     @CrossOrigin
-    @GetMapping("/{userId}/{myId}")
-    public ResponseEntity<UserResponseDTO> getUser(@PathVariable String userId,@PathVariable String myId){
+    @GetMapping("/profile/{userId}")
+    public ResponseEntity<UserResponseDTO> getUser(
+            @RequestParam(value = "myId", required = true) String myId, @PathVariable String userId){
     return new ResponseEntity<>(userService.getUser(userId,myId),HttpStatus.OK);
     }
 
