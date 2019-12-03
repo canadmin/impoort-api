@@ -16,5 +16,6 @@ public interface PostRepository extends JpaRepository<Post,Integer> {
 
     @Query("select post from Post post where post.postType = 2 order by post.likeCount desc ")
     List<Post> getPost(Pageable pageable);
+    List<Post> findAllByPostIdIn(List<Integer> postId);
 
 }

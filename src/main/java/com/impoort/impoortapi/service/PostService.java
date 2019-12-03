@@ -36,4 +36,6 @@ public interface PostService {
     PostResponseDTO watchPost(int postId, String userId);
 
     void deleteWatch(int postId, String userId);
+
+    List<PostResponseDTO> listWatchedPosts(String userId);
 }

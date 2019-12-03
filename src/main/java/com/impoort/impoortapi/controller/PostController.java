@@ -107,4 +107,12 @@ public class PostController {
                             @RequestParam(value = "userId",required = true) String userId){
         postService.deleteWatch(postId,userId);
     }
+
+    @CrossOrigin
+    @GetMapping("/{userId}/watchedPost")
+    public ResponseEntity<List<PostResponseDTO>> listWatchedPosts(@PathVariable String userId){
+        return new ResponseEntity<>(postService.listWatchedPosts(userId),HttpStatus.OK);
+    }
+
+
 }
