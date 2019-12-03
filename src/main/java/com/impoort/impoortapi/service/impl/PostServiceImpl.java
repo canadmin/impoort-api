@@ -31,6 +31,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Service
@@ -138,7 +139,8 @@ public class PostServiceImpl implements PostService {
         List<Like> likes = post.getLikeList();
         Like like = modelMapper.map(likeRequestDTO, Like.class);
         User user = userRepository.getOne(likeRequestDTO.getUser());
-        like.setUser(user);
+        like.setUserId(user.getUserId());
+        like.setPost(post);
         likes.add(like);
         post.setLikeList(likes);
         post.setLikeCount(likes.size());
@@ -155,7 +157,7 @@ public class PostServiceImpl implements PostService {
         // TODO bunu çözelim hasancığım satır 218 deki gibi :)
         Like delete = null;
         for(Like like : likes) {
-        	if(like.getUser().getUserId().equals(deleteRequestDTO.getUser())) {
+        	if(like.getUserId().equals(deleteRequestDTO.getUser())) {
         		delete = like;
         		break;
         	}
@@ -181,30 +183,34 @@ public class PostServiceImpl implements PostService {
     public PostPageList listPost(String userId, PageRequest pageRequest, Boolean profilePost) {
 
         PostPageList postPageList;
-        Pageable sortedByCreatedDateTime = PageRequest.of(pageRequest.getPageNumber(), pageRequest.getPageSize(), Sort.by("createdDateTime"));
+        Pageable sortedByCreatedDateTime = PageRequest.of(pageRequest.getPageNumber(),
+                pageRequest.getPageSize(), Sort.by("createdDateTime"));
         Page<Post> postPage = null;
-
+        //postlar görüntülenirken benim beğendiğime göre bulunması gerekli
 
         if (profilePost) {
             postPage = postPagingRepository.findAllByUserId(userId, sortedByCreatedDateTime);
 
         } else {
             List<String> users = new ArrayList<>();
-
+            users.add(userId);
             for (int i = 0; i < userRepository.getOne(userId).getWatching().size(); i++) {
                 users.add(userRepository.getOne(userId).getWatching().get(i).getUser().getUserId());
             }
 
             postPage = postPagingRepository.findByUserIdIn(users, sortedByCreatedDateTime);
         }
+        List<PostResponseDTO> updatedPostPage = postPage.getContent().stream().map(x->modelMapper.map(x,PostResponseDTO.class)).collect(Collectors.toList());
+        AtomicInteger index = new AtomicInteger();
+        updatedPostPage.stream().forEach(x->{
+            if(x.getLikeList().get(index.getAndIncrement()).getUserId().equals(userId)){
+                x.setIsLiked(true);
+            }
+        });
 
-        postPageList = new PostPageList(postPage
-                .getContent().stream()
-                .map(x -> modelMapper.map(x, PostResponseDTO.class))
-                .collect(Collectors.toList()),
+        postPageList = new PostPageList(updatedPostPage,
                 PageRequest.of(postPage.getPageable().getPageNumber(),
                         postPage.getPageable().getPageSize()), postPage.getTotalElements());
-
         return postPageList;
     }
 
