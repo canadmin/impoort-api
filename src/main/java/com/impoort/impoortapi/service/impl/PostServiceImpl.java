@@ -36,6 +36,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -214,15 +215,19 @@ public class PostServiceImpl implements PostService {
         //listenecek postlarda benim beğenip beğenmediğim bilgisi ekleniyor
         // listenecek postlarda benim watchlayıp watchlamadığım görünecek
         AtomicInteger index = new AtomicInteger();
+        AtomicInteger index2 = new AtomicInteger();
+
         List<WatchPost> watchPostList = watchPostRepository.findAllByUser(user1.get());
 
         updatedPostPage.stream().forEach(post->{
-            if(post.getLikeList().get(index.getAndIncrement()).getUserId().equals(userId)){
-                post.setIsLiked(true);
-                post.setLikeList(null);
+            if(!post.getLikeList().isEmpty()) {
+                if (post.getLikeList().get(index.getAndIncrement()).getUserId().equals(userId)) {
+                    post.setIsLiked(true);
+                    post.setLikeList(null);
+                }
             }
             if(!watchPostList.isEmpty()){
-                if(post.getPostId() == watchPostList.get(index.decrementAndGet()).getPost()){
+                if(post.getPostId() == watchPostList.get(index2.getAndIncrement()).getPost()){
                     post.setIsWatched(true);
                 }
             }
@@ -263,7 +268,10 @@ public class PostServiceImpl implements PostService {
     @Override
     public List<PostResponseDTO> listWatchedPosts(String userId) {
         Optional<User> user = userRepository.findById(userId);
-        List<PostResponseDTO> postResponseDTOS = Arrays.asList(modelMapper.map(user.get().getWatchPosts(),PostResponseDTO[].class));
-        return postResponseDTOS;
+        List<Integer> postIdList = new ArrayList<>();
+        for(WatchPost watchPost:user.get().getWatchPosts()){
+            postIdList.add(watchPost.getPost());
+        }
+        return Arrays.asList(modelMapper.map(postRepository.findAllByPostIdIn(postIdList),PostResponseDTO[].class));
     }
 }
