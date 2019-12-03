@@ -22,6 +22,6 @@ public interface UserRepository extends JpaRepository<User,String> {
     @Query("select user from User user order by user.watcherCount desc ")
     List<User> getSuggestedUser(Pageable pageable);
 
-    List<User> findAllByFullNameContainingAndUserTypeIn(String userName,List<UserType> userType);
+    List<User> findAllByFullNameContainingAndUserTypeIn(String fullName,List<UserType> userType);
 
 }

@@ -1,13 +1,8 @@
 package com.impoort.impoortapi.service.impl;
 
-import com.impoort.impoortapi.api.v1.model.requestmodel.PostRequestDTO;
-import com.impoort.impoortapi.api.v1.model.requestmodel.UserRequestDTO;
-import com.impoort.impoortapi.api.v1.model.requestmodel.pageLists.PostPageList;
 import com.impoort.impoortapi.api.v1.model.responsemodel.PostResponseDTO;
 import com.impoort.impoortapi.api.v1.model.responsemodel.UserResponseDTO;
-import com.impoort.impoortapi.domain.post.Post;
 import com.impoort.impoortapi.repository.UserRepository;
-import com.impoort.impoortapi.repository.postrepositories.PostPagingRepository;
 import com.impoort.impoortapi.repository.postrepositories.PostRepository;
 import com.impoort.impoortapi.service.DiscoverService;
 import lombok.RequiredArgsConstructor;
