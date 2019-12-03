@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @Slf4j
 @Controller
 @RequestMapping("/api/v1/watch")
@@ -24,7 +26,7 @@ public class WatchController {
 
     @CrossOrigin
     @PostMapping
-    public ResponseEntity<Watch> watchUser(@RequestBody Watch watch){
+    public ResponseEntity<Watch> watchUser(@RequestBody @Valid Watch watch){
         return new ResponseEntity<Watch>(watchService.watchUser(watch), HttpStatus.OK) ;
     }
 

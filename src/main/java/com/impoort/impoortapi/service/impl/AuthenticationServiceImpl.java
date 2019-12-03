@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -58,7 +59,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         User user = modelMapper.map(userRequestDTO, User.class);
         user.setActiveGuide(RandomStringGenerator.generateString());
         user.setFullName(Converters.generateFullName(user.getFirstName(),user.getLastName()));
-        user = userRepository.save(user);
+        try {
+            user = userRepository.save(user);
+        }catch (Exception e ){
+            e.printStackTrace();
+            return null;
+        }
         UserResponseDTO userResponseDTO = modelMapper.map(user, UserResponseDTO.class);
         return userResponseDTO;
     }

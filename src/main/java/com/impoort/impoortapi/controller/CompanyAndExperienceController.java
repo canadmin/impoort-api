@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -27,13 +28,13 @@ public class CompanyAndExperienceController {
 
     @PostMapping("experience")
     @CrossOrigin
-    public ResponseEntity  newExperiences(@RequestBody List<Experience> experiences){
+    public ResponseEntity  newExperiences(@RequestBody @Valid List<Experience> experiences){
         return new ResponseEntity<>(companyAndExperienceService.addExperience(experiences),HttpStatus.CREATED);
     }
 
     @PutMapping("experience")
     @CrossOrigin
-    public ResponseEntity updateExperiences(@RequestBody List<Experience> experiences){
+    public ResponseEntity updateExperiences(@RequestBody @Valid List<Experience> experiences){
         return new ResponseEntity<>(companyAndExperienceService.updateExperience(experiences),HttpStatus.CREATED);
     }
 

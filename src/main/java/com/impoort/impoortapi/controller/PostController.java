@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -39,17 +40,17 @@ public class PostController {
     }*/
     @CrossOrigin
     @PostMapping
-    public ResponseEntity<PostResponseDTO> addNewPost(@RequestBody PostRequestDTO postRequestDTO){
+    public ResponseEntity<PostResponseDTO> addNewPost(@RequestBody @Valid PostRequestDTO postRequestDTO){
         return new ResponseEntity<PostResponseDTO>(postService.addNewPost(postRequestDTO),HttpStatus.OK);
     }
     @CrossOrigin
     @PostMapping("/{postId}/addComment")
-    public ResponseEntity<CommentResponseDTO> addNewComment(@RequestBody CommentRequestDTO commentRequestDTO, @PathVariable int postId){
+    public ResponseEntity<CommentResponseDTO> addNewComment(@RequestBody @Valid CommentRequestDTO  commentRequestDTO, @PathVariable int postId){
         return new ResponseEntity<CommentResponseDTO>(postService.addNewComment(postId,commentRequestDTO),HttpStatus.OK);
     }
     @CrossOrigin
     @PostMapping("/{postId}/deleteComment")
-    public ResponseEntity<CommentResponseDTO> deleteComment(@RequestBody IDCommentRequestDTO commentRequestDTO, @PathVariable int postId){
+    public ResponseEntity<CommentResponseDTO> deleteComment(@RequestBody @Valid IDCommentRequestDTO commentRequestDTO, @PathVariable int postId){
         return new ResponseEntity<CommentResponseDTO>(postService.deleteComment(postId,commentRequestDTO),HttpStatus.OK);
     }
     @CrossOrigin
@@ -59,12 +60,12 @@ public class PostController {
     }
     @CrossOrigin
     @PostMapping("{postId}/addNewLike")
-    public ResponseEntity<LikeResponseDTO> addNewLike(@RequestBody LikeRequestDTO likeRequestDTO,@PathVariable int postId){
+    public ResponseEntity<LikeResponseDTO> addNewLike(@RequestBody @Valid LikeRequestDTO likeRequestDTO,@PathVariable int postId){
         return  new ResponseEntity<LikeResponseDTO>(postService.addNewLike(postId,likeRequestDTO),HttpStatus.OK);
     }
     @CrossOrigin
     @DeleteMapping("{postId}/deleteLike")
-    public ResponseEntity<LikeResponseDTO> deleteLike(@RequestBody LikeRequestDTO likeRequestDTO,@PathVariable int postId){
+    public ResponseEntity<LikeResponseDTO> deleteLike(@RequestBody @Valid LikeRequestDTO likeRequestDTO,@PathVariable int postId){
         return  new ResponseEntity<LikeResponseDTO>(postService.deleteLike(postId,likeRequestDTO),HttpStatus.OK);
     }
 

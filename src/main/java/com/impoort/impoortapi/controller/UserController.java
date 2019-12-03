@@ -16,6 +16,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import javax.xml.ws.Response;
 import java.util.List;
 
@@ -44,7 +45,7 @@ public class UserController {
     */
     @CrossOrigin
     @PostMapping("/updateUser")
-    public ResponseEntity<UserResponseDTO> updateUser(@RequestBody UserUpdateDto user){
+    public ResponseEntity<UserResponseDTO> updateUser(@RequestBody @Valid UserUpdateDto user){
         return new ResponseEntity<>(userService.updateUser(user),HttpStatus.OK);
     }
 
