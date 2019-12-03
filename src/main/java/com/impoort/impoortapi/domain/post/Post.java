@@ -37,8 +37,7 @@ public class Post {
     private int likeCount;
     private int commentCount;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "like_post_id")
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "post")
     private List<Like> likeList;
 
     @OneToMany(cascade = CascadeType.ALL)

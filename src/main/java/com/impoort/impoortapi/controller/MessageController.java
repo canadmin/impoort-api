@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -32,7 +33,7 @@ public class MessageController {
 
     @CrossOrigin
     @PostMapping("/sendMessage")
-    public ResponseEntity<Message> sendNewMessageToReceiver(@RequestBody Message message){
+    public ResponseEntity<Message> sendNewMessageToReceiver(@RequestBody @Valid Message message){
         return  new ResponseEntity<Message>(messageService.sendMessageToReceiver(message),HttpStatus.OK);
     }
 

@@ -6,6 +6,8 @@ import com.impoort.impoortapi.domain.user.User;
 import lombok.Builder;
 import lombok.Data;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Map;
@@ -20,9 +22,10 @@ public class UserRequestDTO {
 
     @NotNull
     private String firstName;
-    @NotNull
     private String lastName;
     @NotNull
+    @NotBlank
+    @Email
     private String email;
     private String city;
     @NotNull

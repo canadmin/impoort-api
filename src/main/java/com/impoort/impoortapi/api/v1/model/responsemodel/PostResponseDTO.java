@@ -20,7 +20,7 @@ public class PostResponseDTO {
     private String postDescription;
     private String department;
     private int likeCount;
-    private List<User> likeList;
+    private List<UserResponseDTO> likeList;
     private int commentCount;
     private List<Comment> commentList;
 
@@ -29,4 +29,6 @@ public class PostResponseDTO {
 
     private Collection<String> tags;
 
+    private Boolean isLiked = false;
+    private Boolean isWatched = false;
 }

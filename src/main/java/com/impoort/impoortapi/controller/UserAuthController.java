@@ -8,9 +8,11 @@ import com.impoort.impoortapi.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/auth")
@@ -24,13 +26,13 @@ public class UserAuthController {
     
     @CrossOrigin
     @PostMapping(path = "/login")
-    public ResponseEntity<Object> login(HttpServletRequest httpServletRequest, @RequestBody final UserAuthRequestDto userAuthRequestDto){
+    public ResponseEntity<Object> login(HttpServletRequest httpServletRequest, @RequestBody @Valid final UserAuthRequestDto userAuthRequestDto){
         return new ResponseEntity<Object>(service.login(userAuthRequestDto),HttpStatus.OK);
     }
 
     @CrossOrigin
     @PostMapping("/signUp")
-    public ResponseEntity<UserResponseDTO> addNewUser(@RequestBody UserRequestDTO userRequestDTO){
+    public ResponseEntity<UserResponseDTO> addNewUser(@RequestBody @Validated UserRequestDTO userRequestDTO){
         return new ResponseEntity<UserResponseDTO>(service.signUp(userRequestDTO),HttpStatus.OK);
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -20,7 +21,7 @@ public class SearchController {
 
     @CrossOrigin
     @GetMapping
-    public ResponseEntity<List<UserResponseDTO>> searchUser(@RequestBody SearchRequest searchRequest){
+    public ResponseEntity<List<UserResponseDTO>> searchUser(@RequestBody @Valid SearchRequest searchRequest){
         return new ResponseEntity<>(searchService.getSearchUser(searchRequest), HttpStatus.OK);
     }
 
