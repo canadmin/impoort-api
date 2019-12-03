@@ -4,6 +4,7 @@ import com.impoort.impoortapi.api.v1.model.requestmodel.LikeRequestDTO;
 import com.impoort.impoortapi.api.v1.model.requestmodel.PostRequestDTO;
 import com.impoort.impoortapi.api.v1.model.requestmodel.comment.CommentRequestDTO;
 import com.impoort.impoortapi.api.v1.model.requestmodel.comment.IDCommentRequestDTO;
+import com.impoort.impoortapi.api.v1.model.responsemodel.UserResponseDTO;
 import com.impoort.impoortapi.domain.pageLists.PostPageList;
 import com.impoort.impoortapi.api.v1.model.responsemodel.CommentResponseDTO;
 import com.impoort.impoortapi.api.v1.model.responsemodel.LikeResponseDTO;
@@ -28,6 +29,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -256,5 +258,12 @@ public class PostServiceImpl implements PostService {
         user.setWatchingPostCount(user.getWatchingPostCount()-1);
         WatchPost watchPost =  watchPostRepository.findByPostAndUser(postId,user);
         watchPostRepository.deleteById(watchPost.getWatchedPostId());
+    }
+
+    @Override
+    public List<PostResponseDTO> listWatchedPosts(String userId) {
+        Optional<User> user = userRepository.findById(userId);
+        List<PostResponseDTO> postResponseDTOS = Arrays.asList(modelMapper.map(user.get().getWatchPosts(),PostResponseDTO[].class));
+        return postResponseDTOS;
     }
 }
