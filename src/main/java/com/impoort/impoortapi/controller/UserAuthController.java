@@ -3,8 +3,8 @@ package com.impoort.impoortapi.controller;
 import com.impoort.impoortapi.api.v1.model.requestmodel.UserRequestDTO;
 import com.impoort.impoortapi.api.v1.model.responsemodel.UserResponseDTO;
 import com.impoort.impoortapi.security.authDto.UserAuthRequestDto;
-import com.impoort.impoortapi.security.authDto.UserAuthResponseDto;
 import com.impoort.impoortapi.service.AuthenticationService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+@Api(description = "User login and signup paths")
 @RestController
 @RequestMapping("/auth")
 public class UserAuthController {

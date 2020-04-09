@@ -92,11 +92,12 @@ public class MessageServiceImpl implements MessageService {
         List<UserMessageDTO> returnedUser = new ArrayList<>();
         for (MessagesGeneral msg : messagesGenerals) {
             User user = userRepository.getOne(msg.getUserMessagesWithID());
-            UserMessageDTO userMessageDTO = new UserMessageDTO(user.getUserId(),
-                                                                user.getFirstName(),
-                                                                user.getLastName(),
-                                                                user.getProfileImgUrl(),
-                                                                msg.getLastMessage());
+            UserMessageDTO userMessageDTO = new
+                    UserMessageDTO(user.getUserId(),
+                    user.getFirstName(),
+                    user.getLastName(),
+                    user.getProfileImgUrl(),
+                    msg.getLastMessage());
 
             returnedUser.add(userMessageDTO);
         }
