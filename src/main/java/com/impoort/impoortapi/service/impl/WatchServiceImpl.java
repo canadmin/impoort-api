@@ -110,7 +110,7 @@ public class WatchServiceImpl implements WatchService {
 
         for (int i = 0; i < myWatchingList.size(); i++) {
             for (int j = 0; j < watchers.size(); j++) {
-                if (watchers.get(j).getUser().getUserId() == myWatchingList.get(i).getUser().getUserId()) {
+                if (watchers.get(j).getUser().getUserId().equals(myWatchingList.get(i).getUser().getUserId())) {
                     watchers.get(j).setBeingWatch(true);
                 }
             }
@@ -138,7 +138,7 @@ public class WatchServiceImpl implements WatchService {
 
         for (int i = 0; i < myWatchingList.size(); i++) {
             for (int j = 0; j < watchings.size(); j++) {
-                if (watchings.get(j).getUser().getUserId() == myWatchingList.get(i).getUser().getUserId()) {
+                if (watchings.get(j).getUser().getUserId().equals(myWatchingList.get(i).getUser().getUserId())) {
                     watchings.get(j).setBeingWatch(true);
                 }
             }
