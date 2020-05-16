@@ -6,7 +6,7 @@ import com.impoort.impoortapi.domain.watch.Watch;
 import org.springframework.data.domain.PageRequest;
 
 public interface WatchService {
-    Watch watchUser(Watch watch);
+    Watch watchUser(String watcherId ,String watchingId);
 
     void stopWatching(int watchingId);
 

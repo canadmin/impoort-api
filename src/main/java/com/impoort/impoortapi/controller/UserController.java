@@ -8,6 +8,7 @@ import com.impoort.impoortapi.domain.watch.Watcher;
 import com.impoort.impoortapi.domain.watch.Watching;
 import com.impoort.impoortapi.service.UserService;
 import com.impoort.impoortapi.utils.MailSenderService;
+import io.swagger.annotations.ApiOperation;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,6 +36,7 @@ public class UserController {
     }
 
     //test için var  silinecek
+    @ApiOperation(value = "Bunu kullanmayın test için yazılmıştı")
     @CrossOrigin
     @GetMapping("/users")
     public ResponseEntity<List<UserResponseDTO>>  getAllUser(){
@@ -43,6 +45,7 @@ public class UserController {
     /*
     kullanıcı bilgilerini güncellemek için yazıldı
     */
+    @ApiOperation(value = "kullanıcın bilgilerini güncellemek için")
     @CrossOrigin
     @PostMapping("/updateUser")
     public ResponseEntity<UserResponseDTO> updateUser(@RequestBody @Valid UserUpdateDto user){
@@ -51,6 +54,7 @@ public class UserController {
 
 
     // profile görüntülemek için yazıldı
+    @ApiOperation(value = "diğer bir kullanıcının profilini görüntülemek için")
     @CrossOrigin
     @GetMapping("/profile/{userId}")
     public ResponseEntity<UserResponseDTO> getUser(

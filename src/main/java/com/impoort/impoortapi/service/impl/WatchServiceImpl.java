@@ -42,12 +42,12 @@ public class WatchServiceImpl implements WatchService {
      * @return içerik olarak takip edecek ve takip edileni döndürüyor
      */
     @Override
-    public Watch watchUser(Watch watch) {
+    public Watch watchUser(String watcherId ,String watchingId) {
 
         UUID mapUUID = UUID.randomUUID();
 
-        User me = userRepository.getOne(watch.getWatcherId());
-        User other = userRepository.getOne(watch.getWatchingId());
+        User me = userRepository.getOne(watcherId);
+        User other = userRepository.getOne(watchingId);
 
         List<Watching> myWatchingList = me.getWatching();
 
@@ -74,7 +74,8 @@ public class WatchServiceImpl implements WatchService {
         userRepository.save(other);
 
 
-        return watch;
+
+        return Watch.builder().watcherId(watcherId).watchingId(watchingId).build();
     }
 
     /*

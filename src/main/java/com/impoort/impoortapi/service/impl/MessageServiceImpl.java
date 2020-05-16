@@ -85,6 +85,11 @@ public class MessageServiceImpl implements MessageService {
 
     }
 
+    /**
+     *
+     * @param userId fixlenebilir çok eskiden yazdık mantığını unuttum
+     * @return
+     */
     @Override
     public List<UserMessageDTO> getAllMessageUser(String userId) {
         List<MessagesGeneral> messagesGenerals = messageGeneralRepository
