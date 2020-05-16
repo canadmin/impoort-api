@@ -17,12 +17,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
-            if (pathMatcher.match("/auth/**", request.getServletPath())) {
-                if (!request.getHeader("auth_key").equals("impoort-api-123")) {
-                    response.sendRedirect("/error/invalid_auth");
-                    return;
-                }
-            }
             if (isProtectedUrl(request)) {
                 String token = request.getHeader("Authorization");
                 JwtUtil.validateToken(token);
