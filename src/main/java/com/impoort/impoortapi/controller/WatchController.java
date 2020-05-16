@@ -4,6 +4,7 @@ import com.impoort.impoortapi.domain.pageLists.WatcherPageList;
 import com.impoort.impoortapi.domain.pageLists.WatchingPageList;
 import com.impoort.impoortapi.domain.watch.Watch;
 import com.impoort.impoortapi.service.WatchService;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -24,12 +25,28 @@ public class WatchController {
         this.watchService = watchService;
     }
 
+    /**
+     *
+     * @param watcherId takip edecenin id si
+     * @param watchingId takip edileceğin id si
+     * @return takip edenin id si ile takip edilenin id si dönüyor önemli bişey değil
+     */
+    @ApiOperation(value = "bir kullanıcıyı takip etmek için")
     @CrossOrigin
     @PostMapping
-    public ResponseEntity<Watch> watchUser(@RequestBody @Valid Watch watch){
-        return new ResponseEntity<Watch>(watchService.watchUser(watch), HttpStatus.OK) ;
+    public ResponseEntity<Watch> watchUser( @RequestParam(value = "watcherId", required = false) String watcherId,
+                                            @RequestParam(value = "watchingId", required = false) String watchingId){
+        return new ResponseEntity<Watch>(watchService.watchUser(watcherId,watchingId), HttpStatus.OK) ;
     }
 
+    /**
+     *
+     * @param watchingId bu id hergangi bir kullanıcının id değil
+     *                   watchingId iki kişi arasındaa oluşan takibin id sidir bunun
+     *                   silinmesi durumunda takip eden kışı takip ettiği kişiyi
+     *                   takipten çıkartır.
+     */
+    @ApiOperation(value = "value takibi durdurmak için")
     @CrossOrigin
     @DeleteMapping("/{watchingId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -37,6 +54,7 @@ public class WatchController {
         watchService.stopWatching(watchingId);
     }
 
+    @ApiOperation(value = "kullanıcının kendisini takip edenleri görüntülemek için paging yapıldı")
     @CrossOrigin
     @GetMapping("/watcher/{userId}")
     public ResponseEntity<WatcherPageList> getWatcher(@PathVariable String userId,
@@ -47,6 +65,7 @@ public class WatchController {
         return new ResponseEntity<>(watchService.getWatcher(userId,myId, PageRequest.of(pageNumber,pageSize)),HttpStatus.OK);
     }
 
+    @ApiOperation(value = "kullanıcın takip ettiklerini görüntülemek için paging yapıldı")
     @CrossOrigin
     @GetMapping("/watching/{userId}")
     public ResponseEntity<WatchingPageList> getWatching(@PathVariable String userId,

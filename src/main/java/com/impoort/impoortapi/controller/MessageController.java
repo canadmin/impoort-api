@@ -5,6 +5,7 @@ import com.impoort.impoortapi.domain.messages.Message;
 import com.impoort.impoortapi.domain.messages.MessagesGeneral;
 import com.impoort.impoortapi.domain.user.User;
 import com.impoort.impoortapi.service.MessageService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,18 +26,21 @@ public class MessageController {
         this.messageService = messageService;
     }
 
+    @ApiOperation(value = "iki kullanıcı arasındaki mesajların hepsini döner")
     @CrossOrigin
     @GetMapping("/allMessage/{senderId}/{receiverId}")
     public ResponseEntity<List<Message>> getAllMessageWithReceiverUser(@PathVariable String senderId, @PathVariable String receiverId){
         return new ResponseEntity<>(messageService.getAllMessageWithReceiver(senderId,receiverId), HttpStatus.OK);
     }
 
+    @ApiOperation("bir kullanıcıya mesaj göndermek için")
     @CrossOrigin
     @PostMapping("/sendMessage")
     public ResponseEntity<Message> sendNewMessageToReceiver(@RequestBody @Valid Message message){
         return  new ResponseEntity<Message>(messageService.sendMessageToReceiver(message),HttpStatus.OK);
     }
 
+    @ApiOperation("bir kullanıcının diğer kullanıcı ile ")
     @CrossOrigin
     @GetMapping("/inbox/{userId}")
     public ResponseEntity<List<UserMessageDTO>> getUserMessagesUsers(@PathVariable String userId){

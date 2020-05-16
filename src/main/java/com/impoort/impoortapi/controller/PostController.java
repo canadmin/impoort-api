@@ -9,6 +9,7 @@ import com.impoort.impoortapi.api.v1.model.responsemodel.CommentResponseDTO;
 import com.impoort.impoortapi.api.v1.model.responsemodel.LikeResponseDTO;
 import com.impoort.impoortapi.api.v1.model.responsemodel.PostResponseDTO;
 import com.impoort.impoortapi.service.PostService;
+import io.swagger.annotations.ApiOperation;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -38,42 +39,54 @@ public class PostController {
     public ResponseEntity<List<PostResponseDTO>> getAllPost(){
         return new ResponseEntity<List<PostResponseDTO>>(postService.getAllPost(), HttpStatus.OK);
     }*/
+    @ApiOperation("yeni post eklemek için")
     @CrossOrigin
     @PostMapping
     public ResponseEntity<PostResponseDTO> addNewPost(@RequestBody @Valid PostRequestDTO postRequestDTO){
         return new ResponseEntity<PostResponseDTO>(postService.addNewPost(postRequestDTO),HttpStatus.OK);
     }
+
+    @ApiOperation(("var olan gönderiye yeni yorum eklemek için"))
     @CrossOrigin
     @PostMapping("/{postId}/addComment")
     public ResponseEntity<CommentResponseDTO> addNewComment(@RequestBody @Valid CommentRequestDTO  commentRequestDTO, @PathVariable int postId){
         return new ResponseEntity<CommentResponseDTO>(postService.addNewComment(postId,commentRequestDTO),HttpStatus.OK);
     }
+    @ApiOperation("yapılan yorumu silmek için ")
     @CrossOrigin
     @PostMapping("/{postId}/deleteComment")
     public ResponseEntity<CommentResponseDTO> deleteComment(@RequestBody @Valid IDCommentRequestDTO commentRequestDTO, @PathVariable int postId){
         return new ResponseEntity<CommentResponseDTO>(postService.deleteComment(postId,commentRequestDTO),HttpStatus.OK);
     }
+
+    @ApiOperation(value = "bir postun bütün yorumlarını görüntülemek için kullanılır")
     @CrossOrigin
     @GetMapping("{postId}/getAllComment")
     public ResponseEntity<List<CommentResponseDTO>> getPostComment(@PathVariable int postId){
         return  new ResponseEntity<List<CommentResponseDTO>>(postService.getAllComment(postId),HttpStatus.OK);
     }
+
+    @ApiOperation(value = "var olan postu beğenmek için")
     @CrossOrigin
     @PostMapping("{postId}/addNewLike")
     public ResponseEntity<LikeResponseDTO> addNewLike(@RequestBody @Valid LikeRequestDTO likeRequestDTO,@PathVariable int postId){
         return  new ResponseEntity<LikeResponseDTO>(postService.addNewLike(postId,likeRequestDTO),HttpStatus.OK);
     }
+    @ApiOperation(value = "beğeniyi geri almak için")
     @CrossOrigin
     @DeleteMapping("{postId}/deleteLike")
     public ResponseEntity<LikeResponseDTO> deleteLike(@RequestBody @Valid LikeRequestDTO likeRequestDTO,@PathVariable int postId){
         return  new ResponseEntity<LikeResponseDTO>(postService.deleteLike(postId,likeRequestDTO),HttpStatus.OK);
     }
 
+    @ApiOperation(value = "postun bütün beğenilerini görüntülemek için")
     @CrossOrigin
     @GetMapping("{postId}/getAllLike")
     public ResponseEntity<List<LikeResponseDTO>> getAllLike(@PathVariable int postId){
         return new ResponseEntity<List<LikeResponseDTO>>(postService.getAllLike(postId),HttpStatus.OK);
     }//Deneme
+
+    @ApiOperation(value = "takip ettiğim kişilerin postlarını görüntülemek için Paging yapılır")
     @CrossOrigin
     @GetMapping
     public ResponseEntity<PostPageList> listPosts(@RequestParam(value = "pageNumber", required = false) Integer pageNumber,
@@ -94,12 +107,14 @@ public class PostController {
         return new ResponseEntity<>(postList,HttpStatus.OK);
     }
 
+    @ApiOperation(value = "var olan bir postu takibe almak için")
     @CrossOrigin
     @PostMapping("/{postId}/watch")
     public ResponseEntity<PostResponseDTO> watchPost(@PathVariable int postId,  @RequestParam(value = "userId",required = true) String userId){
         return new ResponseEntity<>(postService.watchPost(postId,userId),HttpStatus.OK);
     }
 
+    @ApiOperation(value = "takibe aldığım bir postun takibini bırakmak için")
     @CrossOrigin
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{postId}/watch")
@@ -108,6 +123,7 @@ public class PostController {
         postService.deleteWatch(postId,userId);
     }
 
+    @ApiOperation(value = "kullanıcının takip ettiği postları görüntülemesi için")
     @CrossOrigin
     @GetMapping("/{userId}/watchedPost")
     public ResponseEntity<List<PostResponseDTO>> listWatchedPosts(@PathVariable String userId){
