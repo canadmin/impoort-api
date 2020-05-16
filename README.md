@@ -3,6 +3,7 @@
 	* proje dizini içerisinde 
 	# mvn spring-boot:run
 	
+	
 # Database profile
     h2 veritabanı için: 
     # h2 veritabanı için: 
