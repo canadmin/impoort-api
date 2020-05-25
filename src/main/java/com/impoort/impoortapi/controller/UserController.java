@@ -18,7 +18,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.xml.ws.Response;
 import java.util.List;
 
 @Controller
@@ -60,6 +59,16 @@ public class UserController {
     public ResponseEntity<UserResponseDTO> getUser(
             @RequestParam(value = "myId", required = true) String myId, @PathVariable String userId){
     return new ResponseEntity<>(userService.getUser(userId,myId),HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "kullanıcı fotoğrafı eklemek ve güncellemek için")
+    @CrossOrigin
+    @PostMapping("/updateProfileImg")
+    public ResponseEntity<String> updateProfileImg(@RequestParam(value = "userId", required = true) String userId,
+                                           @RequestParam(value = "url" , required =  true)String url){
+            this.userService.updateUserProfileImg(userId,url);
+
+            return new ResponseEntity<>("profile image updated successfully",HttpStatus.CREATED);
     }
 
     /*
