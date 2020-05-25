@@ -18,4 +18,6 @@ public interface UserService {
 
     UserResponseDTO updateUser(UserUpdateDto userUpdateDto);
 
+    void updateUserProfileImg(String userId,String url);
+
 }
