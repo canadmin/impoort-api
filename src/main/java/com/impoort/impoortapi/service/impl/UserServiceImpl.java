@@ -110,4 +110,10 @@ public class UserServiceImpl implements UserService {
         return userResponseDTO;
     }
 
+    @Override
+    public void updateUserProfileImg(String userId, String url) {
+        User user = userRepository.getOne(userId);
+        user.setProfileImgUrl(url);
+        userRepository.save(user);
+    }
 }
