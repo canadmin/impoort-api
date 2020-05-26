@@ -51,7 +51,7 @@ public class User {
             CascadeType.REFRESH,
             CascadeType.MERGE,
             CascadeType.PERSIST
-    }, orphanRemoval = true)
+    }   )
     @JsonIgnore
     @JoinColumn(name = "watcher_user_id")
     private List<Watcher> watcher;
@@ -60,7 +60,7 @@ public class User {
             CascadeType.REFRESH,
             CascadeType.MERGE,
             CascadeType.PERSIST
-    }, orphanRemoval = true)
+    })
     @JsonIgnore
     @JoinColumn(name = "watching_user_id")
     private List<Watching> watching;

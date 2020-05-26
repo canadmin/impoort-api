@@ -38,7 +38,7 @@ public class UserController {
     @ApiOperation(value = "Bunu kullanmayın test için yazılmıştı")
     @CrossOrigin
     @GetMapping("/users")
-    public ResponseEntity<List<UserResponseDTO>>  getAllUser(){
+    public ResponseEntity<List<UserResponseDTO>> getAllUser(){
           return new ResponseEntity<List<UserResponseDTO>>(userService.getAllUser(), HttpStatus.OK);
     }
     /*

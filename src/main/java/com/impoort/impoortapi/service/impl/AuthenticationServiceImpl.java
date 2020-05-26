@@ -4,6 +4,7 @@ import com.impoort.impoortapi.api.v1.model.requestmodel.UserRequestDTO;
 import com.impoort.impoortapi.api.v1.model.responsemodel.UserResponseDTO;
 import com.impoort.impoortapi.domain.user.User;
 import com.impoort.impoortapi.repository.UserRepository;
+import com.impoort.impoortapi.repository.company.CompanyRepository;
 import com.impoort.impoortapi.security.JwtUtil;
 import com.impoort.impoortapi.security.authDto.UserAuthRequestDto;
 import com.impoort.impoortapi.security.authDto.UserAuthResponseDto;
@@ -24,11 +25,13 @@ import java.util.Map;
 public class AuthenticationServiceImpl implements AuthenticationService {
     private final ModelMapper modelMapper;
     private final UserRepository userRepository;
+    private final CompanyRepository companyRepository;
 
     @Autowired
-    public AuthenticationServiceImpl(ModelMapper modelMapper, UserRepository userRepository) {
+    public AuthenticationServiceImpl(ModelMapper modelMapper, UserRepository userRepository, CompanyRepository companyRepository) {
         this.modelMapper = modelMapper;
         this.userRepository = userRepository;
+        this.companyRepository = companyRepository;
     }
 
     @Override
@@ -38,6 +41,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         User user = userRepository.findByEmail(userAuthRequestDto.getEmail());
         UserResponseDTO userResponseDTO = modelMapper.map(user, UserResponseDTO.class);
         UserAuthRequestDto userAuthFound = modelMapper.map(user, UserAuthRequestDto.class);
+        userResponseDTO.setExperiences(companyRepository.findByWorkerId(userResponseDTO.getUserId()));
         if (isValidPassword(userAuthRequestDto.getPassword(), userAuthFound.getPassword())) {
             String jwt = JwtUtil.generateToken(userAuthRequestDto.getEmail());
             userAuthResponseDto.setToken(jwt);

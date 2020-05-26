@@ -17,6 +17,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -88,24 +89,13 @@ public class UserServiceImpl implements UserService {
 
     //bu kullanıcının profil bilgilerinin güncellenmesi için yazıldı
     @Override
+    @Transactional
     public UserResponseDTO updateUser(UserUpdateDto userUpdateDto) {
 
 
         User updatedUser = (modelMapper.map(userUpdateDto, User.class));
-        User oldUser = userRepository.getOne(userUpdateDto.getUserId());
-
-        User newUser = updatedUser;
-        newUser.setActiveGuide(oldUser.getActiveGuide());
-        newUser.setWatcherCount(oldUser.getWatcherCount());
-        newUser.setWatchingCount(oldUser.getWatchingCount());
-        newUser.setWatcher(oldUser.getWatcher());
-        newUser.setWatching(oldUser.getWatching());
-        newUser.setWatchingPostCount(oldUser.getWatchingPostCount());
-        newUser.setEmployeeCount(oldUser.getEmployeeCount());
-        newUser.setActive(oldUser.isActive());
-
-        userRepository.save(newUser);
-        UserResponseDTO userResponseDTO = modelMapper.map(newUser, UserResponseDTO.class);
+        userRepository.save(updatedUser);
+        UserResponseDTO userResponseDTO = modelMapper.map(updatedUser, UserResponseDTO.class);
         userResponseDTO.setExperiences(companyRepository.findByWorkerId(userResponseDTO.getUserId()));
         return userResponseDTO;
     }
