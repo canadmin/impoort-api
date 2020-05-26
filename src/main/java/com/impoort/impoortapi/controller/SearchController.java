@@ -26,5 +26,11 @@ public class SearchController {
     public ResponseEntity<List<UserResponseDTO>> searchUser(@RequestBody @Valid SearchRequest searchRequest){
         return new ResponseEntity<>(searchService.getSearchUser(searchRequest), HttpStatus.OK);
     }
+    @ApiOperation(value = "Sadece Web için kullanılacak")
+    @CrossOrigin
+    @PostMapping
+    public ResponseEntity<List<UserResponseDTO>> searchUserForWeb(@RequestBody @Valid SearchRequest searchRequest){
+        return new ResponseEntity<>(searchService.getSearchUser(searchRequest), HttpStatus.OK);
+    }
 
 }
