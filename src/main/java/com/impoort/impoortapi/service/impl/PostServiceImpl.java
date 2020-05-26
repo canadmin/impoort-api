@@ -140,37 +140,45 @@ public class PostServiceImpl implements PostService {
         List<Like> likes = post.getLikeList();
         Like like = modelMapper.map(likeRequestDTO, Like.class);
         User user = userRepository.getOne(likeRequestDTO.getUser());
-        like.setUserId(user.getUserId());
-        like.setPost(post);
-        likes.add(like);
-        post.setLikeList(likes);
-        post.setLikeCount(likes.size());
-        LikeResponseDTO likeResponseDTO = modelMapper.map(like, LikeResponseDTO.class);
-        postRepository.save(post);
-        likeResponseDTO.setLikeId(likes.get(likes.size() - 1).getLikeId());
-        return likeResponseDTO;
+        if(isLiked(user.getUserId(),postId)){
+            return modelMapper.map(like, LikeResponseDTO.class);
+        }else{
+            like.setUserId(user.getUserId());
+            like.setPost(post);
+            likes.add(like);
+            post.setLikeList(likes);
+            post.setLikeCount(likes.size());
+            LikeResponseDTO likeResponseDTO = modelMapper.map(like, LikeResponseDTO.class);
+            postRepository.save(post);
+            likeResponseDTO.setLikeId(likes.get(likes.size() - 1).getLikeId());
+            return likeResponseDTO;
+        }
+
     }
 
-    @Override
-    public LikeResponseDTO deleteLike(int postId, LikeRequestDTO deleteRequestDTO) {
-        Post post = postRepository.getOne(postId);
-        List<Like> likes = post.getLikeList();
-        // TODO bunu çözelim hasancığım satır 218 deki gibi :)
-        Like delete = null;
-        for (Like like : likes) {
-            if (like.getUserId().equals(deleteRequestDTO.getUser())) {
-                delete = like;
-                break;
+    private boolean isLiked(String userId, int postId) {
+        boolean liked = false;
+        List<Like> likes = likeRepository.findAllByUserId(userId);
+        for (Like like:likes) {
+            if(like.getPost().getPostId() == postId){
+                return true;
             }
         }
 
-        likes.remove(delete);
-        likeRepository.delete(delete);
-        post.setLikeCount(likes.size());
-        postRepository.save(post);
+        return false;
+    }
 
-        LikeResponseDTO deleteResponseDTO = modelMapper.map(delete, LikeResponseDTO.class);
-        return deleteResponseDTO;
+    @Override
+    public void deleteLike(int postId, LikeRequestDTO deleteRequestDTO) {
+        Post post = postRepository.getOne(postId);
+            List<Like> likes = likeRepository.findAllByUserId(deleteRequestDTO.getUser());
+            for (Like like : likes){
+                if(like.getPost().getPostId( )== postId){
+                    likeRepository.deleteById(like.getLikeId());
+                }
+            }
+        post.setLikeCount(post.getLikeCount()-1);
+        postRepository.save(post);
     }
 
 

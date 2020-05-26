@@ -75,8 +75,19 @@ public class PostController {
     @ApiOperation(value = "beğeniyi geri almak için")
     @CrossOrigin
     @DeleteMapping("{postId}/deleteLike")
-    public ResponseEntity<LikeResponseDTO> deleteLike(@RequestBody @Valid LikeRequestDTO likeRequestDTO,@PathVariable int postId){
-        return  new ResponseEntity<LikeResponseDTO>(postService.deleteLike(postId,likeRequestDTO),HttpStatus.OK);
+    public ResponseEntity<String> deleteLike(@RequestBody @Valid LikeRequestDTO likeRequestDTO,@PathVariable int postId){
+        postService.deleteLike(postId,likeRequestDTO);
+        return  new ResponseEntity<String>("Başarı ile silindi",HttpStatus.OK);
+    }
+    @ApiOperation(value = "Sadece Web için yazıldı beğeni geri almak için")
+    @CrossOrigin
+    @PostMapping("/deleteLikeWeb")
+    public ResponseEntity<String> deleteLikeforWeb(@RequestParam(value = "userId", required = false) String userId,
+                                                            @RequestParam(value = "postId", required = false) Integer postId){
+        LikeRequestDTO likeRequestDTO = new LikeRequestDTO();
+        likeRequestDTO.setUser(userId);
+        postService.deleteLike(postId,likeRequestDTO);
+        return  new ResponseEntity<>("Başarı ile silindi",HttpStatus.OK);
     }
 
     @ApiOperation(value = "postun bütün beğenilerini görüntülemek için")

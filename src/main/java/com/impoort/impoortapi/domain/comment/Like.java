@@ -13,8 +13,7 @@ public class Like  {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int likeId;
-    @ManyToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "post_id")
+    @ManyToOne   @JoinColumn(name = "post_id")
     private Post post;
 
     private String userId;
