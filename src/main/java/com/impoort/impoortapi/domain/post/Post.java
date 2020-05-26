@@ -37,7 +37,7 @@ public class Post {
     private int likeCount;
     private int commentCount;
 
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "post")
+    @OneToMany(cascade = {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH},mappedBy = "post")
     private List<Like> likeList;
 
     @OneToMany(cascade = CascadeType.ALL)

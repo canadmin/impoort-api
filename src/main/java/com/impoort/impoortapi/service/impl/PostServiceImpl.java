@@ -4,7 +4,6 @@ import com.impoort.impoortapi.api.v1.model.requestmodel.LikeRequestDTO;
 import com.impoort.impoortapi.api.v1.model.requestmodel.PostRequestDTO;
 import com.impoort.impoortapi.api.v1.model.requestmodel.comment.CommentRequestDTO;
 import com.impoort.impoortapi.api.v1.model.requestmodel.comment.IDCommentRequestDTO;
-import com.impoort.impoortapi.api.v1.model.responsemodel.UserResponseDTO;
 import com.impoort.impoortapi.domain.pageLists.PostPageList;
 import com.impoort.impoortapi.api.v1.model.responsemodel.CommentResponseDTO;
 import com.impoort.impoortapi.api.v1.model.responsemodel.LikeResponseDTO;
@@ -29,14 +28,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -45,7 +42,7 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
     private final LikeRepository likeRepository;
     private final CommentRepository commentRepository;
-    
+
     private final ModelMapper modelMapper;
     private final PostPagingRepository postPagingRepository;
     private final UserRepository userRepository;
@@ -91,23 +88,23 @@ public class PostServiceImpl implements PostService {
         commentResponseDTO.setPostId(post.getPostId());
         return commentResponseDTO;
     }
-    
-	@Override
-	public CommentResponseDTO deleteComment(int postId, IDCommentRequestDTO commentRequestDTO) {
+
+    @Override
+    public CommentResponseDTO deleteComment(int postId, IDCommentRequestDTO commentRequestDTO) {
         Post post = postRepository.getOne(postId);
         List<Comment> comments = post.getCommentList();
-        Comment delete = commentRepository.getOne(Integer.parseInt(commentRequestDTO.getCommentId()));   
-        
-        comments.remove(delete);     
-        post.setCommentCount(comments.size());   	
-        
+        Comment delete = commentRepository.getOne(Integer.parseInt(commentRequestDTO.getCommentId()));
+
+        comments.remove(delete);
+        post.setCommentCount(comments.size());
+
         commentRepository.delete(delete);
         postRepository.save(post);
-        
-        CommentResponseDTO deleteResponseDTO = modelMapper.map(delete,CommentResponseDTO.class);
+
+        CommentResponseDTO deleteResponseDTO = modelMapper.map(delete, CommentResponseDTO.class);
         deleteResponseDTO.setPostId(postId);
         return deleteResponseDTO;
-	}
+    }
 
     /**
      * @param postId yorumları  görüntülenecek postun ıdsi
@@ -143,38 +140,46 @@ public class PostServiceImpl implements PostService {
         List<Like> likes = post.getLikeList();
         Like like = modelMapper.map(likeRequestDTO, Like.class);
         User user = userRepository.getOne(likeRequestDTO.getUser());
-        like.setUserId(user.getUserId());
-        like.setPost(post);
-        likes.add(like);
-        post.setLikeList(likes);
-        post.setLikeCount(likes.size());
-        LikeResponseDTO likeResponseDTO = modelMapper.map(like, LikeResponseDTO.class);
-        postRepository.save(post);
-        likeResponseDTO.setLikeId(likes.get(likes.size() - 1).getLikeId());
-        return likeResponseDTO;
-    }
-    
-    @Override
-	public LikeResponseDTO deleteLike(int postId, LikeRequestDTO deleteRequestDTO) {
-        Post post = postRepository.getOne(postId);
-        List<Like> likes = post.getLikeList();
-        // TODO bunu çözelim hasancığım satır 218 deki gibi :)
-        Like delete = null;
-        for(Like like : likes) {
-        	if(like.getUserId().equals(deleteRequestDTO.getUser())) {
-        		delete = like;
-        		break;
-        	}
+        if(isLiked(user.getUserId(),postId)){
+            return modelMapper.map(like, LikeResponseDTO.class);
+        }else{
+            like.setUserId(user.getUserId());
+            like.setPost(post);
+            likes.add(like);
+            post.setLikeList(likes);
+            post.setLikeCount(likes.size());
+            LikeResponseDTO likeResponseDTO = modelMapper.map(like, LikeResponseDTO.class);
+            postRepository.save(post);
+            likeResponseDTO.setLikeId(likes.get(likes.size() - 1).getLikeId());
+            return likeResponseDTO;
         }
-          
-        likes.remove(delete);        	
-        likeRepository.delete(delete);
-        post.setLikeCount(likes.size());
+
+    }
+
+    private boolean isLiked(String userId, int postId) {
+        boolean liked = false;
+        List<Like> likes = likeRepository.findAllByUserId(userId);
+        for (Like like:likes) {
+            if(like.getPost().getPostId() == postId){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    @Override
+    public void deleteLike(int postId, LikeRequestDTO deleteRequestDTO) {
+        Post post = postRepository.getOne(postId);
+            List<Like> likes = likeRepository.findAllByUserId(deleteRequestDTO.getUser());
+            for (Like like : likes){
+                if(like.getPost().getPostId( )== postId){
+                    likeRepository.deleteById(like.getLikeId());
+                }
+            }
+        post.setLikeCount(post.getLikeCount()-1);
         postRepository.save(post);
-        
-        LikeResponseDTO deleteResponseDTO = modelMapper.map(delete,LikeResponseDTO.class);
-        return deleteResponseDTO;
-	}
+    }
 
 
     /**
@@ -209,7 +214,7 @@ public class PostServiceImpl implements PostService {
         List<PostResponseDTO> updatedPostPage =
                 postPage.getContent()
                         .stream()
-                        .map(x-> modelMapper.map(x,PostResponseDTO.class))
+                        .map(x -> modelMapper.map(x, PostResponseDTO.class))
                         .collect(Collectors.toList());
 
         //listenecek postlarda benim beğenip beğenmediğim bilgisi ekleniyor
@@ -218,22 +223,23 @@ public class PostServiceImpl implements PostService {
         AtomicInteger index2 = new AtomicInteger();
 
         List<WatchPost> watchPostList = watchPostRepository.findAllByUser(user1.get());
+        AtomicInteger searchCompleted = new AtomicInteger();
+        updatedPostPage.stream().forEach(post -> {
+            if (!post.getLikeList().isEmpty()) {
+                for (int i = 0; i < post.getLikeList().size(); i++) {
+                    if (post.getLikeList().get(i).getUserId().equalsIgnoreCase(userId)) {
+                        post.setIsLiked(true);
+                    }
+                    if (!watchPostList.isEmpty()) {
+                        if (post.getPostId() == watchPostList.get(i).getPost()) {
+                            post.setIsWatched(true);
 
-        updatedPostPage.stream().forEach(post->{
-            if(!post.getLikeList().isEmpty()) {
-                if (post.getLikeList().get(index.getAndIncrement()).getUserId().equals(userId)) {
-                    post.setIsLiked(true);
-                    post.setLikeList(null);
+                        }
+                    }
+
                 }
             }
-            if(!watchPostList.isEmpty()){
-                if(post.getPostId() == watchPostList.get(index2.getAndIncrement()).getPost()){
-                    post.setIsWatched(true);
-                }
-            }
-
         });
-
 
         postPageList = new PostPageList(updatedPostPage,
                 PageRequest.of(postPage.getPageable().getPageNumber(),
@@ -246,13 +252,13 @@ public class PostServiceImpl implements PostService {
         User user = userRepository.getOne(userId);
         Post post = postRepository.getOne(postId);
 
-        Boolean isExist = watchPostRepository.existsByPostAndUser(postId,user);
-        if(!isExist){
-            user.setWatchingPostCount(user.getWatchingPostCount()+1);
+        Boolean isExist = watchPostRepository.existsByPostAndUser(postId, user);
+        if (!isExist) {
+            user.setWatchingPostCount(user.getWatchingPostCount() + 1);
             WatchPost watchPost = WatchPost.builder().user(user).post(postId).build();
             watchPostRepository.save(watchPost);
 
-            return modelMapper.map(postRepository.getOne(postId),PostResponseDTO.class);
+            return modelMapper.map(postRepository.getOne(postId), PostResponseDTO.class);
         }
         return null;
     }
@@ -260,8 +266,8 @@ public class PostServiceImpl implements PostService {
     @Override
     public void deleteWatch(int postId, String userId) {
         User user = userRepository.getOne(userId);
-        user.setWatchingPostCount(user.getWatchingPostCount()-1);
-        WatchPost watchPost =  watchPostRepository.findByPostAndUser(postId,user);
+        user.setWatchingPostCount(user.getWatchingPostCount() - 1);
+        WatchPost watchPost = watchPostRepository.findByPostAndUser(postId, user);
         watchPostRepository.deleteById(watchPost.getWatchedPostId());
     }
 
@@ -269,9 +275,9 @@ public class PostServiceImpl implements PostService {
     public List<PostResponseDTO> listWatchedPosts(String userId) {
         Optional<User> user = userRepository.findById(userId);
         List<Integer> postIdList = new ArrayList<>();
-        for(WatchPost watchPost:user.get().getWatchPosts()){
+        for (WatchPost watchPost : user.get().getWatchPosts()) {
             postIdList.add(watchPost.getPost());
         }
-        return Arrays.asList(modelMapper.map(postRepository.findAllByPostIdIn(postIdList),PostResponseDTO[].class));
+        return Arrays.asList(modelMapper.map(postRepository.findAllByPostIdIn(postIdList), PostResponseDTO[].class));
     }
 }

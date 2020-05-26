@@ -29,7 +29,7 @@ public interface PostService {
 
     PostPageList listPost(String userId,PageRequest pageRequest,Boolean profilePost);
 
-	LikeResponseDTO deleteLike(int postId, LikeRequestDTO deleteRequestDto);
+	void deleteLike(int postId, LikeRequestDTO deleteRequestDto);
 
 	CommentResponseDTO deleteComment(int postId, IDCommentRequestDTO commentRequestDTO);
 
