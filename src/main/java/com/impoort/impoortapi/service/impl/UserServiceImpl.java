@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserService {
 
             userResponseDTO.setEmployees(workerUsers);
         }
-
+        userResponseDTO.setExperiences(companyRepository.findByWorkerId(userId));
         return userResponseDTO;
     }
 
@@ -91,9 +91,8 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserResponseDTO updateUser(UserUpdateDto userUpdateDto) {
-
-
         User updatedUser = (modelMapper.map(userUpdateDto, User.class));
+        updatedUser.setFullName(Converters.generateFullName(userUpdateDto.getFirstName(),userUpdateDto.getLastName()));
         userRepository.save(updatedUser);
         UserResponseDTO userResponseDTO = modelMapper.map(updatedUser, UserResponseDTO.class);
         userResponseDTO.setExperiences(companyRepository.findByWorkerId(userResponseDTO.getUserId()));
