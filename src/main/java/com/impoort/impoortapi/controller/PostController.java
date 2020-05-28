@@ -134,6 +134,14 @@ public class PostController {
         postService.deleteWatch(postId,userId);
     }
 
+    @ApiOperation(value = "takibe aldığım bir postun takibini bırakmak için WEB İCİN GELİŞTİRİLDİ")
+    @CrossOrigin
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PostMapping("/{postId}/unWatchPost")
+    public void deleteWatchForWeb(@PathVariable int postId,
+                            @RequestParam(value = "userId",required = true) String userId){
+        postService.deleteWatch(postId,userId);
+    }
     @ApiOperation(value = "kullanıcının takip ettiği postları görüntülemesi için")
     @CrossOrigin
     @GetMapping("/{userId}/watchedPost")
