@@ -140,9 +140,9 @@ public class PostServiceImpl implements PostService {
         List<Like> likes = post.getLikeList();
         Like like = modelMapper.map(likeRequestDTO, Like.class);
         User user = userRepository.getOne(likeRequestDTO.getUser());
-        if(isLiked(user.getUserId(),postId)){
+        if (isLiked(user.getUserId(), postId)) {
             return modelMapper.map(like, LikeResponseDTO.class);
-        }else{
+        } else {
             like.setUserId(user.getUserId());
             like.setPost(post);
             likes.add(like);
@@ -159,8 +159,8 @@ public class PostServiceImpl implements PostService {
     private boolean isLiked(String userId, int postId) {
         boolean liked = false;
         List<Like> likes = likeRepository.findAllByUserId(userId);
-        for (Like like:likes) {
-            if(like.getPost().getPostId() == postId){
+        for (Like like : likes) {
+            if (like.getPost().getPostId() == postId) {
                 return true;
             }
         }
@@ -171,13 +171,13 @@ public class PostServiceImpl implements PostService {
     @Override
     public void deleteLike(int postId, LikeRequestDTO deleteRequestDTO) {
         Post post = postRepository.getOne(postId);
-            List<Like> likes = likeRepository.findAllByUserId(deleteRequestDTO.getUser());
-            for (Like like : likes){
-                if(like.getPost().getPostId( )== postId){
-                    likeRepository.deleteById(like.getLikeId());
-                }
+        List<Like> likes = likeRepository.findAllByUserId(deleteRequestDTO.getUser());
+        for (Like like : likes) {
+            if (like.getPost().getPostId() == postId) {
+                likeRepository.deleteById(like.getLikeId());
             }
-        post.setLikeCount(post.getLikeCount()-1);
+        }
+        post.setLikeCount(post.getLikeCount() - 1);
         postRepository.save(post);
     }
 
@@ -230,13 +230,18 @@ public class PostServiceImpl implements PostService {
                     if (post.getLikeList().get(i).getUserId().equalsIgnoreCase(userId)) {
                         post.setIsLiked(true);
                     }
-                    if (!watchPostList.isEmpty()) {
-                        if (post.getPostId() == watchPostList.get(i).getPost()) {
-                            post.setIsWatched(true);
-
-                        }
+//                    if (!watchPostList.isEmpty()) {
+//                        if (post.getPostId() == watchPostList.get(i).getPost()) {
+//                            post.setIsWatched(true);
+//                        }
+//                    }
+                }
+            }
+            if (!watchPostList.isEmpty()) {
+                for (int i = 0; i < watchPostList.size(); i++) {
+                    if (post.getPostId() == watchPostList.get(i).getPost()) {
+                        post.setIsWatched(true);
                     }
-
                 }
             }
         });
