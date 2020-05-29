@@ -1,5 +1,6 @@
 package com.impoort.impoortapi.domain.comment;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.impoort.impoortapi.domain.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,7 +21,7 @@ public class WatchPost {
     private int watchedPostId;
 
     private int post;
-
+    @JsonIgnore
     @OneToOne(cascade = {CascadeType.MERGE})
     @JoinColumn(name= "userId")
     private User user;
