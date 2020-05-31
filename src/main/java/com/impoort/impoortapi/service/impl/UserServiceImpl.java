@@ -91,9 +91,28 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserResponseDTO updateUser(UserUpdateDto userUpdateDto) {
+        User userDb = userRepository.getOne(userUpdateDto.getUserId());
         User updatedUser = (modelMapper.map(userUpdateDto, User.class));
+
+        System.out.println(userDb.getUserId());
+
         updatedUser.setFullName(Converters.generateFullName(userUpdateDto.getFirstName(),userUpdateDto.getLastName()));
-        userRepository.save(updatedUser);
+
+        userDb.setFullName(updatedUser.getFullName());
+        userDb.setDepartment(userUpdateDto.getDepartment());
+        userDb.setDescription(userUpdateDto.getDescription());
+        userDb.setLinks(userUpdateDto.getLinks());
+        userDb.setFirstName(updatedUser.getFirstName());
+        userDb.setLastName(updatedUser.getLastName());
+        userDb.setPhoneNumber(updatedUser.getPhoneNumber());
+        userDb.setCity(updatedUser.getCity());
+        userDb.setEmail(updatedUser.getEmail());
+        userDb.setUserType(updatedUser.getUserType());
+        userDb.setGender(userUpdateDto.getGender());
+        userDb.setProfileImgUrl(userUpdateDto.getProfileImgUrl());
+
+
+        userRepository.save(userDb);
         UserResponseDTO userResponseDTO = modelMapper.map(updatedUser, UserResponseDTO.class);
         userResponseDTO.setExperiences(companyRepository.findByWorkerId(userResponseDTO.getUserId()));
         return userResponseDTO;

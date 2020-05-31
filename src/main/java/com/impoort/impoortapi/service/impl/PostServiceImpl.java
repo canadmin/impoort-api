@@ -217,10 +217,7 @@ public class PostServiceImpl implements PostService {
                         .map(x -> modelMapper.map(x, PostResponseDTO.class))
                         .collect(Collectors.toList());
 
-        //listenecek postlarda benim beğenip beğenmediğim bilgisi ekleniyor
-        // listenecek postlarda benim watchlayıp watchlamadığım görünecek
-        AtomicInteger index = new AtomicInteger();
-        AtomicInteger index2 = new AtomicInteger();
+
 
         List<WatchPost> watchPostList = watchPostRepository.findAllByUser(user1.get());
         AtomicInteger searchCompleted = new AtomicInteger();
@@ -230,11 +227,7 @@ public class PostServiceImpl implements PostService {
                     if (post.getLikeList().get(i).getUserId().equalsIgnoreCase(userId)) {
                         post.setIsLiked(true);
                     }
-//                    if (!watchPostList.isEmpty()) {
-//                        if (post.getPostId() == watchPostList.get(i).getPost()) {
-//                            post.setIsWatched(true);
-//                        }
-//                    }
+
                 }
             }
             if (!watchPostList.isEmpty()) {

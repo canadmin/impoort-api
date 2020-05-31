@@ -4,9 +4,11 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.Null;
+import java.sql.Timestamp;
 
 @Entity
 @Data
@@ -21,9 +23,9 @@ public class Message {
     private String messageReceiverUserId;
     private String messageText;
 
-    @Null
-    @JsonFormat(pattern="dd-MM-yyyy hh:mm:ss", shape=JsonFormat.Shape.STRING)
-    private long messageDate;
+
+    @CreationTimestamp
+    private Timestamp messageDate;
 
 
 }
