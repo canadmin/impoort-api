@@ -43,12 +43,9 @@ public class WatchServiceImpl implements WatchService {
      */
     @Override
     public Watch watchUser(String watcherId ,String watchingId) {
-
         UUID mapUUID = UUID.randomUUID();
-
         User me = userRepository.getOne(watcherId);
         User other = userRepository.getOne(watchingId);
-
         List<Watching> myWatchingList = me.getWatching();
 
         Watching newWatching = new Watching();
