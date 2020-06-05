@@ -1,5 +1,6 @@
 package com.impoort.impoortapi.controller;
 
+import com.impoort.impoortapi.api.v1.model.requestmodel.ProfileImgRequestDto;
 import com.impoort.impoortapi.api.v1.model.requestmodel.UserRequestDTO;
 import com.impoort.impoortapi.api.v1.model.requestmodel.UserUpdateDto;
 import com.impoort.impoortapi.api.v1.model.responsemodel.UserResponseDTO;
@@ -70,6 +71,17 @@ public class UserController {
 
             return new ResponseEntity<>("profile image updated successfully",HttpStatus.CREATED);
     }
+    @ApiOperation(value = "kullanıcı fotoğrafı eklemek ve güncellemek için Sadece Android için")
+    @CrossOrigin
+    @PostMapping("/updateProfileImgAndroid")
+    public ResponseEntity<String> updateProfileImgForAndroid(@RequestParam(value = "userId", required = true) String userId,
+                                                             @RequestBody ProfileImgRequestDto profileImgRequestDto){
+        this.userService.updateUserProfileImg(userId,profileImgRequestDto.getProfileImg());
+
+        return new ResponseEntity<>("profile image updated successfully",HttpStatus.CREATED);
+    }
+
+
 
     /*
     @GetMapping("/verifyAccount/url/{activeGuide}")
